@@ -1,8 +1,30 @@
-/* War Room — adds K/DEF, W/R flex only, accordions closed by default,
-   Yahoo defaults, and previous fixes (stack badge, shared filters, instant starters)
+/* War Room — Smarter AI (needs + scarcity + stacks + bye penalty + late-round upside)
+   - Keeps K/DEF + W/R FLEX only
+   - Shares filters across tabs
+   - Instant starters + empty slots pre-draft
+   - Accordions already handled in index.html
 */
 
 const DATA_URL = "./consensus.json";
+
+/* ====== TUNABLE WEIGHTS (edit these to taste) ====== */
+const WEIGHTS = {
+  // Base components
+  vor: 1.0,                 // value over replacement (from projections)
+  tierBoost: 1.0,           // favor earlier tiers
+  valueVsADP: 0.8,          // discount/steal potential
+
+  // Smarts
+  need: 0.9,                // how much current roster needs by position matter
+  scarcity: 0.7,            // boost when a position is drying up
+  stackSynergy: 1.0,        // QB<->WR/TE stack bonus
+  byePenalty: -0.5,         // apply when candidate creates bye overlap among your starters
+  lateUpside: 0.6,          // late-round upside bias
+
+  // Lateness thresholds
+  lateRoundStartPct: 0.5,   // after 50% of draft completed, we lean into upside more
+  deepRoundStartPct: 0.75   // after 75%, even more upside bias
+};
 
 let state = {
   settings: {
@@ -38,7 +60,7 @@ let state = {
   dataSource: "consensus.json"
 };
 
-// ------- helpers -------
+// ---------- helpers ----------
 const el = id => document.getElementById(id);
 
 function normalizeTeam(abbr){
@@ -75,7 +97,19 @@ function buildPosRankCache(){
 function getPosRank(p){ const m = state.posRankCache[p.pos]; return m ? m.get(p.id ?? p.player) : undefined; }
 function posRankLabel(p, rank){ return rank ? `${p.pos}${rank}` : ""; }
 
-// Stacking (QB <-> WR/TE on YOUR team)
+// --- team/round helpers
+function overallToTeam(overall){
+  const T=state.settings.teams; const r=Math.ceil(overall/T); const pos=overall-(r-1)*T;
+  return (r%2===1) ? (pos-1) : (T - pos);
+}
+function getRound(overall){ return Math.ceil(overall/state.settings.teams); }
+function pickInRound(overall){ const r=getRound(overall), start=(r-1)*state.settings.teams+1; return overall-start+1; }
+function draftProgressPct(){
+  const total = state.settings.teams * state.settings.rounds;
+  return Math.min(1, (state.currentOverall-1)/Math.max(1,total));
+}
+
+// ---------- stacks / bye / needs ----------
 function hasPrimaryStackForMyTeam(candidate){
   const rosterIdxs = state.teamRosters[state.myTeamIndex] || [];
   const candTeam = normalizeTeam(candidate.team);
@@ -91,6 +125,7 @@ function hasPrimaryStackForMyTeam(candidate){
   return false;
 }
 function stackBonusForTeam(teamIndex, candidate){
+  if(!state.features.stack) return 0;
   const roster = (state.teamRosters[teamIndex]||[]).map(i=>state.players[i]);
   let bonus = 0;
   const candTeam = normalizeTeam(candidate.team);
@@ -103,7 +138,68 @@ function stackBonusForTeam(teamIndex, candidate){
   return bonus;
 }
 
-// ------- data load -------
+// Penalty if candidate creates bye overlap among *starters* at that position
+function byeOverlapPenalty(teamIndex, candidate){
+  const s = state.settings;
+  const startersTarget = { QB:s.qb, RB:s.rb, WR:s.wr, TE:s.te, K:s.k, DEF:s.def };
+  const rosterIdxs = state.teamRosters[teamIndex] || [];
+  const bye = candidate.bye || null;
+  if(!bye) return 0;
+
+  // Build current starters by pos (best ECR first)
+  const roster = rosterIdxs.map(i=>state.players[i]).sort((a,b)=>(a.ecr??9999)-(b.ecr??9999));
+  const starters = { QB:[], RB:[], WR:[], TE:[], K:[], DEF:[] };
+  for(const p of roster){
+    if(startersTarget[p.pos] && starters[p.pos].length < startersTarget[p.pos]) starters[p.pos].push(p);
+  }
+
+  const list = starters[candidate.pos] || [];
+  const overlap = list.some(p => (p.bye||-1) === bye);
+  if(!overlap) return 0;
+
+  // stronger penalty if this would be the first overlap (i.e., you’re filling your last starter of that pos)
+  const fillingLastStarter = list.length+1 >= (startersTarget[candidate.pos]||0);
+  return fillingLastStarter ? -3 : -1.5;
+}
+
+// Positional scarcity: fewer remaining relative to total => bigger boost
+function computeScarcityBoost(p){
+  const total = state.players.filter(x=>x.pos===p.pos).length;
+  const remain = state.available.map(i=>state.players[i]).filter(x=>x.pos===p.pos).length;
+  if(total === 0) return 0;
+  const pctRemain = remain/total;          // 1.0 early, approaches 0.0 when scarce
+  const scarcity = (1 - pctRemain);        // 0 early -> 1 late
+  // Make RB/WR scarcity sting a bit more than QB/K/DEF
+  const posFactor = (p.pos==="RB"||p.pos==="WR") ? 1.2 : (p.pos==="TE"? 1.0 : 0.6);
+  return scarcity * posFactor * 4;         // up to ~4.8 raw points
+}
+
+// Need weighting: how many starters left to fill at this position
+function rosterNeeds(teamIndex){
+  const s=state.settings, slots=state.rosterSlots[teamIndex]||{QB:0,RB:0,WR:0,TE:0,FLEX:0,K:0,DEF:0,BEN:0};
+  const target={QB:s.qb,RB:s.rb,WR:s.wr,TE:s.te,K:s.k,DEF:s.def}, need={};
+  for(const pos of ["QB","RB","WR","TE","K","DEF"]){
+    const have=slots[pos]||0, left=Math.max(0,(target[pos]||0)-have);
+    // curve: 1.0 base + bigger multiplier when you still have many to fill
+    need[pos]= 1 + (left*0.8);
+  }
+  return need;
+}
+
+// Late-round upside: boost players who (a) beat replacement by a bit and (b) have ADP discount
+function lateRoundUpsideBonus(p){
+  const pct = draftProgressPct();
+  if (pct < WEIGHTS.lateRoundStartPct) return 0;
+  // discount vs ADP (positive if ADP is later than current pick)
+  const discount = (state.dataFlags.hasADP && p.adp) ? Math.max(0, p.adp - state.currentOverall) : 0;
+  if (discount <= 0) return 0;
+  const tier = p.tier || 6;
+  const tierLean = Math.max(0, (tier-2)); // later tiers get more upside bias
+  const deep = (pct >= WEIGHTS.deepRoundStartPct) ? 1.25 : 1.0;
+  return (Math.log10(1 + discount) * (0.75 + 0.25*tierLean)) * deep; // ~0–2.5
+}
+
+// ---------- data load ----------
 async function loadConsensus() {
   const lastUpdatedEl = el("lastUpdated");
   const srcLabel = el("dataSourceLabel");
@@ -151,11 +247,10 @@ function ingestPlayers(raw){
   buildPosRankCache();
 }
 
-// ------- CSV upload -------
+// ---------- CSV Upload ----------
 function initCsvUpload(){
   const input = el("csvInput");
   if (input){
-    // reflect persisted filters in UI
     const posSel = el("filterPos"); if (posSel) posSel.value = state.filters.pos;
     const qInput = el("searchName"); if (qInput) qInput.value = state.filters.q;
 
@@ -251,24 +346,17 @@ function mapFantasyProsRow(headers, row){
 }
 function toNum(x){ const n = Number(String(x||"").replace(/[^0-9.\-]/g,"")); return isFinite(n)? n : null; }
 
-// ------- init -------
+// ---------- init ----------
 document.addEventListener("DOMContentLoaded", init);
 function init() {
-  // accordions: closed by default via HTML <details>; nothing needed here
   loadConsensus();
   setInterval(loadConsensus, 30*60*1000);
   initCsvUpload();
 
-  // reflect saved filters on first paint
-  const posSel = el("filterPos"); if (posSel) posSel.value = state.filters.pos;
-  const qInput = el("searchName"); if (qInput) qInput.value = state.filters.q;
-
-  // league inputs
   ["teams","rounds","pickPos","scoring",
    "qbSlots","rbSlots","wrSlots","teSlots","flexSlots","kSlots","defSlots","benchSlots"]
     .forEach(id=> el(id)?.addEventListener("input", syncSettings));
 
-  // draft controls
   el("startMock")?.addEventListener("click", startMock);
   el("pauseMock")?.addEventListener("click", ()=>{ state.paused=true; stopAutoLoop(); });
   el("resumeMock")?.addEventListener("click", ()=>{ if(!state.started) return; state.paused=false; if(state.autoplay.enabled) startAutoLoop(); });
@@ -282,17 +370,12 @@ function init() {
     if (state.autoplay.enabled) startAutoLoop(); else stopAutoLoop();
   });
 
-  // board tabs
   el("tabOverall")?.addEventListener("click", () => { state.boardView="overall"; localStorage.setItem("boardView","overall"); updateBoardTabs(); renderBoard(); });
   el("tabByRound")?.addEventListener("click", () => { state.boardView="round";   localStorage.setItem("boardView","round");   updateBoardTabs(); renderBoard(); });
-  updateBoardTabs();
 
-  // mid-panel tabs (shared filters)
   el("subtabRecs")?.addEventListener("click", () => { state.midTab="recs"; localStorage.setItem("midTab","recs"); updateMidTabs(); renderMidPanel(); });
   el("subtabRanks")?.addEventListener("click", () => { state.midTab="ranks"; localStorage.setItem("midTab","ranks"); updateMidTabs(); renderMidPanel(); });
-  updateMidTabs();
 
-  // shared filters (apply to BOTH tabs and persist)
   el("filterPos")?.addEventListener("change", (e) => {
     state.filters.pos = (e.target.value || "").toUpperCase();
     localStorage.setItem("filterPos", state.filters.pos);
@@ -304,15 +387,17 @@ function init() {
     renderMidPanel();
   });
 
+  updateBoardTabs(); updateMidTabs();
   render();
 }
 
 function syncSettings(){ const s=state.settings;
   s.teams=+el("teams").value||12; s.rounds=+el("rounds").value||16; s.pickPos=+el("pickPos").value||5;
   s.scoring=el("scoring").value; s.qb=+el("qbSlots").value||1; s.rb=+el("rbSlots").value||2; s.wr=+el("wrSlots").value||2;
-  s.te=+el("teSlots").value||1; s.flex=+el("flexSlots").value||1; s.k=+el("kSlots").value||1; s.def=+el("defSlots").value||1; s.bench=+el("benchSlots").value||8; }
+  s.te=+el("teSlots").value||1; s.flex=+el("flexSlots").value||1; s.k=+el("kSlots").value||1; s.def=+el("defSlots").value||1; s.bench=+el("benchSlots").value||8;
+}
 
-// ------- draft engine -------
+// ---------- draft engine ----------
 function startMock(){
   if (!state.players.length){ alert("Load players first (consensus.json or upload CSV)."); return; }
   syncSettings();
@@ -323,13 +408,6 @@ function startMock(){
   state.draftPicks = []; state.currentOverall = 1; state.started = true; state.paused=false;
   render(); if (state.autoplay.enabled) startAutoLoop();
 }
-function overallToTeam(overall){
-  const T=state.settings.teams; const r=Math.ceil(overall/T); const pos=overall-(r-1)*T;
-  return (r%2===1) ? (pos-1) : (T - pos);
-}
-function getRound(overall){ return Math.ceil(overall/state.settings.teams); }
-function pickInRound(overall){ const r=getRound(overall), start=(r-1)*state.settings.teams+1; return overall-start+1; }
-
 function startAutoLoop(){ stopAutoLoop();
   if (!state.autoplay.enabled) return;
   state.autoplay.loopId = setInterval(()=>{
@@ -366,12 +444,16 @@ function autoUntilMyPick(){
 function advanceAfterPick(shouldRender=true){ state.currentOverall += 1; if (shouldRender) render(); }
 
 function aiPick(teamIndex){
-  const {list}=computeRecommendations(teamIndex); if(!list.length) return;
-  const weighted = list.slice(0,24).map(p=> ({...p, biasScore: p.score + stackBonusForTeam(teamIndex, p)}));
-  weighted.sort((a,b)=>b.biasScore-a.biasScore);
-  const k=Math.min(7, weighted.length), weights=Array.from({length:k},(_,i)=>(k-i));
-  const sum=weights.reduce((a,b)=>a+b,0); let r=Math.random()*sum, pick=weighted[0];
-  for(let i=0;i<k;i++){ r-=weights[i]; if(r<=0){ pick=weighted[i]; break; } }
+  // Take the top scored player with a tiny amount of randomness in early rounds only
+  const {list}=computeRecommendations(teamIndex);
+  if(!list.length) return;
+  const early = draftProgressPct() < 0.2;
+  const k = early ? Math.min(6, list.length) : Math.min(3, list.length);
+  // soft random choice favoring top
+  const weights = Array.from({length:k},(_,i)=>(k-i));
+  const sum=weights.reduce((a,b)=>a+b,0);
+  let r=Math.random()*sum, pick=list[0];
+  for(let i=0;i<k;i++){ r-=weights[i]; if(r<=0){ pick=list[i]; break; } }
   draftPlayerById(pick.id,teamIndex);
 }
 function draftPlayerById(id, teamIndex){
@@ -386,8 +468,7 @@ function draftByIndex(poolIdx, teamIndex){
   state.teamRosters[teamIndex].push(poolIdx); bumpRosterSlot(teamIndex, state.players[poolIdx].pos);
   state.draftPicks.push({overall, team:teamIndex, round, pickInRound:pir, playerIdx:poolIdx});
 }
-function bumpRosterSlot(teamIndex,pos){ const s=state.rosterSlots[teamIndex]; if(!s) return;
-  if(pos in s) s[pos]++; else s.BEN++; }
+function bumpRosterSlot(teamIndex,pos){ const s=state.rosterSlots[teamIndex]; if(!s) return; if(pos in s) s[pos]++; else s.BEN++; }
 function undoPick(){
   if(!state.draftPicks.length) return;
   const last=state.draftPicks.pop(); const {playerIdx, team, overall}=last;
@@ -397,7 +478,7 @@ function undoPick(){
   state.currentOverall = overall; render();
 }
 
-// ------- export -------
+// ---------- export ----------
 function exportBoard(){
   const rows=[["overall","round","pickInRound","team","player","pos","teamAbbr","bye","ecr","adp","proj_ppr","tier"]];
   for(const p of [...state.draftPicks].sort((a,b)=>a.overall-b.overall)){
@@ -409,15 +490,14 @@ function exportBoard(){
   a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1500);
 }
 
-// ------- scoring / filters -------
+// ---------- scoring / filters ----------
 function replacementLevels(){
   if(!state.dataFlags.hasProj){ return {QB:0,RB:0,WR:0,TE:0,K:0,DEF:0}; }
   const s=state.settings, T=s.teams, flexShare=s.flex;
-  // Target counts per team (approx baseline depth)
   const counts={QB:s.qb,RB:s.rb,WR:s.wr,TE:s.te,K:s.k,DEF:s.def}, idxAt={};
   for(const pos of ["QB","RB","WR","TE","K","DEF"]){
     let N=T*counts[pos];
-    if(pos==="RB" || pos==="WR"){ N += Math.round(T * (pos==="RB" ? 0.5*flexShare : 0.5*flexShare)); } // FLEX W/R only
+    if(pos==="RB" || pos==="WR"){ N += Math.round(T * (0.5*flexShare)); } // FLEX is W/R only
     idxAt[pos]=Math.max(N,1);
   }
   const baseline={};
@@ -425,12 +505,6 @@ function replacementLevels(){
     const pool=state.available.map(i=>state.players[i]).filter(p=>p.pos===pos).sort((a,b)=>(b.proj_ppr||0)-(a.proj_ppr||0));
     const idx=Math.min(idxAt[pos]-1, Math.max(0,pool.length-1)); baseline[pos]=pool[idx]? (pool[idx].proj_ppr||0):0;
   } return baseline;
-}
-function rosterNeeds(teamIndex){
-  const s=state.settings, slots=state.rosterSlots[teamIndex]||{QB:0,RB:0,WR:0,TE:0,FLEX:0,K:0,DEF:0,BEN:0};
-  const target={QB:s.qb,RB:s.rb,WR:s.wr,TE:s.te,K:s.k,DEF:s.def}, need={};
-  for(const pos of ["QB","RB","WR","TE","K","DEF"]){ const have=slots[pos]||0, left=Math.max(0,target[pos]-have); need[pos]=1+left*0.75; }
-  return need;
 }
 function applyFilters(list){
   let out = list.slice();
@@ -440,37 +514,51 @@ function applyFilters(list){
   if (q)   out = out.filter(p => p.player.toLowerCase().includes(q));
   return out;
 }
+
 function computeRecommendations(teamIndex){
-  const base = replacementLevels(); const needs = rosterNeeds(teamIndex);
+  const base = replacementLevels();
+  const needs = rosterNeeds(teamIndex);
   let candidates = state.available.map(i=>state.players[i]);
   candidates = applyFilters(candidates);
+
+  const pct = draftProgressPct();
 
   const scored = candidates.map(p=>{
     const baseProj = state.dataFlags.hasProj ? (p.proj_ppr||0) : 0;
     const rep = state.dataFlags.hasProj ? (base[p.pos]||0) : 0;
-    const vor = baseProj - rep;
-    const tierBoost = (6 - Math.min(p.tier||6,6)) * 1.2;
-    const valueBoost = state.dataFlags.hasADP ? Math.min(Math.max(0,(p.adp||state.currentOverall)-state.currentOverall)/10, 8) : 0;
-    const needW = (needs[p.pos]||1.0);
-    const stackSynergy = stackBonusForTeam(teamIndex, p);
-    let score = (state.dataFlags.hasProj ? vor*needW : 0) + tierBoost + valueBoost + stackSynergy;
+    const vor = baseProj - rep;                                              // value over replacement
+    const tierBoost = (6 - Math.min(p.tier||6,6));                           // T1 > T6
+    const valueBoost = state.dataFlags.hasADP ? Math.max(0,(p.adp||state.currentOverall)-state.currentOverall)/10 : 0;
+
+    const needW = (needs[p.pos]||1.0);                                       // roster need
+    const scarcity = computeScarcityBoost(p);                                 // positional scarcity
+    const stackSynergy = stackBonusForTeam(teamIndex, p);                     // stacks
+    const byePen = byeOverlapPenalty(teamIndex, p);                           // bye conflict
+    const upside = lateRoundUpsideBonus(p);                                   // late round upside
+
+    // Weighted sum
+    let score =
+      WEIGHTS.vor * (state.dataFlags.hasProj ? vor : 0) +
+      WEIGHTS.tierBoost * tierBoost +
+      WEIGHTS.valueVsADP * valueBoost +
+      WEIGHTS.need * needW +
+      WEIGHTS.scarcity * scarcity +
+      WEIGHTS.stackSynergy * stackSynergy +
+      WEIGHTS.byePenalty * Math.min(0, byePen) +    // byePen is negative
+      WEIGHTS.lateUpside * upside;
+
+    // Slightly dampen K/DEF early
+    if ((p.pos==="K" || p.pos==="DEF") && pct < 0.6) score -= 3 * (0.6 - pct);
+
     return {...p, baseProj, rep, vor, score, hasMyStack: hasPrimaryStackForMyTeam(p) };
   });
 
-  scored.sort((a,b)=>{
-    if((a.tier||9)!==(b.tier||9)) return (a.tier||9)-(b.tier||9);
-    return b.score-a.score;
-  });
-
+  scored.sort((a,b)=> b.score-a.score);
   return { list: scored.slice(0,30), baseline: base, needs };
 }
 
-// ------- render -------
-function render(){
-  renderBoard();
-  renderMidPanel();
-  renderMyRoster(); // shows slots even pre-draft
-}
+// ---------- render ----------
+function render(){ renderBoard(); renderMidPanel(); renderMyRoster(); }
 
 function renderBoard(){
   const root=el("board"); if(!root) return; root.innerHTML="";
@@ -494,7 +582,7 @@ function boardPickElem(p){
                      ${logo ? `<img src="${logo}" alt="${pl.team||''}" class="team-logo">` : ""}
                      <div class="name">${pl.player}</div>
                    </div>
-                   <div class="small"><span class="badge pos ${pl.pos}">${pl.pos}${posRank?posRankLabel(pl,posRank):""}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
+                   <div class="small"><span class="badge pos ${pl.pos}">${p.pos}${posRank?posRankLabel(pl,posRank):""}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
   return div;
 }
 
@@ -504,12 +592,8 @@ function renderMidPanel(){
   if(state.midTab === "recs"){
     const team = state.started ? overallToTeam(state.currentOverall) : state.myTeamIndex;
     const { list } = computeRecommendations(team);
-    let lastTier=null;
-    list.forEach(p=>{
+    list.forEach((p,idx)=>{
       const t = p.tier || 6;
-      if(lastTier===null || t!==lastTier){
-        const sep=document.createElement("div"); sep.className=`tier-divider t${t}`; sep.textContent=`Tier ${t}`; root.appendChild(sep); lastTier=t;
-      }
       const logo = teamLogoUrl(p.team); const posRank = getPosRank(p);
       const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
       const projBit = state.dataFlags.hasProj ? ` • Proj ${p.baseProj?.toFixed?.(1) || "0.0"} (rep ${p.rep?.toFixed?.(1) || "0.0"})` : "";
@@ -519,7 +603,7 @@ function renderMidPanel(){
           <div class="flex" style="gap:10px;">
             ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
             <div>
-              <div class="name">${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span></div>
+              <div class="name">${idx+1}. ${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span></div>
               <div class="small">${p.team||""} • Bye ${p.bye||"-"} • ECR ${p.ecr||"-"}${projBit}${adpBit}</div>
             </div>
           </div>
@@ -532,7 +616,7 @@ function renderMidPanel(){
     let list = state.available.map(i=>state.players[i]);
     list = applyFilters(list);
     list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
-    list.slice(0,600).forEach(p=>{
+    list.slice(0,600).forEach((p,idx)=>{
       const logo = teamLogoUrl(p.team);
       const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
       const projBit = state.dataFlags.hasProj ? ` • Proj ${Number(p.proj_ppr||0).toFixed(1)}` : "";
@@ -544,7 +628,7 @@ function renderMidPanel(){
           <div class="flex" style="gap:10px;">
             ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
             <div>
-              <div class="name">${p.player} ${stackBadge} <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span> <span class="badge">${ecr}</span></div>
+              <div class="name">${idx+1}. ${p.player} ${stackBadge} <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span> <span class="badge">${ecr}</span></div>
               <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
             </div>
           </div>
@@ -571,7 +655,6 @@ function renderMyRoster(){
 
   for(const p of mine){
     if (slotsTarget[p.pos] && starters[p.pos].length < slotsTarget[p.pos]) { starters[p.pos].push(p); continue; }
-    // FLEX is W/R only
     if ((p.pos==="RB" || p.pos==="WR") && starters.FLEX.length < slotsTarget.FLEX){ starters.FLEX.push(p); continue; }
     bench.push(p);
   }
@@ -617,13 +700,17 @@ function renderMyRoster(){
   section("Bench", bench, state.settings.bench, true);
 }
 
-// ------- tabs helpers -------
+// ---------- ui tabs ----------
 function updateBoardTabs(){
   el("tabOverall")?.classList.toggle("active", state.boardView==="overall");
   el("tabByRound")?.classList.toggle("active", state.boardView==="round");
 }
+function updateMidTabs(){
+  el("subtabRecs")?.classList.toggle("active", state.midTab==="recs");
+  el("subtabRanks")?.classList.toggle("active", state.midTab==="ranks");
+}
 
-// small board element builder
+// ---------- small utils ----------
 function boardPickElem(p){
   const pl=state.players[p.playerIdx]; const logo = teamLogoUrl(pl.team); const posRank = getPosRank(pl);
   const div=document.createElement("div"); div.className="pick";

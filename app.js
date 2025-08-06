@@ -6,7 +6,7 @@ let state = {
   players: [], available: [], draftPicks: [], currentOverall:1, myTeamIndex:0,
   teamRosters: [], rosterSlots: [], started:false, paused:false,
   biasMap: {}, stackBoost:false,
-  features: { biases:false, stack:false, compare:false, scarcity:true },
+  features: { biases:false, stack:false, scarcity:true }, // compare removed
   dataFlags: { hasProj:false, hasADP:false },
   autoplay: { enabled:true, delayMs:1000, loopId:null }, // hidden/locked delay
   boardView: localStorage.getItem("boardView") || "overall" // "overall" or "round"
@@ -14,6 +14,14 @@ let state = {
 
 const el = id => document.getElementById(id);
 const show = (id, on)=>{ const n=el(id); if(!n) return; n.classList.toggle("hidden", !on); };
+
+// Logo helper — uses NFL’s official club logo assets by team abbreviation (e.g., KC, BUF)
+function teamLogoUrl(abbr){
+  if(!abbr) return "";
+  const code = String(abbr).toUpperCase().trim();
+  // Most sites use standard 2-3 letter abbreviations; NFL serves svg by code, example: https://static.www.nfl.com/league/api/clubs/logos/KC.svg
+  return `https://static.www.nfl.com/league/api/clubs/logos/${code}.svg`;
+}
 
 // ---------- Load & Detect Data ----------
 async function loadConsensus() {
@@ -36,8 +44,7 @@ async function loadConsensus() {
     state.dataFlags.hasProj = state.players.some(p=> (p.proj_ppr||0) > 0);
     state.dataFlags.hasADP  = state.players.some(p=> p.adp !== null && p.adp !== undefined);
 
-    if(!state.dataFlags.hasProj){ state.features.compare=false; const t=el("toggleCompare"); if(t) t.checked=false; }
-    render();
+    render(); // compare feature removed, no gating
   } catch (e) {
     console.error("Consensus load error:", e);
     lastUpdatedEl.innerHTML = `<span style="color:#f87171; font-weight:bold;">Error:</span> ${e.message}`;
@@ -71,15 +78,8 @@ function init() {
   el("toggleBiases").onchange = () => { state.features.biases = el("toggleBiases").checked; };
   el("toggleStack").onchange = () => { state.features.stack = el("toggleStack").checked; state.stackBoost = state.features.stack; };
   el("toggleScarcity").onchange = () => { state.features.scarcity = el("toggleScarcity").checked; renderScarcityBars(); };
-  el("toggleCompare").onchange = () => { state.features.compare = el("toggleCompare").checked && state.dataFlags.hasProj; };
 
-  // Rankings panel
-  el("toggleRankings").onclick = ()=>{
-    const isHidden = el("rankingsPanel").classList.contains("hidden");
-    show("rankingsPanel", isHidden);
-    el("toggleRankings").textContent = isHidden ? "Hide Rankings" : "Show Rankings";
-    if (isHidden) renderRankings();
-  };
+  // Rankings panel is always visible
   el("rankingsSearch").addEventListener("input", renderRankings);
   el("rankingsPos").addEventListener("change", renderRankings);
 
@@ -173,7 +173,7 @@ function autoUntilMyPick(){
     const total=state.settings.teams*state.settings.rounds; if(state.currentOverall>total) break;
     const team = overallToTeam(state.currentOverall);
     aiPick(team);
-    advanceAfterPick(false); // don't re-render every iteration for perf
+    advanceAfterPick(false); // batch
   }
   render();
 }
@@ -219,7 +219,7 @@ function stackBonusForTeam(teamIndex, candidate){
 function draftPlayerById(id, teamIndex){
   const poolIdx = state.players.findIndex(p=>p.id===id);
   if(poolIdx===-1) return;
-  draftByIndex(poolIdx, teamIndex, /*incrementOverall*/false); // don't advance here!
+  draftByIndex(poolIdx, teamIndex, /*incrementOverall*/false); // we advance centrally
 }
 
 function draftByIndex(poolIdx, teamIndex, incrementOverall=false){
@@ -230,7 +230,7 @@ function draftByIndex(poolIdx, teamIndex, incrementOverall=false){
   const overall=state.currentOverall, round=getRound(overall), pir=pickInRound(overall);
   state.teamRosters[teamIndex].push(poolIdx); bumpRosterSlot(teamIndex, state.players[poolIdx].pos);
   state.draftPicks.push({overall, team:teamIndex, round, pickInRound:pir, playerIdx:poolIdx});
-  if(incrementOverall) state.currentOverall += 1; // (we never use this now)
+  if(incrementOverall) state.currentOverall += 1; // unused
 }
 
 function bumpRosterSlot(teamIndex,pos){ const s=state.rosterSlots[teamIndex]; if(!s) return; if(pos in s) s[pos]++; else s.BEN++; }
@@ -308,7 +308,7 @@ function rosterNeeds(teamIndex){
   return need;
 }
 
-// ---------- Rankings Panel ----------
+// ---------- Rankings Panel (always visible) ----------
 function renderRankings(){
   const root = el("rankingsList"); if(!root) return;
   root.innerHTML = "";
@@ -318,13 +318,23 @@ function renderRankings(){
   if(q) list = list.filter(p=>p.player.toLowerCase().includes(q));
   if(pos) list = list.filter(p=>p.pos===pos);
   list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
+
   list.slice(0,400).forEach(p=>{
     const d=document.createElement("div"); d.className="item";
+
+    const logo = teamLogoUrl(p.team);
     const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
     const projBit = state.dataFlags.hasProj ? ` • Proj ${p.proj_ppr?.toFixed(1)??"0.0"}` : "";
+    const ecr = (p.ecr!=null)? `#${p.ecr}` : "#—";
+
     d.innerHTML = `<div class="flex">
-      <div><div class="name">${p.player}</div>
-      <div class="small"><span class="badge pos ${p.pos}">${p.pos}</span> • ${p.team||""} • ECR ${p.ecr||"-"}${adpBit}${projBit}</div></div>
+      <div class="flex" style="gap:10px;">
+        ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
+        <div>
+          <div class="name">${p.player} <span class="badge pos ${p.pos}">${p.pos}</span> <span class="badge">${ecr}</span></div>
+          <div class="small">${p.team||""}${adpBit}${projBit}</div>
+        </div>
+      </div>
       <div><button data-id="${p.id}">Draft</button></div>
     </div>`;
     d.querySelector("button").onclick = ()=>{ draftPlayerById(p.id, state.myTeamIndex); render(); };
@@ -333,7 +343,7 @@ function renderRankings(){
 }
 
 // ---------- Rendering ----------
-function render(){ renderBoard(); renderRecs(); renderMyRoster(); renderScarcityBars(); }
+function render(){ renderBoard(); renderRecs(); renderMyRoster(); renderScarcityBars(); renderRankings(); }
 
 function renderBoard(){
   const root=el("board"); root.innerHTML="";

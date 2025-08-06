@@ -1,0 +1,8790 @@
+{
+  "source": "FantasyPros CSV (PPR Cheatsheet download)",
+  "updated_at": "2025-08-06T00:55:18.527681Z",
+  "players": [
+    {
+      "id": 1,
+      "player": "Ja'Marr Chase",
+      "pos": "WR1",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 1,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 1,
+      "notes": {
+        "ecr_vs_adp": "0",
+        "avg_diff": 4.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 2,
+      "player": "Bijan Robinson",
+      "pos": "RB1",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 2,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 1,
+      "notes": {
+        "ecr_vs_adp": "0",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 3,
+      "player": "Justin Jefferson",
+      "pos": "WR2",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 3,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 1,
+      "notes": {
+        "ecr_vs_adp": "+2",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 4,
+      "player": "CeeDee Lamb",
+      "pos": "WR3",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 4,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 1,
+      "notes": {
+        "ecr_vs_adp": "+2",
+        "avg_diff": -0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 5,
+      "player": "Jahmyr Gibbs",
+      "pos": "RB2",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 5,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 2,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": 2.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 6,
+      "player": "Malik Nabers",
+      "pos": "WR4",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 6,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 2,
+      "notes": {
+        "ecr_vs_adp": "+4",
+        "avg_diff": 1.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 7,
+      "player": "Puka Nacua",
+      "pos": "WR5",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 7,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 2,
+      "notes": {
+        "ecr_vs_adp": "+2",
+        "avg_diff": 1.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 8,
+      "player": "Amon-Ra St. Brown",
+      "pos": "WR6",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 8,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 2,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": 1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 9,
+      "player": "Saquon Barkley",
+      "pos": "RB3",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 9,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 2,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": 3.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 10,
+      "player": "Nico Collins",
+      "pos": "WR7",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 10,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 2,
+      "notes": {
+        "ecr_vs_adp": "+4",
+        "avg_diff": 0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 11,
+      "player": "Brian Thomas Jr.",
+      "pos": "WR8",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 11,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 2,
+      "notes": {
+        "ecr_vs_adp": "+4",
+        "avg_diff": 3.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 12,
+      "player": "Drake London",
+      "pos": "WR9",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 12,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 3,
+      "notes": {
+        "ecr_vs_adp": "+7",
+        "avg_diff": -0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 13,
+      "player": "Christian McCaffrey",
+      "pos": "RB4",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 13,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 3,
+      "notes": {
+        "ecr_vs_adp": "-5",
+        "avg_diff": -8.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 14,
+      "player": "De'Von Achane",
+      "pos": "RB5",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 14,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 3,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": -0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 15,
+      "player": "Ashton Jeanty",
+      "pos": "RB6",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 15,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 3,
+      "notes": {
+        "ecr_vs_adp": "-3",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 16,
+      "player": "A.J. Brown",
+      "pos": "WR10",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 16,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 3,
+      "notes": {
+        "ecr_vs_adp": "+1",
+        "avg_diff": 0.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 17,
+      "player": "Ladd McConkey",
+      "pos": "WR11",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 17,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 3,
+      "notes": {
+        "ecr_vs_adp": "+8",
+        "avg_diff": 2.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 18,
+      "player": "Brock Bowers",
+      "pos": "TE1",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 18,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 3,
+      "notes": {
+        "ecr_vs_adp": "0",
+        "avg_diff": 1.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 19,
+      "player": "Jaxon Smith-Njigba",
+      "pos": "WR12",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 19,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 3,
+      "notes": {
+        "ecr_vs_adp": "+14",
+        "avg_diff": 1.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 20,
+      "player": "Trey McBride",
+      "pos": "TE2",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 20,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "+6",
+        "avg_diff": 1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 21,
+      "player": "Derrick Henry",
+      "pos": "RB7",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 21,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "-10",
+        "avg_diff": 2.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 22,
+      "player": "Garrett Wilson",
+      "pos": "WR13",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 22,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "+13",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 23,
+      "player": "Tyreek Hill",
+      "pos": "WR14",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 23,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "+5",
+        "avg_diff": -2.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 24,
+      "player": "Josh Allen",
+      "pos": "QB1",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 24,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": 2.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 25,
+      "player": "Tee Higgins",
+      "pos": "WR15",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 25,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "+5",
+        "avg_diff": 4.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 26,
+      "player": "Lamar Jackson",
+      "pos": "QB2",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 26,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "-4",
+        "avg_diff": 3.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 27,
+      "player": "Chase Brown",
+      "pos": "RB8",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 27,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "0",
+        "avg_diff": 2.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 28,
+      "player": "Bucky Irving",
+      "pos": "RB9",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 28,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "-7",
+        "avg_diff": 2.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 29,
+      "player": "Davante Adams",
+      "pos": "WR16",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 29,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "+8",
+        "avg_diff": 1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 30,
+      "player": "Josh Jacobs",
+      "pos": "RB10",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 30,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 4,
+      "notes": {
+        "ecr_vs_adp": "-14",
+        "avg_diff": 1.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 31,
+      "player": "Mike Evans",
+      "pos": "WR17",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 31,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "+11",
+        "avg_diff": 1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 32,
+      "player": "George Kittle",
+      "pos": "TE3",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 32,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "+7",
+        "avg_diff": 2.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 33,
+      "player": "Jonathan Taylor",
+      "pos": "RB11",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 33,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "-13",
+        "avg_diff": 1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 34,
+      "player": "Jayden Daniels",
+      "pos": "QB3",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 34,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "-5",
+        "avg_diff": 2.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 35,
+      "player": "Jalen Hurts",
+      "pos": "QB4",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 35,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "+1",
+        "avg_diff": 0.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 36,
+      "player": "Kyren Williams",
+      "pos": "RB12",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 36,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "-12",
+        "avg_diff": -0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 37,
+      "player": "Marvin Harrison Jr.",
+      "pos": "WR18",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 37,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "+6",
+        "avg_diff": -1.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 38,
+      "player": "Terry McLaurin",
+      "pos": "WR19",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 38,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "+2",
+        "avg_diff": 1.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 39,
+      "player": "DJ Moore",
+      "pos": "WR20",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 39,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "+8",
+        "avg_diff": -0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 40,
+      "player": "Breece Hall",
+      "pos": "RB13",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 40,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "-8",
+        "avg_diff": -2.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 41,
+      "player": "Alvin Kamara",
+      "pos": "RB14",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 41,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "-3",
+        "avg_diff": -0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 42,
+      "player": "Kenneth Walker III",
+      "pos": "RB15",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 42,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": 0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 43,
+      "player": "DK Metcalf",
+      "pos": "WR21",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 43,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "+6",
+        "avg_diff": -1.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 44,
+      "player": "Joe Burrow",
+      "pos": "QB5",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 44,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "-10",
+        "avg_diff": 3.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 45,
+      "player": "Courtland Sutton",
+      "pos": "WR22",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 45,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "+7",
+        "avg_diff": 1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 46,
+      "player": "James Cook",
+      "pos": "RB16",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 46,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "-15",
+        "avg_diff": 2.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 47,
+      "player": "DeVonta Smith",
+      "pos": "WR23",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 47,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 5,
+      "notes": {
+        "ecr_vs_adp": "+8",
+        "avg_diff": 1.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 48,
+      "player": "Omarion Hampton",
+      "pos": "RB17",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 48,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "-4",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 49,
+      "player": "Zay Flowers",
+      "pos": "WR24",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 49,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "+11",
+        "avg_diff": -1.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 50,
+      "player": "Chuba Hubbard",
+      "pos": "RB18",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 50,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "-5",
+        "avg_diff": 2.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 51,
+      "player": "Rashee Rice",
+      "pos": "WR25",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 51,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "-3",
+        "avg_diff": -0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 52,
+      "player": "James Conner",
+      "pos": "RB19",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 52,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": 0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 53,
+      "player": "Jaylen Waddle",
+      "pos": "WR26",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 53,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "+20",
+        "avg_diff": -1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 54,
+      "player": "Tetairoa McMillan",
+      "pos": "WR27",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 54,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "+15",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 55,
+      "player": "Xavier Worthy",
+      "pos": "WR28",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 55,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "+1",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 56,
+      "player": "Jameson Williams",
+      "pos": "WR29",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 56,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "+2",
+        "avg_diff": 2.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 57,
+      "player": "Chris Olave",
+      "pos": "WR30",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 57,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "+21",
+        "avg_diff": -3.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 58,
+      "player": "George Pickens",
+      "pos": "WR31",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 58,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "+9",
+        "avg_diff": -1.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 59,
+      "player": "Calvin Ridley",
+      "pos": "WR32",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 59,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "+11",
+        "avg_diff": -0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 60,
+      "player": "D'Andre Swift",
+      "pos": "RB20",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 60,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": -1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 61,
+      "player": "David Montgomery",
+      "pos": "RB21",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 61,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "-4",
+        "avg_diff": 1.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 62,
+      "player": "Patrick Mahomes II",
+      "pos": "QB6",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 62,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 6,
+      "notes": {
+        "ecr_vs_adp": "-9",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 63,
+      "player": "Jerry Jeudy",
+      "pos": "WR33",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 63,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+13",
+        "avg_diff": 2.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 64,
+      "player": "Sam LaPorta",
+      "pos": "TE4",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 64,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-14",
+        "avg_diff": 0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 65,
+      "player": "T.J. Hockenson",
+      "pos": "TE5",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 65,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-4",
+        "avg_diff": -1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 66,
+      "player": "Aaron Jones Sr.",
+      "pos": "RB22",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 66,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": -0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 67,
+      "player": "TreVeyon Henderson",
+      "pos": "RB23",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 67,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-8",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 68,
+      "player": "Travis Hunter",
+      "pos": "WR34",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 68,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-4",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 69,
+      "player": "Baker Mayfield",
+      "pos": "QB7",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 69,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-3",
+        "avg_diff": 5.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 70,
+      "player": "RJ Harvey",
+      "pos": "RB24",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 70,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-7",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 71,
+      "player": "Tony Pollard",
+      "pos": "RB25",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 71,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+1",
+        "avg_diff": -1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 72,
+      "player": "Travis Kelce",
+      "pos": "TE6",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 72,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-10",
+        "avg_diff": -1.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 73,
+      "player": "Isiah Pacheco",
+      "pos": "RB26",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 73,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-5",
+        "avg_diff": -3.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 74,
+      "player": "Bo Nix",
+      "pos": "QB8",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 74,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+1",
+        "avg_diff": 2.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 75,
+      "player": "Jakobi Meyers",
+      "pos": "WR35",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 75,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+15",
+        "avg_diff": 1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 76,
+      "player": "Rome Odunze",
+      "pos": "WR36",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 76,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+5",
+        "avg_diff": -0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 77,
+      "player": "Stefon Diggs",
+      "pos": "WR37",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 77,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+10",
+        "avg_diff": 0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 78,
+      "player": "Chris Godwin",
+      "pos": "WR38",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 78,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": 3.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 79,
+      "player": "Joe Mixon",
+      "pos": "RB27",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 79,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-28",
+        "avg_diff": 0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 80,
+      "player": "Kyler Murray",
+      "pos": "QB9",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 80,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+2",
+        "avg_diff": -1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 81,
+      "player": "Evan Engram",
+      "pos": "TE7",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 81,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+2",
+        "avg_diff": -1.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 82,
+      "player": "Kaleb Johnson",
+      "pos": "RB28",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 82,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-11",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 83,
+      "player": "David Njoku",
+      "pos": "TE8",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 83,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+3",
+        "avg_diff": 1.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 84,
+      "player": "Khalil Shakir",
+      "pos": "WR39",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 84,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+9",
+        "avg_diff": -0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 85,
+      "player": "Brian Robinson Jr.",
+      "pos": "RB29",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 85,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": -0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 86,
+      "player": "Jordan Addison",
+      "pos": "WR40",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 86,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": 3.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 87,
+      "player": "Jauan Jennings",
+      "pos": "WR41",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 87,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+7",
+        "avg_diff": 2.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 88,
+      "player": "Justin Fields",
+      "pos": "QB10",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 88,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 7,
+      "notes": {
+        "ecr_vs_adp": "+15",
+        "avg_diff": 0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 89,
+      "player": "Mark Andrews",
+      "pos": "TE9",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 89,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-15",
+        "avg_diff": 1.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 90,
+      "player": "Jaylen Warren",
+      "pos": "RB30",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 90,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": -1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 91,
+      "player": "Dak Prescott",
+      "pos": "QB11",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 91,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+11",
+        "avg_diff": -1.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 92,
+      "player": "Brock Purdy",
+      "pos": "QB12",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 92,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+9",
+        "avg_diff": 0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 93,
+      "player": "Josh Downs",
+      "pos": "WR42",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 93,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+29",
+        "avg_diff": 1.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 94,
+      "player": "Ricky Pearsall",
+      "pos": "WR43",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 94,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+5",
+        "avg_diff": 1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 95,
+      "player": "Justin Herbert",
+      "pos": "QB13",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 95,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+18",
+        "avg_diff": 0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 96,
+      "player": "Tyrone Tracy Jr.",
+      "pos": "RB31",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 96,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-8",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 97,
+      "player": "Caleb Williams",
+      "pos": "QB14",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 97,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+12",
+        "avg_diff": -0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 98,
+      "player": "Deebo Samuel Sr.",
+      "pos": "WR44",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 98,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-13",
+        "avg_diff": -3.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 99,
+      "player": "Jayden Reed",
+      "pos": "WR45",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 99,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+5",
+        "avg_diff": -0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 100,
+      "player": "Jared Goff",
+      "pos": "QB15",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 100,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-2",
+        "avg_diff": 4.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 101,
+      "player": "Cooper Kupp",
+      "pos": "WR46",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 101,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-17",
+        "avg_diff": -1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 102,
+      "player": "Michael Pittman Jr.",
+      "pos": "WR47",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 102,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+21",
+        "avg_diff": -1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 103,
+      "player": "Travis Etienne Jr.",
+      "pos": "RB32",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 103,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-8",
+        "avg_diff": -3.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 104,
+      "player": "Drake Maye",
+      "pos": "QB16",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 104,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+41",
+        "avg_diff": 1.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 105,
+      "player": "Jake Ferguson",
+      "pos": "TE10",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 105,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+26",
+        "avg_diff": -2.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 106,
+      "player": "Jordan Love",
+      "pos": "QB17",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 106,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+24",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 107,
+      "player": "Javonte Williams",
+      "pos": "RB33",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 107,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-10",
+        "avg_diff": -2.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 108,
+      "player": "Tucker Kraft",
+      "pos": "TE11",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 108,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+4",
+        "avg_diff": 1.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 109,
+      "player": "Zach Charbonnet",
+      "pos": "RB34",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 109,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+9",
+        "avg_diff": 1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 110,
+      "player": "Trevor Lawrence",
+      "pos": "QB18",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 110,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+54",
+        "avg_diff": -0.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 111,
+      "player": "Rhamondre Stevenson",
+      "pos": "RB35",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 111,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": -1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 112,
+      "player": "Emeka Egbuka",
+      "pos": "WR48",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 112,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+8",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 113,
+      "player": "Dalton Kincaid",
+      "pos": "TE12",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 113,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+16",
+        "avg_diff": -2.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 114,
+      "player": "C.J. Stroud",
+      "pos": "QB19",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 114,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+21",
+        "avg_diff": -3.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 115,
+      "player": "Darnell Mooney",
+      "pos": "WR49",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 115,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+10",
+        "avg_diff": 0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 116,
+      "player": "Tyjae Spears",
+      "pos": "RB36",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 116,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "+11",
+        "avg_diff": 0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 117,
+      "player": "Cam Skattebo",
+      "pos": "RB37",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 117,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 8,
+      "notes": {
+        "ecr_vs_adp": "-26",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 118,
+      "player": "Jordan Mason",
+      "pos": "RB38",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 118,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-3",
+        "avg_diff": -1.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 119,
+      "player": "Dallas Goedert",
+      "pos": "TE13",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 119,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+14",
+        "avg_diff": -0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 120,
+      "player": "Najee Harris",
+      "pos": "RB39",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 120,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-13",
+        "avg_diff": -1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 121,
+      "player": "J.J. McCarthy",
+      "pos": "QB20",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 121,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+22",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 122,
+      "player": "Brandon Aiyuk",
+      "pos": "WR50",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 122,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-3",
+        "avg_diff": -4.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 123,
+      "player": "Tyler Warren",
+      "pos": "TE14",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 123,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-17",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 124,
+      "player": "Rachaad White",
+      "pos": "RB40",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 124,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+2",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 125,
+      "player": "Matthew Golden",
+      "pos": "WR51",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 125,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-29",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 126,
+      "player": "Rashid Shaheed",
+      "pos": "WR52",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 126,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+23",
+        "avg_diff": 2.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 127,
+      "player": "Christian Kirk",
+      "pos": "WR53",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 127,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+36",
+        "avg_diff": -2.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 128,
+      "player": "Quinshon Judkins",
+      "pos": "RB41",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 128,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-36",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 129,
+      "player": "Tank Bigsby",
+      "pos": "RB42",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 129,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+7",
+        "avg_diff": 0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 130,
+      "player": "Keon Coleman",
+      "pos": "WR54",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 130,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-9",
+        "avg_diff": -0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 131,
+      "player": "Tua Tagovailoa",
+      "pos": "QB21",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 131,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+37",
+        "avg_diff": 1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 132,
+      "player": "J.K. Dobbins",
+      "pos": "RB43",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 132,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-18",
+        "avg_diff": 1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 133,
+      "player": "Austin Ekeler",
+      "pos": "RB44",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 133,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+1",
+        "avg_diff": -0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 134,
+      "player": "Cedric Tillman",
+      "pos": "WR55",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 134,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+62",
+        "avg_diff": 1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 135,
+      "player": "Colston Loveland",
+      "pos": "TE15",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 135,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-24",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 136,
+      "player": "Matthew Stafford",
+      "pos": "QB22",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 136,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+43",
+        "avg_diff": -1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 137,
+      "player": "Luther Burden III",
+      "pos": "WR56",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 137,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+19",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 138,
+      "player": "Bryce Young",
+      "pos": "QB23",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 138,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+71",
+        "avg_diff": 1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 139,
+      "player": "Rashod Bateman",
+      "pos": "WR57",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 139,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+31",
+        "avg_diff": 1.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 140,
+      "player": "Michael Penix Jr.",
+      "pos": "QB24",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 140,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+37",
+        "avg_diff": -0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 141,
+      "player": "Hunter Henry",
+      "pos": "TE16",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 141,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+25",
+        "avg_diff": -0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 142,
+      "player": "Ray Davis",
+      "pos": "RB45",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 142,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "+27",
+        "avg_diff": 1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 143,
+      "player": "Tre' Harris",
+      "pos": "WR58",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 143,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 9,
+      "notes": {
+        "ecr_vs_adp": "-2",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 144,
+      "player": "Jerome Ford",
+      "pos": "RB46",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 144,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+14",
+        "avg_diff": -1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 145,
+      "player": "Jonnu Smith",
+      "pos": "TE17",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 145,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-35",
+        "avg_diff": 3.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 146,
+      "player": "Marvin Mims Jr.",
+      "pos": "WR59",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 146,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+5",
+        "avg_diff": 2.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 147,
+      "player": "Marquise Brown",
+      "pos": "WR60",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 147,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+13",
+        "avg_diff": 1.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 148,
+      "player": "Wan'Dale Robinson",
+      "pos": "WR61",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 148,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+52",
+        "avg_diff": -0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 149,
+      "player": "Romeo Doubs",
+      "pos": "WR62",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 149,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+52",
+        "avg_diff": 0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 150,
+      "player": "Rico Dowdle",
+      "pos": "RB47",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 150,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+56",
+        "avg_diff": 0.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 151,
+      "player": "Adam Thielen",
+      "pos": "WR63",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 151,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+27",
+        "avg_diff": 3.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 152,
+      "player": "Trey Benson",
+      "pos": "RB48",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 152,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+3",
+        "avg_diff": -0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 153,
+      "player": "Tyler Allgeier",
+      "pos": "RB49",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 153,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+4",
+        "avg_diff": -0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 154,
+      "player": "Jayden Higgins",
+      "pos": "WR64",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 154,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-12",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 155,
+      "player": "Geno Smith",
+      "pos": "QB25",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 155,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+44",
+        "avg_diff": -0.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 156,
+      "player": "Kyle Pitts Sr.",
+      "pos": "TE18",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 156,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-18",
+        "avg_diff": -1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 157,
+      "player": "Braelon Allen",
+      "pos": "RB50",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 157,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+23",
+        "avg_diff": -1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 158,
+      "player": "Isaac Guerendo",
+      "pos": "RB51",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 158,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-12",
+        "avg_diff": 1.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 159,
+      "player": "Quentin Johnston",
+      "pos": "WR65",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 159,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+32",
+        "avg_diff": 0.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 160,
+      "player": "Denver Broncos",
+      "pos": "DST1",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 160,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-52",
+        "avg_diff": 1.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 161,
+      "player": "DeMario Douglas",
+      "pos": "WR66",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 161,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+57",
+        "avg_diff": -0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 162,
+      "player": "Zach Ertz",
+      "pos": "TE19",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 162,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-12",
+        "avg_diff": 1.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 163,
+      "player": "Kyle Williams",
+      "pos": "WR67",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 163,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+18",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 164,
+      "player": "Jaydon Blue",
+      "pos": "RB52",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 164,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-27",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 165,
+      "player": "Jalen McMillan",
+      "pos": "WR68",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 165,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+25",
+        "avg_diff": 1.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 166,
+      "player": "Jaylen Wright",
+      "pos": "RB53",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 166,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+17",
+        "avg_diff": -0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 167,
+      "player": "Xavier Legette",
+      "pos": "WR69",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 167,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+9",
+        "avg_diff": -1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 168,
+      "player": "Bhayshul Tuten",
+      "pos": "RB54",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 168,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-14",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 169,
+      "player": "Philadelphia Eagles",
+      "pos": "DST2",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 169,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-53",
+        "avg_diff": -0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 170,
+      "player": "Sam Darnold",
+      "pos": "QB26",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 170,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+49",
+        "avg_diff": 2.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 171,
+      "player": "Dylan Sampson",
+      "pos": "RB55",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 171,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+3",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 172,
+      "player": "Roschon Johnson",
+      "pos": "RB56",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 172,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+31",
+        "avg_diff": 0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 173,
+      "player": "Nick Chubb",
+      "pos": "RB57",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 173,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-25",
+        "avg_diff": -2.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 174,
+      "player": "Cameron Ward",
+      "pos": "QB27",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 174,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-2",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 175,
+      "player": "Baltimore Ravens",
+      "pos": "DST3",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 175,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-43",
+        "avg_diff": -1.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 176,
+      "player": "Pittsburgh Steelers",
+      "pos": "DST4",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 176,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-52",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 177,
+      "player": "Brenton Strange",
+      "pos": "TE20",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 177,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+12",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 178,
+      "player": "DeAndre Hopkins",
+      "pos": "WR70",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 178,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+30",
+        "avg_diff": -1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 179,
+      "player": "Joshua Palmer",
+      "pos": "WR71",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 179,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "+47",
+        "avg_diff": -1.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 180,
+      "player": "Minnesota Vikings",
+      "pos": "DST5",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 180,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 10,
+      "notes": {
+        "ecr_vs_adp": "-33",
+        "avg_diff": 0.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 181,
+      "player": "Pat Freiermuth",
+      "pos": "TE21",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 181,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+11",
+        "avg_diff": 0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 182,
+      "player": "Blake Corum",
+      "pos": "RB58",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 182,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+43",
+        "avg_diff": -1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 183,
+      "player": "Houston Texans",
+      "pos": "DST6",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 183,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-43",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 184,
+      "player": "Aaron Rodgers",
+      "pos": "QB28",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 184,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+33",
+        "avg_diff": -0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 185,
+      "player": "Detroit Lions",
+      "pos": "DST7",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 185,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-14",
+        "avg_diff": -0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 186,
+      "player": "Kansas City Chiefs",
+      "pos": "DST8",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 186,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-11",
+        "avg_diff": -0.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 187,
+      "player": "Brandon Aubrey",
+      "pos": "K1",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 187,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-87",
+        "avg_diff": 3.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 188,
+      "player": "Mike Gesicki",
+      "pos": "TE22",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 188,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+28",
+        "avg_diff": 0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 189,
+      "player": "Buffalo Bills",
+      "pos": "DST9",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 189,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-50",
+        "avg_diff": -0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 190,
+      "player": "Jake Bates",
+      "pos": "K2",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 190,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-62",
+        "avg_diff": 0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 191,
+      "player": "Jack Bech",
+      "pos": "WR72",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 191,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-32",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 192,
+      "player": "Michael Wilson",
+      "pos": "WR73",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 192,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+132",
+        "avg_diff": -0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 193,
+      "player": "MarShawn Lloyd",
+      "pos": "RB59",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 193,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+36",
+        "avg_diff": -0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 194,
+      "player": "Jalen Coker",
+      "pos": "WR74",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 194,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+132",
+        "avg_diff": 1.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 195,
+      "player": "Cameron Dicker",
+      "pos": "K3",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 195,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-78",
+        "avg_diff": 2.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 196,
+      "player": "Isaiah Likely",
+      "pos": "TE23",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 196,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-34",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 197,
+      "player": "Alec Pierce",
+      "pos": "WR75",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 197,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+56",
+        "avg_diff": 3.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 198,
+      "player": "Los Angeles Chargers",
+      "pos": "DST10",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 198,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+4",
+        "avg_diff": -0.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 199,
+      "player": "Seattle Seahawks",
+      "pos": "DST11",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 199,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+6",
+        "avg_diff": 0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 200,
+      "player": "Wil Lutz",
+      "pos": "K4",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 200,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-16",
+        "avg_diff": 2.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 201,
+      "player": "Chig Okonkwo",
+      "pos": "TE24",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 201,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+22",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 202,
+      "player": "Cade Otton",
+      "pos": "TE25",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 202,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+11",
+        "avg_diff": 0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 203,
+      "player": "Mason Taylor",
+      "pos": "TE26",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 203,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+28",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 204,
+      "player": "Los Angeles Rams",
+      "pos": "DST12",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 204,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+20",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 205,
+      "player": "Chris Boswell",
+      "pos": "K5",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 205,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-53",
+        "avg_diff": 3.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 206,
+      "player": "Chase McLaughlin",
+      "pos": "K6",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 206,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-62",
+        "avg_diff": 1.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 207,
+      "player": "Dontayvion Wicks",
+      "pos": "WR76",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 207,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+69",
+        "avg_diff": -1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 208,
+      "player": "Darius Slayton",
+      "pos": "WR77",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 208,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+110",
+        "avg_diff": -0.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 209,
+      "player": "Justice Hill",
+      "pos": "RB60",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 209,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-5",
+        "avg_diff": 1.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 210,
+      "player": "Green Bay Packers",
+      "pos": "DST13",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 210,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-17",
+        "avg_diff": -0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 211,
+      "player": "Ka'imi Fairbairn",
+      "pos": "K7",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 211,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-58",
+        "avg_diff": 2.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 212,
+      "player": "Kareem Hunt",
+      "pos": "RB61",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 212,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-26",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 213,
+      "player": "New York Jets",
+      "pos": "DST14",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 213,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-16",
+        "avg_diff": -3.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 214,
+      "player": "Harrison Butker",
+      "pos": "K8",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 214,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-49",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 215,
+      "player": "Andrei Iosivas",
+      "pos": "WR78",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 215,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+53",
+        "avg_diff": 0.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 216,
+      "player": "Calvin Austin III",
+      "pos": "WR79",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 216,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+39",
+        "avg_diff": 1.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 217,
+      "player": "Jaylin Noel",
+      "pos": "WR80",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 217,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+62",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 218,
+      "player": "Evan McPherson",
+      "pos": "K9",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 218,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-23",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 219,
+      "player": "Anthony Richardson Sr.",
+      "pos": "QB29",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 219,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-21",
+        "avg_diff": -1.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 220,
+      "player": "Adonai Mitchell",
+      "pos": "WR81",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 220,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+126",
+        "avg_diff": -2.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 221,
+      "player": "Tyler Bass",
+      "pos": "K10",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 221,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "-48",
+        "avg_diff": 0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 222,
+      "player": "Devaughn Vele",
+      "pos": "WR82",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 222,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+165",
+        "avg_diff": 1.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 223,
+      "player": "Dalton Schultz",
+      "pos": "TE27",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 223,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 11,
+      "notes": {
+        "ecr_vs_adp": "+11",
+        "avg_diff": -1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 224,
+      "player": "Tyler Lockett",
+      "pos": "WR83",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 224,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+26",
+        "avg_diff": -2.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 225,
+      "player": "Kendre Miller",
+      "pos": "RB62",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 225,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+20",
+        "avg_diff": -1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 226,
+      "player": "Jake Elliott",
+      "pos": "K11",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 226,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-65",
+        "avg_diff": 0.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 227,
+      "player": "Elic Ayomanor",
+      "pos": "WR84",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 227,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+81",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 228,
+      "player": "Diontae Johnson",
+      "pos": "WR85",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 228,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+87",
+        "avg_diff": -2.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 229,
+      "player": "Jaleel McLaughlin",
+      "pos": "RB63",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 229,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+59",
+        "avg_diff": -0.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 230,
+      "player": "Miles Sanders",
+      "pos": "RB64",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 230,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+18",
+        "avg_diff": -1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 231,
+      "player": "Keenan Allen",
+      "pos": "WR86",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 231,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+35",
+        "avg_diff": 1.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 232,
+      "player": "San Francisco 49ers",
+      "pos": "DST15",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 232,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-65",
+        "avg_diff": -2.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 233,
+      "player": "Jason Sanders",
+      "pos": "K12",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 233,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-51",
+        "avg_diff": 2.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 234,
+      "player": "DJ Giddens",
+      "pos": "RB65",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 234,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 235,
+      "player": "Russell Wilson",
+      "pos": "QB30",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 235,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+23",
+        "avg_diff": 1.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 236,
+      "player": "Pat Bryant",
+      "pos": "WR87",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 236,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+8",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 237,
+      "player": "Will Shipley",
+      "pos": "RB66",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 237,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-5",
+        "avg_diff": -0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 238,
+      "player": "Elijah Arroyo",
+      "pos": "TE28",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 238,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-10",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 239,
+      "player": "Juwan Johnson",
+      "pos": "TE29",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 239,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+68",
+        "avg_diff": -0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 240,
+      "player": "Kyle Monangai",
+      "pos": "RB67",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 240,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+22",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 241,
+      "player": "Devin Neal",
+      "pos": "RB68",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 241,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+43",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 242,
+      "player": "Ja'Tavion Sanders",
+      "pos": "TE30",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 242,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+33",
+        "avg_diff": -0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 243,
+      "player": "Younghoe Koo",
+      "pos": "K13",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 243,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-56",
+        "avg_diff": 0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 244,
+      "player": "Woody Marks",
+      "pos": "RB69",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 244,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-2",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 245,
+      "player": "Roman Wilson",
+      "pos": "WR88",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 245,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+42",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 246,
+      "player": "Dallas Cowboys",
+      "pos": "DST16",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 246,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-61",
+        "avg_diff": -2.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 247,
+      "player": "Cole Kmet",
+      "pos": "TE31",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 247,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+13",
+        "avg_diff": 0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 248,
+      "player": "Jalen Royals",
+      "pos": "WR89",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 248,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+9",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 249,
+      "player": "Elijah Moore",
+      "pos": "WR90",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 249,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+94",
+        "avg_diff": -1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 250,
+      "player": "Brandin Cooks",
+      "pos": "WR91",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 250,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+168",
+        "avg_diff": -1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 251,
+      "player": "Jalen Tolbert",
+      "pos": "WR92",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 251,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+151",
+        "avg_diff": 1.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 252,
+      "player": "Raheem Mostert",
+      "pos": "RB70",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 252,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-25",
+        "avg_diff": -1.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 253,
+      "player": "Dyami Brown",
+      "pos": "WR93",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 253,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+25",
+        "avg_diff": -0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 254,
+      "player": "Keaton Mitchell",
+      "pos": "RB71",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 254,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+83",
+        "avg_diff": -0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 255,
+      "player": "Brashard Smith",
+      "pos": "RB72",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 255,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+15",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 256,
+      "player": "Daniel Jones",
+      "pos": "QB31",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 256,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+82",
+        "avg_diff": -1.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 257,
+      "player": "Jarquez Hunter",
+      "pos": "RB73",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 257,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-17",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 258,
+      "player": "Tampa Bay Buccaneers",
+      "pos": "DST17",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 258,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-47",
+        "avg_diff": -1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 259,
+      "player": "Matt Gay",
+      "pos": "K14",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 259,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-49",
+        "avg_diff": 1.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 260,
+      "player": "Tahj Brooks",
+      "pos": "RB74",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 260,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 261,
+      "player": "Nick Westbrook-Ikhine",
+      "pos": "WR94",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 261,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+163",
+        "avg_diff": 2.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 262,
+      "player": "Audric Estime",
+      "pos": "RB75",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 262,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+31",
+        "avg_diff": -0.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 263,
+      "player": "Malik Washington",
+      "pos": "WR95",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 263,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+280",
+        "avg_diff": 0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 264,
+      "player": "Joshua Karty",
+      "pos": "K15",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 264,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-12",
+        "avg_diff": 0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 265,
+      "player": "Elijah Mitchell",
+      "pos": "RB76",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 265,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-28",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 266,
+      "player": "Kayshon Boutte",
+      "pos": "WR96",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 266,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+32",
+        "avg_diff": 1.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 267,
+      "player": "Antonio Gibson",
+      "pos": "RB77",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 267,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+42",
+        "avg_diff": -0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 268,
+      "player": "Trevor Etienne",
+      "pos": "RB78",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 268,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 269,
+      "player": "Kenneth Gainwell",
+      "pos": "RB79",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 269,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+139",
+        "avg_diff": -0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 270,
+      "player": "Harold Fannin Jr.",
+      "pos": "TE32",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 270,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+72",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 271,
+      "player": "Noah Gray",
+      "pos": "TE33",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 271,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+1",
+        "avg_diff": 2.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 272,
+      "player": "Devin Singletary",
+      "pos": "RB80",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 272,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 12,
+      "notes": {
+        "ecr_vs_adp": "+119",
+        "avg_diff": -1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 273,
+      "player": "Ollie Gordon II",
+      "pos": "RB81",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 273,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+1",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 274,
+      "player": "Amari Cooper",
+      "pos": "WR97",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 274,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+93",
+        "avg_diff": -2.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 275,
+      "player": "Ty Johnson",
+      "pos": "RB82",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 275,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+162",
+        "avg_diff": 2.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 276,
+      "player": "Cleveland Browns",
+      "pos": "DST18",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 276,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-30",
+        "avg_diff": -2.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 277,
+      "player": "Sean Tucker",
+      "pos": "RB83",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 277,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+27",
+        "avg_diff": 1.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 278,
+      "player": "Parker Washington",
+      "pos": "WR98",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 278,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+225",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 279,
+      "player": "Tre Tucker",
+      "pos": "WR99",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 279,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+131",
+        "avg_diff": 0.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 280,
+      "player": "Theo Johnson",
+      "pos": "TE34",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 280,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+3",
+        "avg_diff": 0.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 281,
+      "player": "Tyler Shough",
+      "pos": "QB32",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 281,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+41",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 282,
+      "player": "Joe Flacco",
+      "pos": "QB33",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 282,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-1",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 283,
+      "player": "Tim Patrick",
+      "pos": "WR100",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 283,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+37",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 284,
+      "player": "Xavier Restrepo",
+      "pos": "WR101",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 284,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+12",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 285,
+      "player": "Luke McCaffrey",
+      "pos": "WR102",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 285,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+34",
+        "avg_diff": -1.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 286,
+      "player": "Khalil Herbert",
+      "pos": "RB84",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 286,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+309",
+        "avg_diff": -1.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 287,
+      "player": "Isaiah Davis",
+      "pos": "RB85",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 287,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+430",
+        "avg_diff": 0.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 288,
+      "player": "Jalen Nailor",
+      "pos": "WR103",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 288,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+87",
+        "avg_diff": 0.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 289,
+      "player": "Darren Waller",
+      "pos": "TE35",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 289,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-95",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 290,
+      "player": "Dameon Pierce",
+      "pos": "RB86",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 290,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+87",
+        "avg_diff": -0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 291,
+      "player": "Taysom Hill",
+      "pos": "TE36",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 291,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-53",
+        "avg_diff": 4.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 292,
+      "player": "Noah Fant",
+      "pos": "TE37",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 292,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": -0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 293,
+      "player": "Jordan James",
+      "pos": "RB87",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 293,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+38",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 294,
+      "player": "Dont'e Thornton Jr.",
+      "pos": "WR104",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 294,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-43",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 295,
+      "player": "Jaxson Dart",
+      "pos": "QB34",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 295,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-39",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 296,
+      "player": "Tory Horton",
+      "pos": "WR105",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 296,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+18",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 297,
+      "player": "Sincere McCormick",
+      "pos": "RB88",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 297,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+179",
+        "avg_diff": -0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 298,
+      "player": "Alexander Mattison",
+      "pos": "RB89",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 298,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+132",
+        "avg_diff": -0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 299,
+      "player": "Daniel Carlson",
+      "pos": "K16",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 299,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-69",
+        "avg_diff": 1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 300,
+      "player": "Christian Watson",
+      "pos": "WR106",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 300,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+33",
+        "avg_diff": -1.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 301,
+      "player": "Kimani Vidal",
+      "pos": "RB90",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 301,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+164",
+        "avg_diff": -1.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 302,
+      "player": "Terrance Ferguson",
+      "pos": "TE38",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 302,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-25",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 303,
+      "player": "Chicago Bears",
+      "pos": "DST19",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 303,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-96",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 304,
+      "player": "Jermaine Burton",
+      "pos": "WR107",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 304,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+40",
+        "avg_diff": -0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 305,
+      "player": "Jacory Croskey-Merritt",
+      "pos": "RB91",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 305,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-66",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 306,
+      "player": "Isaac TeSlaa",
+      "pos": "WR108",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 306,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-65",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 307,
+      "player": "Oronde Gadsden II",
+      "pos": "TE39",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 307,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+102",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 308,
+      "player": "Zack Moss",
+      "pos": "RB92",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 308,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-87",
+        "avg_diff": -1.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 309,
+      "player": "Damien Martinez",
+      "pos": "RB93",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 309,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+133",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 310,
+      "player": "Will Reichard",
+      "pos": "K17",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 310,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-75",
+        "avg_diff": 2.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 311,
+      "player": "Ty Chandler",
+      "pos": "RB94",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 311,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+70",
+        "avg_diff": -1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 312,
+      "player": "Tyler Higbee",
+      "pos": "TE40",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 312,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-39",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 313,
+      "player": "Gabe Davis",
+      "pos": "WR109",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 313,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": -3.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 314,
+      "player": "Ben Sinnott",
+      "pos": "TE41",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 314,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+65",
+        "avg_diff": -0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 315,
+      "player": "Emanuel Wilson",
+      "pos": "RB95",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 315,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+124",
+        "avg_diff": 1.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 316,
+      "player": "Tyler Loop",
+      "pos": "K18",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 316,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-104",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 317,
+      "player": "Tez Johnson",
+      "pos": "WR110",
+      "team": "TB",
+      "bye": 9,
+      "ecr": 317,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+98",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 318,
+      "player": "Tutu Atwell",
+      "pos": "WR111",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 318,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+9",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 319,
+      "player": "Will Dissly",
+      "pos": "TE42",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 319,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+16",
+        "avg_diff": -0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 320,
+      "player": "Chris Brooks",
+      "pos": "RB96",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 320,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+161",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 321,
+      "player": "New England Patriots",
+      "pos": "DST20",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 321,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-107",
+        "avg_diff": -1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 322,
+      "player": "Shedeur Sanders",
+      "pos": "QB35",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 322,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-75",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 323,
+      "player": "Phil Mafah",
+      "pos": "RB97",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 323,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+427",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 324,
+      "player": "Tyrod Taylor",
+      "pos": "QB36",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 324,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "+233",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 325,
+      "player": "Ray-Ray McCloud III",
+      "pos": "WR112",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 325,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 13,
+      "notes": {
+        "ecr_vs_adp": "-2",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 326,
+      "player": "Tyler Conklin",
+      "pos": "TE43",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 326,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-10",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 327,
+      "player": "Chris Rodriguez Jr.",
+      "pos": "RB98",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 327,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+212",
+        "avg_diff": 2.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 328,
+      "player": "Jordan Whittington",
+      "pos": "WR113",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 328,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+26",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 329,
+      "player": "Miami Dolphins",
+      "pos": "DST21",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 329,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-68",
+        "avg_diff": -1.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 330,
+      "player": "Arizona Cardinals",
+      "pos": "DST22",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 330,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-115",
+        "avg_diff": -1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 331,
+      "player": "Jason Myers",
+      "pos": "K19",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 331,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-49",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 332,
+      "player": "Zamir White",
+      "pos": "RB99",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 332,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+32",
+        "avg_diff": -4.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 333,
+      "player": "Raheim Sanders",
+      "pos": "RB100",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 333,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+577",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 334,
+      "player": "Jalen Milroe",
+      "pos": "QB37",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 334,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-63",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 335,
+      "player": "Justin Tucker",
+      "pos": "K20",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 335,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-66",
+        "avg_diff": 0.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 336,
+      "player": "Tai Felton",
+      "pos": "WR114",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 336,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+154",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 337,
+      "player": "John Metchie III",
+      "pos": "WR115",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 337,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+190",
+        "avg_diff": 0.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 338,
+      "player": "Samaje Perine",
+      "pos": "RB101",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 338,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-48",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 339,
+      "player": "Marquez Valdes-Scantling",
+      "pos": "WR116",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 339,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-9",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 340,
+      "player": "A.J. Dillon",
+      "pos": "RB102",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 340,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-41",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 341,
+      "player": "Noah Brown",
+      "pos": "WR117",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 341,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+104",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 342,
+      "player": "Gus Edwards",
+      "pos": "RB103",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 342,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": -1.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 343,
+      "player": "Demarcus Robinson",
+      "pos": "WR118",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 343,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+83",
+        "avg_diff": -0.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 344,
+      "player": "KaVontae Turpin",
+      "pos": "WR119",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 344,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-44",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 345,
+      "player": "Dawson Knox",
+      "pos": "TE44",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 345,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-48",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 346,
+      "player": "Cam Akers",
+      "pos": "RB104",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 346,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+145",
+        "avg_diff": 0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 347,
+      "player": "Josh Reynolds",
+      "pos": "WR120",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 347,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+295",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 348,
+      "player": "Michael Mayer",
+      "pos": "TE45",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 348,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-20",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 349,
+      "player": "Troy Franklin",
+      "pos": "WR121",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 349,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-57",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 350,
+      "player": "Savion Williams",
+      "pos": "WR122",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 350,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+70",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 351,
+      "player": "Luke Musgrave",
+      "pos": "TE46",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 351,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-30",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 352,
+      "player": "Spencer Rattler",
+      "pos": "QB38",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 352,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+88",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 353,
+      "player": "Kirk Cousins",
+      "pos": "QB39",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 353,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-48",
+        "avg_diff": -1.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 354,
+      "player": "Jake Moody",
+      "pos": "K21",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 354,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-118",
+        "avg_diff": 0.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 355,
+      "player": "Chimere Dike",
+      "pos": "WR123",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 355,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+205",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 356,
+      "player": "Brandon McManus",
+      "pos": "K22",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 356,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-134",
+        "avg_diff": 0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 357,
+      "player": "Tank Dell",
+      "pos": "WR124",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 357,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-62",
+        "avg_diff": -2.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 358,
+      "player": "Mack Hollins",
+      "pos": "WR125",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 358,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+7",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 359,
+      "player": "AJ Barner",
+      "pos": "TE47",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 359,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-46",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 360,
+      "player": "New York Giants",
+      "pos": "DST23",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 360,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-140",
+        "avg_diff": -2.4,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 361,
+      "player": "Curtis Samuel",
+      "pos": "WR126",
+      "team": "BUF",
+      "bye": 7,
+      "ecr": 361,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+97",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 362,
+      "player": "Isaiah Bond",
+      "pos": "WR127",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 362,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 363,
+      "player": "Greg Dortch",
+      "pos": "WR128",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 363,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+101",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 364,
+      "player": "Eddy Pineiro",
+      "pos": "K23",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 364,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+107",
+        "avg_diff": -0.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 365,
+      "player": "Kenny Pickett",
+      "pos": "QB40",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 365,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+252",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 366,
+      "player": "Jameis Winston",
+      "pos": "QB41",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 366,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-25",
+        "avg_diff": 2.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 367,
+      "player": "Allen Lazard",
+      "pos": "WR129",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 367,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+56",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 368,
+      "player": "Donovan Edwards",
+      "pos": "RB105",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 368,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+407",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 369,
+      "player": "Jaylin Lane",
+      "pos": "WR130",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 369,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+44",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 370,
+      "player": "Matt Prater",
+      "pos": "K24",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 370,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+176",
+        "avg_diff": 1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 371,
+      "player": "Dillon Gabriel",
+      "pos": "QB42",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 371,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+179",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 372,
+      "player": "Washington Commanders",
+      "pos": "DST24",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 372,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-184",
+        "avg_diff": -3.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 373,
+      "player": "Gunnar Helm",
+      "pos": "TE48",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 373,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "+383",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 374,
+      "player": "Austin Hooper",
+      "pos": "TE49",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 374,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 14,
+      "notes": {
+        "ecr_vs_adp": "-34",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 375,
+      "player": "Cam Little",
+      "pos": "K25",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 375,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-86",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 376,
+      "player": "Luke Schoonmaker",
+      "pos": "TE50",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 376,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+17",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 377,
+      "player": "KeAndre Lambert-Smith",
+      "pos": "WR131",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 377,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+15",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 378,
+      "player": "Trey Sermon",
+      "pos": "RB106",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 378,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+225",
+        "avg_diff": -0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 379,
+      "player": "Robert Woods",
+      "pos": "WR132",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 379,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-21",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 380,
+      "player": "Jahan Dotson",
+      "pos": "WR133",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 380,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-70",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 381,
+      "player": "LeQuint Allen Jr.",
+      "pos": "RB107",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 381,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+115",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 382,
+      "player": "Emari Demercado",
+      "pos": "RB108",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 382,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+321",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 383,
+      "player": "Van Jefferson",
+      "pos": "WR134",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 383,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+115",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 384,
+      "player": "Jacob Cowing",
+      "pos": "WR135",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 384,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+99",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 385,
+      "player": "Ameer Abdullah",
+      "pos": "RB109",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 385,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+228",
+        "avg_diff": 1.9,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 386,
+      "player": "Theo Wease Jr.",
+      "pos": "WR136",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 386,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 387,
+      "player": "Tommy Tremble",
+      "pos": "TE51",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 387,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+18",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 388,
+      "player": "Kyle Juszczyk",
+      "pos": "RB110",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 388,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 389,
+      "player": "Ja'Lynn Polk",
+      "pos": "WR137",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 389,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+165",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 390,
+      "player": "Antwane Wells Jr.",
+      "pos": "WR138",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 390,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 391,
+      "player": "Foster Moreau",
+      "pos": "TE52",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 391,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+187",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 392,
+      "player": "Hunter Renfrow",
+      "pos": "WR139",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 392,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-58",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 393,
+      "player": "Blake Grupe",
+      "pos": "K26",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 393,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-102",
+        "avg_diff": 0.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 394,
+      "player": "Indianapolis Colts",
+      "pos": "DST25",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 394,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-145",
+        "avg_diff": -3.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 395,
+      "player": "Graham Gano",
+      "pos": "K27",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 395,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-93",
+        "avg_diff": -1.3,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 396,
+      "player": "Jalin Hyatt",
+      "pos": "WR140",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 396,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-36",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 397,
+      "player": "Jonathan Mingo",
+      "pos": "WR141",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 397,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+145",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 398,
+      "player": "Olamide Zaccheaus",
+      "pos": "WR142",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 398,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-12",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 399,
+      "player": "Kendrick Bourne",
+      "pos": "WR143",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 399,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-21",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 400,
+      "player": "Kalel Mullings",
+      "pos": "RB111",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 400,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+212",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 401,
+      "player": "Ja'Quinden Jackson",
+      "pos": "RB112",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 401,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+358",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 402,
+      "player": "Cincinnati Bengals",
+      "pos": "DST26",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 402,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-159",
+        "avg_diff": -4.0,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 403,
+      "player": "Nick Folk",
+      "pos": "K28",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 403,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-27",
+        "avg_diff": 0.6,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 404,
+      "player": "JuJu Smith-Schuster",
+      "pos": "WR144",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 404,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-92",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 405,
+      "player": "Cairo Santos",
+      "pos": "K29",
+      "team": "CHI",
+      "bye": 5,
+      "ecr": 405,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-125",
+        "avg_diff": -0.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 406,
+      "player": "KhaDarel Hodge",
+      "pos": "WR145",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 406,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+170",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 407,
+      "player": "Atlanta Falcons",
+      "pos": "DST27",
+      "team": "ATL",
+      "bye": 5,
+      "ecr": 407,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-122",
+        "avg_diff": -2.5,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 408,
+      "player": "Mason Rudolph",
+      "pos": "QB43",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 408,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-23",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 409,
+      "player": "Zay Jones",
+      "pos": "WR146",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 409,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+376",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 410,
+      "player": "Jordan Watkins",
+      "pos": "WR147",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 410,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+184",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 411,
+      "player": "Michael Gallup",
+      "pos": "WR148",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 411,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+234",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 412,
+      "player": "Jonathon Brooks",
+      "pos": "RB113",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 412,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+165",
+        "avg_diff": -2.8,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 413,
+      "player": "Grant Calcaterra",
+      "pos": "TE53",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 413,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-84",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 414,
+      "player": "Bub Means",
+      "pos": "WR149",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 414,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+135",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 415,
+      "player": "Jake Bobo",
+      "pos": "WR150",
+      "team": "SEA",
+      "bye": 8,
+      "ecr": 415,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-60",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 416,
+      "player": "Josh Oliver",
+      "pos": "TE54",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 416,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-43",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 417,
+      "player": "Aidan O'Connell",
+      "pos": "QB44",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 417,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-17",
+        "avg_diff": -1.7,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 418,
+      "player": "Cade Stover",
+      "pos": "TE55",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 418,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+174",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 419,
+      "player": "Arian Smith",
+      "pos": "WR151",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 419,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+63",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 420,
+      "player": "Devontez Walker",
+      "pos": "WR152",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 420,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+31",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 421,
+      "player": "Deshaun Watson",
+      "pos": "QB45",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 421,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-70",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 422,
+      "player": "Malachi Corley",
+      "pos": "WR153",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 422,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+99",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 423,
+      "player": "Craig Reynolds",
+      "pos": "RB114",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 423,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-71",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 424,
+      "player": "Jeremy Ruckert",
+      "pos": "TE56",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 424,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+181",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 425,
+      "player": "Greg Dulcich",
+      "pos": "TE57",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 425,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+394",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 426,
+      "player": "D'Ernest Johnson",
+      "pos": "RB115",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 426,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": -0.2,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 427,
+      "player": "Chad Ryland",
+      "pos": "K30",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 427,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-110",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 428,
+      "player": "Javon Baker",
+      "pos": "WR154",
+      "team": "NE",
+      "bye": 14,
+      "ecr": 428,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+127",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 429,
+      "player": "Alec Ingold",
+      "pos": "RB116",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 429,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+365",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 430,
+      "player": "Jake Haener",
+      "pos": "QB46",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 430,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+267",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 431,
+      "player": "Marcus Yarns",
+      "pos": "RB117",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 431,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+473",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 432,
+      "player": "Clyde Edwards-Helaire",
+      "pos": "RB118",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 432,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+37",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 433,
+      "player": "Joe Milton III",
+      "pos": "QB47",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 433,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-97",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 434,
+      "player": "Darnell Washington",
+      "pos": "TE58",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 434,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-84",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 435,
+      "player": "Mitchell Evans",
+      "pos": "TE59",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 435,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-6",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 436,
+      "player": "Will Howard",
+      "pos": "QB48",
+      "team": "PIT",
+      "bye": 5,
+      "ecr": 436,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-104",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 437,
+      "player": "Chris Tyree",
+      "pos": "RB119",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 437,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+335",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 438,
+      "player": "New Orleans Saints",
+      "pos": "DST28",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 438,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-175",
+        "avg_diff": -1.1,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 439,
+      "player": "Jamari Thrash",
+      "pos": "WR155",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 439,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+79",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 440,
+      "player": "Kalif Raymond",
+      "pos": "WR156",
+      "team": "DET",
+      "bye": 8,
+      "ecr": 440,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-79",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 441,
+      "player": "Elijah Higgins",
+      "pos": "TE60",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 441,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "-43",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 442,
+      "player": "Colby Parkinson",
+      "pos": "TE61",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 442,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 15,
+      "notes": {
+        "ecr_vs_adp": "+149",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 443,
+      "player": "Daniel Bellinger",
+      "pos": "TE62",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 443,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-32",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 444,
+      "player": "Stone Smartt",
+      "pos": "TE63",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 444,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+248",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 445,
+      "player": "Derius Davis",
+      "pos": "WR157",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 445,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+68",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 446,
+      "player": "Kylen Granson",
+      "pos": "TE64",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 446,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+172",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 447,
+      "player": "Jimmy Horn Jr.",
+      "pos": "WR158",
+      "team": "CAR",
+      "bye": 14,
+      "ecr": 447,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-141",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 448,
+      "player": "Jeremy McNichols",
+      "pos": "RB120",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 448,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+41",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 449,
+      "player": "Cordarrelle Patterson",
+      "pos": "RB121",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 449,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+190",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 450,
+      "player": "Pierre Strong Jr.",
+      "pos": "RB122",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 450,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 451,
+      "player": "Julian Hill",
+      "pos": "TE65",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 451,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-19",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 452,
+      "player": "Ezekiel Elliott",
+      "pos": "RB123",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 452,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-25",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 453,
+      "player": "Michael Carter",
+      "pos": "RB124",
+      "team": "ARI",
+      "bye": 8,
+      "ecr": 453,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+219",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 454,
+      "player": "Marcus Mariota",
+      "pos": "QB49",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 454,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-38",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 455,
+      "player": "Malik Willis",
+      "pos": "QB50",
+      "team": "GB",
+      "bye": 5,
+      "ecr": 455,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-87",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 456,
+      "player": "Tyler Goodson",
+      "pos": "RB125",
+      "team": "IND",
+      "bye": 11,
+      "ecr": 456,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+158",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 457,
+      "player": "Dare Ogunbowale",
+      "pos": "RB126",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 457,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+115",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 458,
+      "player": "Ronnie Rivers",
+      "pos": "RB127",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 458,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+372",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 459,
+      "player": "Mac Jones",
+      "pos": "QB51",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 459,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-88",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 460,
+      "player": "Deuce Vaughn",
+      "pos": "RB128",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 460,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-97",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 461,
+      "player": "Patrick Taylor Jr.",
+      "pos": "RB129",
+      "team": "SF",
+      "bye": 14,
+      "ecr": 461,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+128",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 462,
+      "player": "Rondale Moore",
+      "pos": "WR159",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 462,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+48",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 463,
+      "player": "Sam Howell",
+      "pos": "QB52",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 463,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+95",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 464,
+      "player": "Hayden Hurst",
+      "pos": "TE66",
+      "team": "FA",
+      "bye": 0,
+      "ecr": 464,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+182",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 465,
+      "player": "Jimmy Garoppolo",
+      "pos": "QB53",
+      "team": "LAR",
+      "bye": 8,
+      "ecr": 465,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-61",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 466,
+      "player": "Jake Browning",
+      "pos": "QB54",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 466,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+189",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 467,
+      "player": "Hunter Long",
+      "pos": "TE67",
+      "team": "JAC",
+      "bye": 8,
+      "ecr": 467,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+344",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 468,
+      "player": "Josh Whyle",
+      "pos": "TE68",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 468,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+155",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 469,
+      "player": "K.J. Osborn",
+      "pos": "WR160",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 469,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+193",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 470,
+      "player": "Zach Wilson",
+      "pos": "QB55",
+      "team": "MIA",
+      "bye": 12,
+      "ecr": 470,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-35",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 471,
+      "player": "David Bell",
+      "pos": "WR161",
+      "team": "CLE",
+      "bye": 9,
+      "ecr": 471,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 472,
+      "player": "Hassan Haskins",
+      "pos": "RB130",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 472,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+2",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 473,
+      "player": "Tyler Johnson",
+      "pos": "WR162",
+      "team": "NYJ",
+      "bye": 9,
+      "ecr": 473,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 474,
+      "player": "Julius Chestnut",
+      "pos": "RB131",
+      "team": "TEN",
+      "bye": 10,
+      "ecr": 474,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-2",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 475,
+      "player": "Michael Burton",
+      "pos": "RB132",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 475,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+89",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 476,
+      "player": "Hunter Luepke",
+      "pos": "RB133",
+      "team": "DAL",
+      "bye": 10,
+      "ecr": 476,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+32",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 477,
+      "player": "Harrison Bryant",
+      "pos": "TE69",
+      "team": "PHI",
+      "bye": 9,
+      "ecr": 477,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+133",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 478,
+      "player": "Thomas Fidone II",
+      "pos": "TE70",
+      "team": "NYG",
+      "bye": 14,
+      "ecr": 478,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+427",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 479,
+      "player": "Brevin Jordan",
+      "pos": "TE71",
+      "team": "HOU",
+      "bye": 6,
+      "ecr": 479,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+119",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 480,
+      "player": "Carson Steele",
+      "pos": "RB134",
+      "team": "KC",
+      "bye": 10,
+      "ecr": 480,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-127",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 481,
+      "player": "C.J. Ham",
+      "pos": "RB135",
+      "team": "MIN",
+      "bye": 6,
+      "ecr": 481,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-47",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 482,
+      "player": "John Bates",
+      "pos": "TE72",
+      "team": "WAS",
+      "bye": 12,
+      "ecr": 482,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+191",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 483,
+      "player": "Dylan Laube",
+      "pos": "RB136",
+      "team": "LV",
+      "bye": 8,
+      "ecr": 483,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+367",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 484,
+      "player": "Cooper Rush",
+      "pos": "QB56",
+      "team": "BAL",
+      "bye": 7,
+      "ecr": 484,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-77",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 485,
+      "player": "Tyler Badie",
+      "pos": "RB137",
+      "team": "DEN",
+      "bye": 12,
+      "ecr": 485,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+126",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 486,
+      "player": "Cedrick Wilson Jr.",
+      "pos": "WR163",
+      "team": "NO",
+      "bye": 11,
+      "ecr": 486,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+164",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 487,
+      "player": "Tanner Hudson",
+      "pos": "TE73",
+      "team": "CIN",
+      "bye": 10,
+      "ecr": 487,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "-",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    },
+    {
+      "id": 488,
+      "player": "Taylor Heinicke",
+      "pos": "QB57",
+      "team": "LAC",
+      "bye": 12,
+      "ecr": 488,
+      "adp": null,
+      "proj_ppr": 0.0,
+      "receptions": 0.0,
+      "risk": 0.0,
+      "tier": 16,
+      "notes": {
+        "ecr_vs_adp": "+152",
+        "avg_diff": null,
+        "pct_over": null
+      }
+    }
+  ]
+}

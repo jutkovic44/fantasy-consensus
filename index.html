@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fantasy Football War Room — Live Mock</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Fantasy Football War Room — Live Mock (FantasyPros)</h1>
+    <p>Loads data from <code>consensus.json</code> in this repo (auto-updated when you upload a new CSV and run the action).</p>
+    <div id="lastUpdated" class="small">Loading…</div>
+  </header>
+
+  <section class="panel">
+    <h2>League + Clock</h2>
+    <div class="grid">
+      <label>Teams <input id="teams" type="number" min="4" max="16" value="12"/></label>
+      <label>Rounds <input id="rounds" type="number" min="6" max="24" value="16"/></label>
+      <label>Pick Position (1-based) <input id="pickPos" type="number" min="1" max="16" value="5"/></label>
+      <label>Scoring
+        <select id="scoring">
+          <option value="PPR" selected>PPR</option>
+          <option value="Half">Half-PPR</option>
+          <option value="Std">Standard</option>
+        </select>
+      </label>
+      <label>QB Slots <input id="qbSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>RB Slots <input id="rbSlots" type="number" min="0" max="4" value="2"/></label>
+      <label>WR Slots <input id="wrSlots" type="number" min="0" max="4" value="2"/></label>
+      <label>TE Slots <input id="teSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>FLEX Slots <input id="flexSlots" type="number" min="0" max="3" value="1"/></label>
+      <label>Bench Slots <input id="benchSlots" type="number" min="0" max="10" value="6"/></label>
+      <label>Pick Clock (sec) <input id="pickClock" type="number" min="10" max="120" value="30"/></label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Draft Controls</h2>
+    <div class="row">
+      <button id="startMock">Start Mock</button>
+      <button id="pauseMock">Pause</button>
+      <button id="resumeMock">Resume</button>
+      <button id="nextPick">Next Pick</button>
+      <button id="autoUntilMyPick">Auto until my pick</button>
+      <button id="undoPick">Undo</button>
+      <button id="exportBoard">Export Board CSV</button>
+    </div>
+    <div class="row small">Clock: <span id="clock">—</span></div>
+  </section>
+
+  <section class="panel layout">
+    <div class="col">
+      <h3>Board & Picks</h3>
+      <div id="board"></div>
+    </div>
+    <div class="col">
+      <h3>Recommendations</h3>
+      <div id="recs"></div>
+      <h4>Compare</h4>
+      <div class="row">
+        <input id="compareA" placeholder="Player A name" />
+        <input id="compareB" placeholder="Player B name" />
+        <button id="doCompare">What if?</button>
+      </div>
+      <div id="compareOut"></div>
+      <h4>Filter</h4>
+      <div class="row">
+        <select id="filterPos">
+          <option value="">All</option>
+          <option value="RB">RB</option>
+          <option value="WR">WR</option>
+          <option value="QB">QB</option>
+          <option value="TE">TE</option>
+        </select>
+        <input id="searchName" placeholder="Search name..." />
+      </div>
+    </div>
+    <div class="col">
+      <h3>My Roster (by slots)</h3>
+      <div id="myRoster"></div>
+      <h3>Positional Scarcity</h3>
+      <div id="scarcity"></div>
+    </div>
+  </section>
+
+  <footer>
+    <small>Data URL: <code>./consensus.json</code> • Site: this repo’s GitHub Pages</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

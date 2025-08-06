@@ -1,128 +1,61 @@
 body {
-  background: #111;
-  color: white;
-  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
 }
 
-.container {
+#app {
   padding: 20px;
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.tab-container {
-  display: flex;
+.tabs {
   margin-bottom: 10px;
 }
 
-.tab {
-  padding: 10px 20px;
-  background-color: #222;
-  color: #fff;
+.tabs button {
+  background: #222;
+  color: white;
+  padding: 10px 15px;
   border: none;
   cursor: pointer;
-  margin-right: 5px;
-  border-radius: 4px;
 }
 
-.tab.active {
-  background-color: green;
+.tabs button.active {
+  background: #28a745;
 }
 
 .filters {
+  margin-bottom: 10px;
+}
+
+.filters select,
+.filters input {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.player-list {
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
-}
-
-input,
-select {
-  padding: 8px;
-  border-radius: 4px;
-  border: none;
-}
-
-.main-section {
-  display: flex;
-  gap: 20px;
-}
-
-.list-container,
-.roster-container {
-  flex: 1;
 }
 
 .player-card {
-  background: #1c1c1c;
-  border: 1px dashed #333;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-}
-
-.player-card .badge {
-  display: inline-block;
-  padding: 2px 6px;
-  margin-left: 4px;
-  font-size: 12px;
-  border-radius: 4px;
-}
-
-.badge.tier {
-  background: #333;
-  color: white;
-}
-
-.badge.pos {
-  background: #444;
-  color: white;
-}
-
-.badge.ecr {
-  background: #555;
-  color: white;
-}
-
-.badge.bye {
-  background: #888;
-  color: white;
-}
-
-.badge.warning-yellow {
-  background: #ffaa00;
-}
-
-.badge.warning-orange {
-  background: #ff6600;
-}
-
-.badge.warning-red {
-  background: #cc0000;
-}
-
-.draft-button {
-  float: right;
-  padding: 6px 12px;
-  background: #444;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.draft-button:hover {
-  background: #666;
-}
-
-.roster-slot {
-  background: #222;
+  border: 1px dashed #444;
   padding: 10px;
-  margin-bottom: 10px;
-  border: 1px dashed #555;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1e1e1e;
+}
+
+.hidden {
+  display: none;
+}
+
+.bye-warning {
+  color: red;
+  font-weight: bold;
 }

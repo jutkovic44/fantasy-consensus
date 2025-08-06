@@ -7,31 +7,35 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Fantasy Football War Room</h1>
+  <div class="container">
+    <h1>Fantasy Football War Room</h1>
 
-  <div class="tabs">
-    <button id="recommendationsTab" class="tab active">Recommendations</button>
-    <button id="fullRankingsTab" class="tab">Full Rankings</button>
+    <div class="tab-container">
+      <button class="tab active" onclick="switchTab('recommendations')">Recommendations</button>
+      <button class="tab" onclick="switchTab('full-rankings')">Full Rankings</button>
+    </div>
+
+    <div class="filters">
+      <select id="positionFilter" onchange="applyFilters()">
+        <option value="All">All</option>
+        <option value="QB">QB</option>
+        <option value="RB">RB</option>
+        <option value="WR">WR</option>
+        <option value="TE">TE</option>
+        <option value="K">K</option>
+        <option value="DEF">DEF</option>
+      </select>
+      <input type="text" id="searchInput" placeholder="Search name..." oninput="applyFilters()" />
+    </div>
+
+    <div class="main-section">
+      <div id="playerList" class="list-container"></div>
+      <div id="myRoster" class="roster-container">
+        <h2>My Roster</h2>
+        <div id="rosterSlots"></div>
+      </div>
+    </div>
   </div>
-
-  <div class="filters">
-    <select id="positionFilter">
-      <option value="All">All</option>
-      <option value="QB">QB</option>
-      <option value="RB">RB</option>
-      <option value="WR">WR</option>
-      <option value="TE">TE</option>
-      <option value="FLEX">FLEX</option>
-      <option value="K">K</option>
-      <option value="DEF">DEF</option>
-    </select>
-    <input type="text" id="searchInput" placeholder="Search name..." />
-  </div>
-
-  <div id="playerList" class="player-list"></div>
-
-  <h2>My Roster</h2>
-  <div id="roster" class="roster"></div>
 
   <script src="app.js"></script>
 </body>

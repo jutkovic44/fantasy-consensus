@@ -45,7 +45,7 @@ button { cursor: pointer; } button:hover { background: #0b1220; }
 .tier-divider.t3 { border-color: var(--tier3); } .tier-divider.t4 { border-color: var(--tier4); }
 .tier-divider.t5 { border-color: var(--tier5); } .tier-divider.t6 { border-color: var(--tier6); }
 
-/* Team logos in rankings */
+/* Team logos */
 .team-logo { width: 24px; height: 24px; object-fit: contain; border-radius: 4px; background: #0b1220; border: 1px solid #334155; }
 
 .scarcity-bars { display: grid; gap: 8px; }

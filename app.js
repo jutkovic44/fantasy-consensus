@@ -685,20 +685,19 @@ function playerCardHTML(p){
 
   return `<div class="flex">
       <div class="flex" style="gap:10px;">
-        ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
+        ${logo ? `<img src="\${logo}" alt="\${p.team||''}" class="team-logo">` : ""}
         <div>
-          <div class="name">${p.player} ${stackBadge} ${upgradeBadge}
-            <span class="badge tier t${t}">T${t}</span>
-            <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span>
-            ${ecrBit} ${adpBit} ${projBit}
+          <div class="name">\${p.player} \${stackBadge} \${upgradeBadge}
+            <span class="badge tier t\${t}">T\${t}</span>
+            <span class="badge pos \${p.pos}">\${p.pos}\${pr ? posRankLabel(pr) : ""}</span>
+            \${ecrBit} \${adpBit} \${projBit}
           </div>
-          <div class="small">${p.team || ""} • Bye ${p.bye || "-"} ${byeDot}</div>
+          <div class="small">\${p.team || ""} • Bye \${p.bye || "-"} \${byeDot}</div>
         </div>
       </div>
-      <div><button data-pid="${p.id}">Draft</button></div>
+      <div><button data-pid="\${p.id}">Draft</button></div>
     </div>`;
 }
-
 
 // ---------- render ----------
 function render(){ renderBoard(); renderMidPanel(); renderMyRoster(); }

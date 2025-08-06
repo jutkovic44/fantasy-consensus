@@ -1,9 +1,9 @@
-/* Fantasy Football War Room — app.js (features always on; robust STACK badge)
-   - CSV uploader (client-side) + "Download consensus.json"
-   - Stack Awareness: always ON with scoring boost + visible STACK badge
-   - Scarcity bars: always ON
-   - Logos in Rankings/Recommendations/Board/Roster
-   - Snake draft; CPU auto-drafts between your turns
+/* Fantasy Football War Room — unified mid-panel (Recs <-> Full Rankings tabs)
+   - Positional Scarcity removed
+   - Shared search/position filter applies to BOTH tabs and persists when switching
+   - Stack Awareness always ON with visible STACK badge
+   - CSV uploader + Download consensus.json
+   - Snake draft + CPU auto-draft between your turns
    - My Roster auto-fills starters by best ECR, then FLEX, then Bench
 */
 
@@ -22,12 +22,15 @@ let state = {
   started: false,
   paused: false,
 
-  // Features: always on
-  features: { stack:true, scarcity:true },
+  // features always ON
+  features: { stack:true },
 
   dataFlags: { hasProj:false, hasADP:false },
   autoplay: { enabled:true, delayMs:1000, loopId:null },
-  boardView: localStorage.getItem("boardView") || "overall",
+
+  // UI
+  boardView: localStorage.getItem("boardView") || "overall", // "overall" | "round"
+  midTab: localStorage.getItem("midTab") || "recs",          // "recs" | "ranks"
   posRankCache: {},
   dataSource: "consensus.json"
 };
@@ -36,21 +39,13 @@ let state = {
 const el = id => document.getElementById(id);
 const show = (id, on)=>{ const n=el(id); if(!n) return; n.classList.toggle("hidden", !on); };
 
-// Normalize team codes to what the NFL logo CDN expects and to avoid mismatches
 function normalizeTeam(abbr){
   if(!abbr) return "";
   const code = String(abbr).toUpperCase().trim();
-  const map = {
-    JAX:"JAC", LA:"LAR", // common alternates
-    WSH:"WAS", STL:"LAR", SD:"LAC" // legacy
-  };
+  const map = { JAX:"JAC", LA:"LAR", WSH:"WAS", STL:"LAR", SD:"LAC" }; // alternates/legacy
   return map[code] || code;
 }
-
-function teamLogoUrl(abbr){
-  const code = normalizeTeam(abbr);
-  return code ? `https://static.www.nfl.com/league/api/clubs/logos/${code}.svg` : "";
-}
+function teamLogoUrl(abbr){ const c=normalizeTeam(abbr); return c ? `https://static.www.nfl.com/league/api/clubs/logos/${c}.svg` : ""; }
 
 function buildPosRankCache(){
   state.posRankCache = {};
@@ -72,8 +67,7 @@ function hasPrimaryStackForMyTeam(candidate){
   if(!candTeam || !rosterIdxs.length) return false;
   for(const idx of rosterIdxs){
     const pl = state.players[idx];
-    if(!pl) continue;
-    if(normalizeTeam(pl.team) !== candTeam) continue;
+    if(!pl || normalizeTeam(pl.team)!==candTeam) continue;
     if( (candidate.pos==="QB" && (pl.pos==="WR" || pl.pos==="TE")) ||
         ((candidate.pos==="WR" || candidate.pos==="TE") && pl.pos==="QB") ){
       return true;
@@ -81,26 +75,21 @@ function hasPrimaryStackForMyTeam(candidate){
   }
   return false;
 }
-
-// Additional (smaller) stack synergy for same-team same-pos — used only in scoring
 function stackBonusForTeam(teamIndex, candidate){
   if(!state.features.stack) return 0;
   const roster = (state.teamRosters[teamIndex]||[]).map(i=>state.players[i]);
   let bonus = 0;
   const candTeam = normalizeTeam(candidate.team);
   for(const pl of roster){
-    if(!pl || !candTeam) continue;
-    if(normalizeTeam(pl.team) !== candTeam) continue;
-    // Primary QB<->WR/TE stack: strong
+    if(!pl || normalizeTeam(pl.team)!==candTeam) continue;
     if( (pl.pos==="QB" && (candidate.pos==="WR" || candidate.pos==="TE")) ||
         (candidate.pos==="QB" && (pl.pos==="WR" || pl.pos==="TE")) ){ bonus += 6; }
-    // Secondary (same-team WR/TE pairs): light
     else if (pl.pos===candidate.pos && (pl.pos==="WR" || pl.pos==="TE")) { bonus += 2; }
   }
   return bonus;
 }
 
-// ---------- data load from consensus.json ----------
+// ---------- data load ----------
 async function loadConsensus() {
   const lastUpdatedEl = el("lastUpdated");
   const srcLabel = el("dataSourceLabel");
@@ -123,12 +112,10 @@ async function loadConsensus() {
     render();
   } catch (e) {
     console.warn("Could not load consensus.json:", e.message);
-    if (el("lastUpdated"))
-      el("lastUpdated").innerHTML = `<span style="color:#f59e0b; font-weight:bold;">Tip:</span> ${e.message}. You can upload a CSV below.`;
+    if (lastUpdatedEl)
+      lastUpdatedEl.innerHTML = `<span style="color:#f59e0b; font-weight:bold;">Tip:</span> ${e.message}. You can upload a CSV below.`;
   }
 }
-
-// normalize/ingest into state
 function ingestPlayers(raw){
   state.players = raw.map((p,i)=>({
     ...p,
@@ -181,10 +168,7 @@ function initCsvUpload(){
     });
   }
 }
-function handleCsvFiles(e){
-  const file = e.target.files?.[0];
-  if(file) parseCsvFile(file);
-}
+function handleCsvFiles(e){ const file = e.target.files?.[0]; if(file) parseCsvFile(file); }
 function parseCsvFile(file){
   const reader = new FileReader();
   reader.onload = () => {
@@ -193,8 +177,8 @@ function parseCsvFile(file){
     const players = rows.map(r => mapFantasyProsRow(headers, r)).filter(Boolean);
     if(!players.length){ alert("Could not parse any rows from CSV. Check the file format."); return; }
     state.dataSource = "CSV";
-    if (el("dataSourceLabel")) el("dataSourceLabel").textContent = "CSV (uploaded)";
-    if (el("lastUpdated")) el("lastUpdated").textContent = `Loaded from CSV: ${file.name} • players: ${players.length}`;
+    const label = el("dataSourceLabel"); if (label) label.textContent = "CSV (uploaded)";
+    const lu = el("lastUpdated"); if (lu) lu.textContent = `Loaded from CSV: ${file.name} • players: ${players.length}`;
     ingestPlayers(players);
     render();
   };
@@ -250,15 +234,17 @@ function mapFantasyProsRow(headers, row){
 function toNum(x){ const n = Number(String(x||"").replace(/[^0-9.\-]/g,"")); return isFinite(n)? n : null; }
 
 // ---------- init ----------
+document.addEventListener("DOMContentLoaded", init);
 function init() {
   loadConsensus();
   setInterval(loadConsensus, 30*60*1000);
   initCsvUpload();
 
+  // league inputs
   ["teams","rounds","pickPos","scoring","qbSlots","rbSlots","wrSlots","teSlots","flexSlots","benchSlots"]
     .forEach(id=> el(id)?.addEventListener("input", syncSettings));
 
-  // Draft controls
+  // draft controls
   el("startMock")?.addEventListener("click", startMock);
   el("pauseMock")?.addEventListener("click", pauseMock);
   el("resumeMock")?.addEventListener("click", resumeMock);
@@ -267,27 +253,29 @@ function init() {
   el("autoUntilMyPick")?.addEventListener("click", autoUntilMyPick);
   el("undoPick")?.addEventListener("click", undoPick);
   el("exportBoard")?.addEventListener("click", exportBoard);
-
   el("autoOthers")?.addEventListener("change", () => {
     state.autoplay.enabled = el("autoOthers").checked;
     if (state.autoplay.enabled) startAutoLoop(); else stopAutoLoop();
   });
 
-  // Rankings filters
-  el("rankingsSearch")?.addEventListener("input", renderRankings);
-  el("rankingsPos")?.addEventListener("change", renderRankings);
+  // board tabs
+  el("tabOverall")?.addEventListener("click", () => { state.boardView="overall"; localStorage.setItem("boardView","overall"); updateBoardTabs(); renderBoard(); });
+  el("tabByRound")?.addEventListener("click", () => { state.boardView="round";   localStorage.setItem("boardView","round");   updateBoardTabs(); renderBoard(); });
+  updateBoardTabs();
 
-  // Tabs
-  el("tabOverall")?.addEventListener("click", () => { state.boardView = "overall"; localStorage.setItem("boardView","overall"); updateTabs(); renderBoard(); });
-  el("tabByRound")?.addEventListener("click", () => { state.boardView = "round"; localStorage.setItem("boardView","round"); updateTabs(); renderBoard(); });
-  updateTabs();
+  // mid-panel tabs (shared filters)
+  el("subtabRecs")?.addEventListener("click", () => { state.midTab="recs"; localStorage.setItem("midTab","recs"); updateMidTabs(); renderMidPanel(); });
+  el("subtabRanks")?.addEventListener("click", () => { state.midTab="ranks"; localStorage.setItem("midTab","ranks"); updateMidTabs(); renderMidPanel(); });
+  updateMidTabs();
+
+  // shared filters (apply to BOTH tabs)
+  el("filterPos")?.addEventListener("change", renderMidPanel);
+  el("searchName")?.addEventListener("input", renderMidPanel);
 
   render();
 }
-document.addEventListener("DOMContentLoaded", init);
 
-function updateTabs(){ el("tabOverall")?.classList.toggle("active", state.boardView==="overall");
-  el("tabByRound")?.classList.toggle("active", state.boardView==="round"); }
+// ---------- settings ----------
 function syncSettings(){ const s=state.settings;
   s.teams=+el("teams").value||12; s.rounds=+el("rounds").value||16; s.pickPos=+el("pickPos").value||5;
   s.scoring=el("scoring").value; s.qb=+el("qbSlots").value||1; s.rb=+el("rbSlots").value||2; s.wr=+el("wrSlots").value||2;
@@ -351,7 +339,6 @@ function advanceAfterPick(shouldRender=true){ state.currentOverall += 1; if (sho
 
 function aiPick(teamIndex){
   const {list}=computeRecommendations(teamIndex); if(!list.length) return;
-  // Rely on tiers, VOR, needs, and stack synergy
   const weighted = list.slice(0,24).map(p=> ({...p, biasScore: p.score + stackBonusForTeam(teamIndex, p)}));
   weighted.sort((a,b)=>b.biasScore-a.biasScore);
   const k=Math.min(7, weighted.length), weights=Array.from({length:k},(_,i)=>(k-i));
@@ -393,11 +380,14 @@ function exportBoard(){
   a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1500);
 }
 
-// ---------- scoring / recs ----------
+// ---------- scoring / lists ----------
 function computeRecommendations(teamIndex){
   const base = replacementLevels(); const needs = rosterNeeds(teamIndex);
+  // shared filters
+  const posFilter = (el("filterPos")?.value || "").toUpperCase();
+  const nameFilter = (el("searchName")?.value || "").toLowerCase();
+
   let candidates = state.available.map(i=>state.players[i]);
-  const posFilter=el("filterPos")?.value || ""; const nameFilter=(el("searchName")?.value||"").toLowerCase();
   if(posFilter) candidates=candidates.filter(p=>p.pos===posFilter);
   if(nameFilter) candidates=candidates.filter(p=>p.player.toLowerCase().includes(nameFilter));
 
@@ -408,7 +398,7 @@ function computeRecommendations(teamIndex){
     const tierBoost = (6 - Math.min(p.tier||6,6)) * 1.2;
     const valueBoost = state.dataFlags.hasADP ? Math.min(Math.max(0,(p.adp||state.currentOverall)-state.currentOverall)/10, 8) : 0;
     const needW = (needs[p.pos]||1.0);
-    const stackSynergy = stackBonusForTeam(teamIndex, p); // always on
+    const stackSynergy = stackBonusForTeam(teamIndex, p);
     let score = (state.dataFlags.hasProj ? vor*needW : 0) + tierBoost + valueBoost + stackSynergy;
     return {...p, baseProj, rep, vor, score, hasMyStack: hasPrimaryStackForMyTeam(p) };
   });
@@ -438,8 +428,12 @@ function rosterNeeds(teamIndex){
   return need;
 }
 
-// ---------- UI renders ----------
-function render(){ renderBoard(); renderRecs(); renderMyRoster(); renderScarcityBars(); renderRankings(); }
+// ---------- render ----------
+function render(){
+  renderBoard();
+  renderMidPanel();   // unified recs/rankings area
+  renderMyRoster();
+}
 
 function renderBoard(){
   const root=el("board"); if(!root) return; root.innerHTML="";
@@ -467,55 +461,71 @@ function boardPickElem(p){
   return div;
 }
 
-function renderRecs(){
-  const root=el("recs"); if(!root) return; root.innerHTML="";
-  if(!state.players.length){ root.textContent="Load players (CSV or consensus.json)."; return; }
-  const team = state.started? overallToTeam(state.currentOverall) : state.myTeamIndex;
-  const {list} = computeRecommendations(team); let lastTier = null;
-  list.forEach((p)=>{
-    const t = p.tier || 6; if(lastTier===null || t!==lastTier){ const sep=document.createElement("div"); sep.className=`tier-divider t${t}`; sep.textContent=`Tier ${t}`; root.appendChild(sep); lastTier=t; }
-    const logo = teamLogoUrl(p.team); const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : ""; const projBit = state.dataFlags.hasProj ? ` • Proj ${p.baseProj.toFixed(1)} (rep ${p.rep.toFixed(1)})` : ""; const posRank = getPosRank(p);
-    const stackBadge = p.hasMyStack ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
-    const d=document.createElement("div"); d.className="item";
-    d.innerHTML = `<div class="flex">
-        <div class="flex" style="gap:10px;">
-          ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
-          <div>
-            <div class="name">${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span></div>
-            <div class="small">${p.team||""} • Bye ${p.bye||"-"} • ECR ${p.ecr||"-"}${projBit}${adpBit}</div>
-          </div>
-        </div>
-        <div><button data-pick="${p.id}">Draft</button></div>
-      </div>`;
-    d.querySelector("button").onclick=()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
-    root.appendChild(d);
-  });
-}
+function renderMidPanel(){
+  const root = el("midList"); if(!root) return; root.innerHTML = "";
+  const posFilter = (el("filterPos")?.value || "").toUpperCase();
+  const nameFilter = (el("searchName")?.value || "").toLowerCase();
 
-function renderRankings(){
-  const root = el("rankingsList"); if(!root) return; root.innerHTML = "";
-  let list = state.available.map(i=>state.players[i]);
-  const q = (el("rankingsSearch")?.value||"").toLowerCase(); const pos = el("rankingsPos")?.value || "";
-  if(q) list = list.filter(p=>p.player.toLowerCase().includes(q));
-  if(pos) list = list.filter(p=>p.pos===pos);
-  list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
-  list.slice(0,500).forEach(p=>{
-    const logo = teamLogoUrl(p.team); const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : ""; const projBit = state.dataFlags.hasProj ? ` • Proj ${Number(p.proj_ppr||0).toFixed(1)}` : ""; const ecr = (p.ecr!=null)? `#${p.ecr}` : "#—"; const posRank = getPosRank(p);
-    const stackBadge = hasPrimaryStackForMyTeam(p) ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
-    const d=document.createElement("div"); d.className="item";
-    d.innerHTML = `<div class="flex">
-      <div class="flex" style="gap:10px;">
-        ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
-        <div>
-          <div class="name">${p.player} ${stackBadge} <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span> <span class="badge">${ecr}</span></div>
-          <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
-        </div>
-      </div>
-      <div><button data-id="${p.id}">Draft</button></div>
-    </div>`;
-    d.querySelector("button").onclick = ()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
-    root.appendChild(d);
-  });
+  if(state.midTab === "recs"){
+    // Recommendations for current team on the clock (or your team if not started)
+    const team = state.started ? overallToTeam(state.currentOverall) : state.myTeamIndex;
+    const { list } = computeRecommendations(team);
+    let lastTier=null;
+    list.forEach(p=>{
+      // secondary filter here too (defensive — same as computeRecommendations, harmless)
+      if(posFilter && p.pos!==posFilter) return;
+      if(nameFilter && !p.player.toLowerCase().includes(nameFilter)) return;
+
+      const t = p.tier || 6;
+      if(lastTier===null || t!==lastTier){
+        const sep=document.createElement("div"); sep.className=`tier-divider t${t}`; sep.textContent=`Tier ${t}`; root.appendChild(sep); lastTier=t;
+      }
+      const logo = teamLogoUrl(p.team); const posRank = getPosRank(p);
+      const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
+      const projBit = state.dataFlags.hasProj ? ` • Proj ${p.baseProj?.toFixed?.(1) || "0.0"} (rep ${p.rep?.toFixed?.(1) || "0.0"})` : "";
+      const stackBadge = p.hasMyStack ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
+      const d=document.createElement("div"); d.className="item";
+      d.innerHTML = `<div class="flex">
+          <div class="flex" style="gap:10px;">
+            ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
+            <div>
+              <div class="name">${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span></div>
+              <div class="small">${p.team||""} • Bye ${p.bye||"-"} • ECR ${p.ecr||"-"}${projBit}${adpBit}</div>
+            </div>
+          </div>
+          <div><button data-pick="${p.id}">Draft</button></div>
+        </div>`;
+      d.querySelector("button").onclick=()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
+      root.appendChild(d);
+    });
+  } else {
+    // Full Rankings (from remaining available)
+    let list = state.available.map(i=>state.players[i]);
+    if(posFilter) list = list.filter(p=>p.pos===posFilter);
+    if(nameFilter) list = list.filter(p=>p.player.toLowerCase().includes(nameFilter));
+    list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
+    list.slice(0,500).forEach(p=>{
+      const logo = teamLogoUrl(p.team);
+      const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
+      const projBit = state.dataFlags.hasProj ? ` • Proj ${Number(p.proj_ppr||0).toFixed(1)}` : "";
+      const ecr = (p.ecr!=null)? `#${p.ecr}` : "#—";
+      const posRank = getPosRank(p);
+      const stackBadge = hasPrimaryStackForMyTeam(p) ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
+      const d=document.createElement("div"); d.className="item";
+      d.innerHTML = `<div class="flex">
+          <div class="flex" style="gap:10px;">
+            ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
+            <div>
+              <div class="name">${p.player} ${stackBadge} <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span> <span class="badge">${ecr}</span></div>
+              <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
+            </div>
+          </div>
+          <div><button data-id="${p.id}">Draft</button></div>
+        </div>`;
+      d.querySelector("button").onclick = ()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
+      root.appendChild(d);
+    });
+  }
 }
 
 function renderMyRoster(){
@@ -540,108 +550,22 @@ function renderMyRoster(){
   section("QB", starters.QB); section("RB", starters.RB); section("WR", starters.WR); section("TE", starters.TE); if (state.settings.flex > 0) section("FLEX", starters.FLEX); section("Bench", bench);
 }
 
-function renderScarcityBars(){
-  // always on
-  show("scarcityWrap", true);
-  const root = el("scarcityBars"); if(!root) return; root.innerHTML="";
-  ["QB","RB","WR","TE"].forEach(pos=>{
-    const total = state.players.filter(p=>p.pos===pos).length;
-    const remain = state.available.map(i=>state.players[i]).filter(p=>p.pos===pos).length;
-    const pct = total? Math.round((remain/total)*100) : 0;
-    const bar = document.createElement("div"); bar.className = "scarcity-row";
-    bar.innerHTML = `<div class="scarcity-label">${pos} <span class="small">(${remain}/${total})</span></div>
-      <div class="scarcity-track"><div class="scarcity-fill ${pos}" style="width:${pct}%"></div></div>`;
-    root.appendChild(bar);
-  });
+// ---------- UI tab helpers ----------
+function updateBoardTabs(){
+  el("tabOverall")?.classList.toggle("active", state.boardView==="overall");
+  el("tabByRound")?.classList.toggle("active", state.boardView==="round");
+}
+function updateMidTabs(){
+  el("subtabRecs")?.classList.toggle("active", state.midTab==="recs");
+  el("subtabRanks")?.classList.toggle("active", state.midTab==="ranks");
 }
 
-// ---------- export ----------
-function exportBoard(){
-  const rows=[["overall","round","pickInRound","team","player","pos","teamAbbr","bye","ecr","adp","proj_ppr","tier"]];
-  for(const p of [...state.draftPicks].sort((a,b)=>a.overall-b.overall)){
-    const pl=state.players[p.playerIdx];
-    rows.push([p.overall,p.round,p.pickInRound,p.team+1,pl.player,pl.pos,pl.team,pl.bye,pl.ecr,pl.adp,pl.proj_ppr,pl.tier]);
-  }
-  const csv=rows.map(r=>r.join(",")).join("\n"); const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="draft_board.csv";
-  a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+// ---------- boot util ----------
+function renderBoardElem(p){
+  const pl=state.players[p.playerIdx]; const logo = teamLogoUrl(pl.team); const posRank = getPosRank(pl);
+  const div=document.createElement("div"); div.className="pick";
+  div.innerHTML=`<div class="flex"><span class="badge">#${p.overall} R${p.round}.${p.pickInRound}</span><span class="small">Team ${p.team+1}</span></div>
+  <div class="flex" style="justify-content:flex-start; gap:8px;">${logo?`<img src="${logo}" class="team-logo">`:""}<div class="name">${pl.player}</div></div>
+  <div class="small"><span class="badge pos ${pl.pos}">${pl.pos}${posRank?posRankLabel(pl,posRank):""}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
+  return div;
 }
-
-// ---------- boot ----------
-document.addEventListener("DOMContentLoaded", init);
-function render(){ renderBoard(); renderRecs(); renderMyRoster(); renderScarcityBars(); renderRankings(); }
-function updateTabs(){ el("tabOverall")?.classList.toggle("active", state.boardView==="overall");
-  el("tabByRound")?.classList.toggle("active", state.boardView==="round"); }
-function init() {
-  loadConsensus();
-  setInterval(loadConsensus, 30*60*1000);
-  initCsvUpload();
-
-  ["teams","rounds","pickPos","scoring","qbSlots","rbSlots","wrSlots","teSlots","flexSlots","benchSlots"]
-    .forEach(id=> el(id)?.addEventListener("input", syncSettings));
-
-  // Draft controls
-  el("startMock")?.addEventListener("click", startMock);
-  el("pauseMock")?.addEventListener("click", pauseMock);
-  el("resumeMock")?.addEventListener("click", resumeMock);
-  el("nextPick")?.addEventListener("click", nextPick);
-  el("prevPick")?.addEventListener("click", () => { pauseMock(); undoPick(); render(); });
-  el("autoUntilMyPick")?.addEventListener("click", autoUntilMyPick);
-  el("undoPick")?.addEventListener("click", undoPick);
-  el("exportBoard")?.addEventListener("click", exportBoard);
-  el("autoOthers")?.addEventListener("change", () => {
-    state.autoplay.enabled = el("autoOthers").checked;
-    if (state.autoplay.enabled) startAutoLoop(); else stopAutoLoop();
-  });
-
-  // Rankings filters
-  el("rankingsSearch")?.addEventListener("input", renderRankings);
-  el("rankingsPos")?.addEventListener("change", renderRankings);
-
-  // Tabs
-  el("tabOverall")?.addEventListener("click", () => { state.boardView = "overall"; localStorage.setItem("boardView","overall"); updateTabs(); renderBoard(); });
-  el("tabByRound")?.addEventListener("click", () => { state.boardView = "round"; localStorage.setItem("boardView","round"); updateTabs(); renderBoard(); });
-  updateTabs();
-
-  render();
-}
-function syncSettings(){ const s=state.settings;
-  s.teams=+el("teams").value||12; s.rounds=+el("rounds").value||16; s.pickPos=+el("pickPos").value||5;
-  s.scoring=el("scoring").value; s.qb=+el("qbSlots").value||1; s.rb=+el("rbSlots").value||2; s.wr=+el("wrSlots").value||2;
-  s.te=+el("teSlots").value||1; s.flex=+el("flexSlots").value||1; s.bench=+el("benchSlots").value||6; }
-
-// --- auto loop & helpers (kept at end to keep file compact) ---
-function startAutoLoop(){ stopAutoLoop();
-  if (!state.autoplay.enabled) return;
-  state.autoplay.loopId = setInterval(()=>{
-    if (!state.started || state.paused) return;
-    const total=state.settings.teams*state.settings.rounds;
-    if(state.currentOverall>total){ stopAutoLoop(); return; }
-    const team = overallToTeam(state.currentOverall);
-    if (team === state.myTeamIndex) return;
-    aiPick(team); advanceAfterPick();
-  }, state.autoplay.delayMs);
-}
-function stopAutoLoop(){ if(state.autoplay.loopId) clearInterval(state.autoplay.loopId); state.autoplay.loopId=null; }
-function overallToTeam(overall){ const T=state.settings.teams; const r=Math.ceil(overall/T); const pos=overall-(r-1)*T; return (r%2===1) ? (pos-1) : (T - pos); }
-function getRound(overall){ return Math.ceil(overall/state.settings.teams); }
-function pickInRound(overall){ const r=getRound(overall), start=(r-1)*state.settings.teams+1; return overall-start+1; }
-function nextPick(){ if(!state.started){ alert("Start the draft first."); return; } const total=state.settings.teams*state.settings.rounds; if(state.currentOverall>total){ stopAutoLoop(); return; }
-  const team = overallToTeam(state.currentOverall); if(team===state.myTeamIndex){ const {list}=computeRecommendations(team); if(!list.length){ alert("No candidates available."); return; } draftPlayerById(list[0].id, team); advanceAfterPick(); return; } aiPick(team); advanceAfterPick(); }
-function autoUntilMyPick(){ if(!state.started){ alert("Start the draft first."); return; } state.paused=false; while(overallToTeam(state.currentOverall)!==state.myTeamIndex){ const total=state.settings.teams*state.settings.rounds; if(state.currentOverall>total) break; const team = overallToTeam(state.currentOverall); aiPick(team); advanceAfterPick(false); } render(); }
-function advanceAfterPick(shouldRender=true){ state.currentOverall += 1; if (shouldRender) render(); }
-function aiPick(teamIndex){ const {list}=computeRecommendations(teamIndex); if(!list.length) return;
-  const weighted = list.slice(0,24).map(p=> ({...p, biasScore: p.score + stackBonusForTeam(teamIndex, p)}));
-  weighted.sort((a,b)=>b.biasScore-a.biasScore); const k=Math.min(7, weighted.length), weights=Array.from({length:k},(_,i)=>(k-i));
-  const sum=weights.reduce((a,b)=>a+b,0); let r=Math.random()*sum, pick=weighted[0]; for(let i=0;i<k;i++){ r-=weights[i]; if(r<=0){ pick=weighted[i]; break; } } draftPlayerById(pick.id,teamIndex); }
-function draftPlayerById(id, teamIndex){ const poolIdx = state.players.findIndex(p=>p.id===id); if(poolIdx===-1) return; draftByIndex(poolIdx, teamIndex); }
-function draftByIndex(poolIdx, teamIndex){ if(state.players[poolIdx].drafted) return; const idxAvail = state.available.indexOf(poolIdx); if(idxAvail!==-1) state.available.splice(idxAvail,1);
-  state.players[poolIdx].drafted=true; const overall=state.currentOverall, round=getRound(overall), pir=pickInRound(overall);
-  state.teamRosters[teamIndex].push(poolIdx); bumpRosterSlot(teamIndex, state.players[poolIdx].pos); state.draftPicks.push({overall, team:teamIndex, round, pickInRound:pir, playerIdx:poolIdx}); }
-function bumpRosterSlot(teamIndex,pos){ const s=state.rosterSlots[teamIndex]; if(!s) return; if(pos in s) s[pos]++; else s.BEN++; }
-function undoPick(){ if(!state.draftPicks.length) return; const last=state.draftPicks.pop(); const {playerIdx, team, overall}=last;
-  state.players[playerIdx].drafted=false; if(!state.available.includes(playerIdx)) state.available.push(playerIdx); const r=state.teamRosters[team]; const ix=r.lastIndexOf(playerIdx); if(ix>=0) r.splice(ix,1);
-  const pos=state.players[playerIdx].pos; if(pos in state.rosterSlots[team]) state.rosterSlots[team][pos]=Math.max(0, state.rosterSlots[team][pos]-1); state.currentOverall = overall; render(); }
-function exportBoard(){ const rows=[["overall","round","pickInRound","team","player","pos","teamAbbr","bye","ecr","adp","proj_ppr","tier"]];
-  for(const p of [...state.draftPicks].sort((a,b)=>a.overall-b.overall)){ const pl=state.players[p.playerIdx]; rows.push([p.overall,p.round,p.pickInRound,p.team+1,pl.player,pl.pos,pl.team,pl.bye,pl.ecr,pl.adp,pl.proj_ppr,pl.tier]); }
-  const csv=rows.map(r=>r.join(",")).join("\n"); const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="draft_board.csv"; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1500); }

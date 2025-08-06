@@ -11,7 +11,7 @@ h1 { margin: 0 0 6px 0; font-size: 20px; }
 .grid { display: grid; gap: 10px; }
 .grid-5 { grid-template-columns: repeat(5, minmax(140px, 1fr)); }
 .grid-6 { grid-template-columns: repeat(6, minmax(120px, 1fr)); }
-.mt8 { margin-top: 8px; } .mt12 { margin-top: 12px; } .ml12 { margin-left: 12px; }
+.mt8 { margin-top: 8px; } .ml12 { margin-left: 12px; }
 .row { display: flex; gap: 10px; align-items: center; }
 .row.wrap { flex-wrap: wrap; }
 label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
@@ -22,9 +22,9 @@ button { cursor: pointer; } button:hover { background: #0b1220; }
 .layout { display: grid; gap: 16px; grid-template-columns: 2fr 1.4fr 1fr; }
 .col { border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: var(--panel); }
 
-.tabs { display: flex; gap: 8px; margin-bottom: 8px; }
-.tab { padding: 6px 10px; border: 1px solid #334155; background: #0b1220; border-radius: 6px; cursor: pointer; }
-.tab.active { outline: 2px solid #475569; }
+.tabs, .subtabs { display: flex; gap: 8px; margin-bottom: 8px; }
+.tab, .subtab { padding: 6px 10px; border: 1px solid #334155; background: #0b1220; border-radius: 6px; cursor: pointer; }
+.tab.active, .subtab.active { outline: 2px solid #475569; }
 
 #board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .round-header { grid-column: 1 / -1; font-weight: 600; color: #e5e7eb; margin-top: 8px; }
@@ -48,33 +48,13 @@ button { cursor: pointer; } button:hover { background: #0b1220; }
 .team-logo { width: 24px; height: 24px; object-fit: contain; border-radius: 4px; background: #0b1220; border: 1px solid #334155; }
 .team-logo-sm { width: 20px; height: 20px; border-radius: 4px; object-fit: contain; background: #0b1220; border: 1px solid #334155; }
 
-/* Scarcity bars */
-.scarcity-bars { display: grid; gap: 8px; }
-.scarcity-row { display: grid; grid-template-columns: 60px 1fr; align-items: center; gap: 8px; }
-.scarcity-label { text-align: right; font-size: 12px; color: var(--muted); }
-.scarcity-track { height: 12px; background: #0b1220; border: 1px solid #334155; border-radius: 999px; overflow: hidden; }
-.scarcity-fill { height: 100%; }
-.scarcity-fill.QB { background: linear-gradient(90deg, var(--qb), #1e3a8a); }
-.scarcity-fill.RB { background: linear-gradient(90deg, var(--rb), #065f46); }
-.scarcity-fill.WR { background: linear-gradient(90deg, var(--wr), #7c2d12); }
-.scarcity-fill.TE { background: linear-gradient(90deg, var(--te), #4c1d95); }
-
-/* Uploader */
-.uploader { display: flex; align-items: center; gap: 10px; }
-.uploader input[type="file"] { display: none; }
-.uploader .button { border: 1px dashed #334155; padding: 8px 10px; border-radius: 6px; background: #0b1220; cursor: pointer; }
-.uploader.drag .button { outline: 2px dashed #60a5fa; }
-.muted { color: var(--muted); }
-
-/* My Roster visuals */
+/* My Roster */
 .roster-section { margin-bottom: 10px; }
 .roster-header { color: var(--muted); margin-bottom: 6px; }
 .roster-item { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border: 1px dashed #334155; border-radius: 6px; background: #0b1220; }
 .roster-name { font-weight: 600; font-size: 13px; }
 .roster-meta { font-size: 12px; color: var(--muted); }
 .roster-empty { padding: 6px 8px; border: 1px dashed #334155; border-radius: 6px; background: #0b1220; color: var(--muted); }
-
-.hidden { display: none !important; }
 
 /* Mobile */
 @media (max-width: 900px){

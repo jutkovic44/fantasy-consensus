@@ -653,11 +653,11 @@ function playerCardHTML(p){
   const logo = teamLogoUrl(p.team);
   const pr = getPosRank(p);
   const t  = p.tier || 6;
-  const adpBit  = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
+  const adpBit  = state.dataFlags.hasADP ? ` • ADP ${p.adp ?? "-"}` : "";
   const ecrBit  = p.ecr != null ? ` • ECR #${p.ecr}` : "";
   const projBit = state.dataFlags.hasProj
       ? (` • Proj ${Number(p.baseProj ?? p.proj_ppr ?? 0).toFixed(1)}`
-         + (p.rep!=null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""))
+         + (p.rep != null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""))
       : "";
   const stackBadge = (p.hasMyStack || hasPrimaryStackForMyTeam(p))
       ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
@@ -674,12 +674,15 @@ function playerCardHTML(p){
             <span class="badge tier t${t}">T${t}</span>
             <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span>
           </div>
-          <div class="small">${p.team||""} • Bye ${p.bye||"-"} ${byeDot}${ecrBit}${adpBit}${projBit}</div>
+          <div class="small">
+            ${p.team || ""} • Bye ${p.bye || "-"} ${byeDot}${ecrBit}${adpBit}${projBit}
+          </div>
         </div>
       </div>
       <div><button data-pid="${p.id}">Draft</button></div>
     </div>`;
 }
+
 
 // ---------- render ----------
 function render(){ renderBoard(); renderMidPanel(); renderMyRoster(); }

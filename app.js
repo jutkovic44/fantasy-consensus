@@ -9,21 +9,22 @@ let state = {
   features: { biases:false, stack:false, scarcity:true }, // compare removed
   dataFlags: { hasProj:false, hasADP:false },
   autoplay: { enabled:true, delayMs:1000, loopId:null }, // hidden/locked delay
-  boardView: localStorage.getItem("boardView") || "overall" // "overall" or "round"
+  boardView: localStorage.getItem("boardView") || "overall", // "overall" or "round"
+  posRankCache: {} // {QB: Map(playerId->rank), ...}
 };
 
 const el = id => document.getElementById(id);
 const show = (id, on)=>{ const n=el(id); if(!n) return; n.classList.toggle("hidden", !on); };
 
-// Logo helper — uses NFL’s official club logo assets by team abbreviation (e.g., KC, BUF)
+/* ---------- Assets ---------- */
 function teamLogoUrl(abbr){
   if(!abbr) return "";
   const code = String(abbr).toUpperCase().trim();
-  // Most sites use standard 2-3 letter abbreviations; NFL serves svg by code, example: https://static.www.nfl.com/league/api/clubs/logos/KC.svg
+  // NFL club logo endpoint
   return `https://static.www.nfl.com/league/api/clubs/logos/${code}.svg`;
 }
 
-// ---------- Load & Detect Data ----------
+/* ---------- Load & Detect Data ---------- */
 async function loadConsensus() {
   const lastUpdatedEl = el("lastUpdated");
   try {
@@ -35,8 +36,7 @@ async function loadConsensus() {
     if (!data.players || !Array.isArray(data.players) || data.players.length === 0)
       throw new Error("consensus.json loaded but contains no player data");
 
-    const ts = data.updated_at || "unknown";
-    lastUpdatedEl.textContent = `Last updated: ${ts}`;
+    lastUpdatedEl.textContent = `Last updated: ${data.updated_at || "unknown"}`;
 
     state.players = data.players.map((p,i)=>({...p, id:p.id ?? i+1, drafted:false}));
     state.available = state.players.map((_,i)=>i);
@@ -44,14 +44,32 @@ async function loadConsensus() {
     state.dataFlags.hasProj = state.players.some(p=> (p.proj_ppr||0) > 0);
     state.dataFlags.hasADP  = state.players.some(p=> p.adp !== null && p.adp !== undefined);
 
-    render(); // compare feature removed, no gating
+    buildPosRankCache(); // needed for WR3/QB5 labels
+    render();
   } catch (e) {
     console.error("Consensus load error:", e);
     lastUpdatedEl.innerHTML = `<span style="color:#f87171; font-weight:bold;">Error:</span> ${e.message}`;
   }
 }
 
-// ---------- Init ----------
+/* ---------- Position rank cache (based on ECR) ---------- */
+function buildPosRankCache(){
+  state.posRankCache = {};
+  ["QB","RB","WR","TE"].forEach(pos=>{
+    const arr = state.players
+      .filter(p=>p.pos===pos && p.ecr!=null)
+      .sort((a,b)=>(a.ecr)-(b.ecr));
+    const map = new Map();
+    arr.forEach((p,idx)=> map.set(p.id, idx+1));
+    state.posRankCache[pos] = map;
+  });
+}
+function getPosRank(p){
+  const m = state.posRankCache[p.pos]; 
+  return m ? m.get(p.id) : undefined;
+}
+
+/* ---------- Init ---------- */
 function init() {
   loadConsensus();
   setInterval(loadConsensus, 30*60*1000);
@@ -75,11 +93,11 @@ function init() {
   };
 
   // Feature toggles
-  el("toggleBiases").onchange = () => { state.features.biases = el("toggleBiases").checked; };
-  el("toggleStack").onchange = () => { state.features.stack = el("toggleStack").checked; state.stackBoost = state.features.stack; };
-  el("toggleScarcity").onchange = () => { state.features.scarcity = el("toggleScarcity").checked; renderScarcityBars(); };
+  el("toggleBiases")?.addEventListener("change", ()=> state.features.biases = el("toggleBiases").checked );
+  el("toggleStack")?.addEventListener("change", ()=> { state.features.stack = el("toggleStack").checked; state.stackBoost = state.features.stack; });
+  el("toggleScarcity")?.addEventListener("change", ()=> { state.features.scarcity = el("toggleScarcity").checked; renderScarcityBars(); });
 
-  // Rankings panel is always visible
+  // Rankings filters
   el("rankingsSearch").addEventListener("input", renderRankings);
   el("rankingsPos").addEventListener("change", renderRankings);
 
@@ -103,7 +121,7 @@ function syncSettings(){ const s=state.settings;
   s.te=+el("teSlots").value||1; s.flex=+el("flexSlots").value||1; s.bench=+el("benchSlots").value||6;
 }
 
-// ---------- Draft Engine ----------
+/* ---------- Draft Engine ---------- */
 function startMock(){
   if (!state.players.length){ alert("Waiting for rankings from consensus.json..."); return; }
   syncSettings();
@@ -246,7 +264,7 @@ function undoPick(){
   render();
 }
 
-// ---------- Export ----------
+/* ---------- Export ---------- */
 function exportBoard(){
   const rows=[["overall","round","pickInRound","team","player","pos","teamAbbr","bye","ecr","adp","proj_ppr","tier"]];
   for(const p of [...state.draftPicks].sort((a,b)=>a.overall-b.overall)){
@@ -259,7 +277,7 @@ function exportBoard(){
   a.download="draft_board.csv"; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1500);
 }
 
-// ---------- Recommendations ----------
+/* ---------- Recommendations ---------- */
 function computeRecommendations(teamIndex){
   const base = replacementLevels();
   const needs = rosterNeeds(teamIndex);
@@ -308,7 +326,7 @@ function rosterNeeds(teamIndex){
   return need;
 }
 
-// ---------- Rankings Panel (always visible) ----------
+/* ---------- Rankings Panel (always visible) ---------- */
 function renderRankings(){
   const root = el("rankingsList"); if(!root) return;
   root.innerHTML = "";
@@ -320,19 +338,19 @@ function renderRankings(){
   list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
 
   list.slice(0,400).forEach(p=>{
-    const d=document.createElement("div"); d.className="item";
-
     const logo = teamLogoUrl(p.team);
     const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
     const projBit = state.dataFlags.hasProj ? ` • Proj ${p.proj_ppr?.toFixed(1)??"0.0"}` : "";
     const ecr = (p.ecr!=null)? `#${p.ecr}` : "#—";
+    const posRank = getPosRank(p); // e.g., WR3
 
+    const d=document.createElement("div"); d.className="item";
     d.innerHTML = `<div class="flex">
       <div class="flex" style="gap:10px;">
         ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
         <div>
-          <div class="name">${p.player} <span class="badge pos ${p.pos}">${p.pos}</span> <span class="badge">${ecr}</span></div>
-          <div class="small">${p.team||""}${adpBit}${projBit}</div>
+          <div class="name">${p.player} <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span> <span class="badge">${ecr}</span></div>
+          <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
         </div>
       </div>
       <div><button data-id="${p.id}">Draft</button></div>
@@ -342,19 +360,16 @@ function renderRankings(){
   });
 }
 
-// ---------- Rendering ----------
+/* ---------- Rendering ---------- */
 function render(){ renderBoard(); renderRecs(); renderMyRoster(); renderScarcityBars(); renderRankings(); }
 
 function renderBoard(){
   const root=el("board"); root.innerHTML="";
-
-  // Ensure all picks render in order
   const picks = [...state.draftPicks].sort((a,b)=>a.overall-b.overall);
 
   if(state.boardView === "overall"){
     picks.forEach(p=> root.appendChild(boardPickElem(p)));
   } else {
-    // group by round
     const byRound = new Map();
     picks.forEach(p=>{
       if(!byRound.has(p.round)) byRound.set(p.round, []);
@@ -372,13 +387,25 @@ function renderBoard(){
 
 function boardPickElem(p){
   const pl=state.players[p.playerIdx];
+  const logo = teamLogoUrl(pl.team);
+  const posRank = getPosRank(pl);
   const div=document.createElement("div"); div.className="pick";
-  div.innerHTML = `<div class="flex"><span class="badge">#${p.overall} R${p.round}.${p.pickInRound}</span><span class="small">Team ${p.team+1}</span></div>
-                   <div class="name">${pl.player}</div>
-                   <div class="small"><span class="badge pos ${pl.pos}">${pl.pos}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
+  div.innerHTML = `<div class="flex">
+                     <span class="badge">#${p.overall} R${p.round}.${p.pickInRound}</span>
+                     <span class="small">Team ${p.team+1}</span>
+                   </div>
+                   <div class="flex" style="justify-content:flex-start; gap:8px;">
+                     ${logo ? `<img src="${logo}" alt="${pl.team||''}" class="team-logo">` : ""}
+                     <div class="name">${pl.player}</div>
+                   </div>
+                   <div class="small">
+                     <span class="badge pos ${pl.pos}">${pl.pos}${posRank?posRankLabel(pl,posRank):""}</span>
+                     • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}
+                   </div>`;
   return div;
 }
 
+/* Recommendations (with logos + full info) */
 function renderRecs(){
   const root=el("recs"); root.innerHTML=""; if(!state.players.length){ root.textContent="Waiting for rankings..."; return; }
   const team = state.started? overallToTeam(state.currentOverall) : state.myTeamIndex;
@@ -393,13 +420,18 @@ function renderRecs(){
       root.appendChild(sep);
       lastTier = t;
     }
-    const d=document.createElement("div"); d.className="item";
-    const line = state.dataFlags.hasProj ? `VOR ${p.vor.toFixed(1)} • Proj ${p.baseProj.toFixed(1)} (rep ${p.rep.toFixed(1)})` : "Tiered recommendation";
+    const logo = teamLogoUrl(p.team);
     const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
+    const projBit = state.dataFlags.hasProj ? ` • Proj ${p.baseProj.toFixed(1)} (rep ${p.rep.toFixed(1)})` : "";
+    const posRank = getPosRank(p);
+    const d=document.createElement("div"); d.className="item";
     d.innerHTML = `<div class="flex">
-        <div>
-          <div class="name">${p.player} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos||"-"}">${p.pos||"-"}</span></div>
-          <div class="small">${line}${adpBit}</div>
+        <div class="flex" style="gap:10px;">
+          ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
+          <div>
+            <div class="name">${p.player} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span></div>
+            <div class="small">${p.team||""} • Bye ${p.bye||"-"} • ECR ${p.ecr||"-"}${projBit}${adpBit}</div>
+          </div>
         </div>
         <div><button data-pick="${p.id}">Draft</button></div>
       </div>`;
@@ -408,6 +440,12 @@ function renderRecs(){
   });
 }
 
+function posRankLabel(p, rank){ return `${rank}` ? `${rank && isFinite(rank) ? rankTag(p.pos, rank) : ""}` : ""; }
+function rankTag(pos, n){ return `${n}`.length ? `${n}`.replace(/^/,(pos||"") ) : ""; }
+// But we want the visual to look like WR3, QB5, etc. Build that directly:
+function posRankLabel(p, rank){ return rank ? `${p.pos}${rank}` : ""; }
+
+/* ---------- My Roster / Scarcity ---------- */
 function renderMyRoster(){
   const root=el("myRoster"); root.innerHTML=""; if(!state.teamRosters.length){ root.textContent="Start the draft to see your roster."; return; }
   const mine=state.teamRosters[state.myTeamIndex]||[]; const players=mine.map(i=>state.players[i]);

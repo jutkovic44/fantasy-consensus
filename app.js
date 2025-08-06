@@ -8,7 +8,7 @@ let state = {
   biasMap: {}, stackBoost:false,
   features: { biases:false, stack:false, compare:false, scarcity:true },
   dataFlags: { hasProj:false, hasADP:false },
-  autoplay: { enabled:true, delayMs:1000, loopId:null }, // hardcoded delay
+  autoplay: { enabled:true, delayMs:1000, loopId:null }, // hidden/locked delay
   boardView: localStorage.getItem("boardView") || "overall" // "overall" or "round"
 };
 
@@ -119,7 +119,13 @@ function startMock(){
 function pauseMock(){ state.paused=true; stopAutoLoop(); }
 function resumeMock(){ if(!state.started) return; state.paused=false; if(state.autoplay.enabled) startAutoLoop(); }
 
-function overallToTeam(overall){ const T=state.settings.teams, r=Math.ceil(overall/T), pos=overall-(r-1)*T; return (r%2===1)?(pos-1):(T-pos); }
+function overallToTeam(overall){
+  const T=state.settings.teams;
+  const r=Math.ceil(overall/T);
+  const pos=overall-(r-1)*T;
+  // odd rounds: 1..T; even rounds: T..1
+  return (r%2===1) ? (pos-1) : (T - pos);
+}
 function getRound(overall){ return Math.ceil(overall/state.settings.teams); }
 function pickInRound(overall){ const r=getRound(overall), start=(r-1)*state.settings.teams+1; return overall-start+1; }
 
@@ -135,31 +141,29 @@ function startAutoLoop(){
     if (team === state.myTeamIndex) return;
     // otherwise CPU pick
     aiPick(team);
-    state.currentOverall += 1;
-    render();
+    advanceAfterPick(); // single source of truth to advance & render
   }, state.autoplay.delayMs);
 }
 function stopAutoLoop(){ if(state.autoplay.loopId) clearInterval(state.autoplay.loopId); state.autoplay.loopId=null; }
 
-function nextPick(auto=false){
+function nextPick(){
   if(!state.started){ alert("Start the draft first."); return; }
   const total=state.settings.teams*state.settings.rounds;
   if(state.currentOverall>total){ stopAutoLoop(); return; }
 
   const team = overallToTeam(state.currentOverall);
 
-  // If it's my turn
   if(team===state.myTeamIndex){
     const {list}=computeRecommendations(team);
-    if(list.length){
-      draftPlayerById(list[0].id, team);
-      state.currentOverall += 1;
-      render(); return;
-    } else { alert("No candidates available."); return; }
+    if(!list.length){ alert("No candidates available."); return; }
+    draftPlayerById(list[0].id, team);
+    advanceAfterPick();
+    return;
   }
 
-  // If CPU turn and user clicked Next => force one pick
-  aiPick(team); state.currentOverall += 1; render();
+  // Force CPU one step
+  aiPick(team);
+  advanceAfterPick();
 }
 
 function autoUntilMyPick(){
@@ -167,9 +171,16 @@ function autoUntilMyPick(){
   state.paused=false;
   while(overallToTeam(state.currentOverall)!==state.myTeamIndex){
     const total=state.settings.teams*state.settings.rounds; if(state.currentOverall>total) break;
-    nextPick(true);
+    const team = overallToTeam(state.currentOverall);
+    aiPick(team);
+    advanceAfterPick(false); // don't re-render every iteration for perf
   }
-  state.paused=true; render();
+  render();
+}
+
+function advanceAfterPick(shouldRender=true){
+  state.currentOverall += 1;
+  if (shouldRender) render();
 }
 
 function aiPick(teamIndex){
@@ -208,10 +219,10 @@ function stackBonusForTeam(teamIndex, candidate){
 function draftPlayerById(id, teamIndex){
   const poolIdx = state.players.findIndex(p=>p.id===id);
   if(poolIdx===-1) return;
-  draftByIndex(poolIdx, teamIndex, false, /*incrementOverall*/true);
+  draftByIndex(poolIdx, teamIndex, /*incrementOverall*/false); // don't advance here!
 }
 
-function draftByIndex(poolIdx, teamIndex, isKeeper=false, incrementOverall=true){
+function draftByIndex(poolIdx, teamIndex, incrementOverall=false){
   if(state.players[poolIdx].drafted) return;
   const idxAvail = state.available.indexOf(poolIdx);
   if(idxAvail!==-1) state.available.splice(idxAvail,1);
@@ -219,26 +230,29 @@ function draftByIndex(poolIdx, teamIndex, isKeeper=false, incrementOverall=true)
   const overall=state.currentOverall, round=getRound(overall), pir=pickInRound(overall);
   state.teamRosters[teamIndex].push(poolIdx); bumpRosterSlot(teamIndex, state.players[poolIdx].pos);
   state.draftPicks.push({overall, team:teamIndex, round, pickInRound:pir, playerIdx:poolIdx});
-  if(incrementOverall) state.currentOverall += 1;
+  if(incrementOverall) state.currentOverall += 1; // (we never use this now)
 }
 
 function bumpRosterSlot(teamIndex,pos){ const s=state.rosterSlots[teamIndex]; if(!s) return; if(pos in s) s[pos]++; else s.BEN++; }
 
 function undoPick(){
   if(!state.draftPicks.length) return;
-  const last=state.draftPicks.pop(); const {playerIdx, team}=last;
+  const last=state.draftPicks.pop(); const {playerIdx, team, overall}=last;
   state.players[playerIdx].drafted=false;
   if(!state.available.includes(playerIdx)) state.available.push(playerIdx);
   const r=state.teamRosters[team]; const ix=r.lastIndexOf(playerIdx); if(ix>=0) r.splice(ix,1);
   const pos=state.players[playerIdx].pos; if(pos in state.rosterSlots[team]) state.rosterSlots[team][pos]=Math.max(0, state.rosterSlots[team][pos]-1);
-  state.currentOverall=Math.max(1,last.overall); render();
+  state.currentOverall = overall; // reset to the undone pick number
+  render();
 }
 
 // ---------- Export ----------
 function exportBoard(){
   const rows=[["overall","round","pickInRound","team","player","pos","teamAbbr","bye","ecr","adp","proj_ppr","tier"]];
-  for(const p of state.draftPicks){ const pl=state.players[p.playerIdx];
-    rows.push([p.overall,p.round,p.pickInRound,p.team+1,pl.player,pl.pos,pl.team,pl.bye,pl.ecr,pl.adp,pl.proj_ppr,pl.tier]); }
+  for(const p of [...state.draftPicks].sort((a,b)=>a.overall-b.overall)){
+    const pl=state.players[p.playerIdx];
+    rows.push([p.overall,p.round,p.pickInRound,p.team+1,pl.player,pl.pos,pl.team,pl.bye,pl.ecr,pl.adp,pl.proj_ppr,pl.tier]);
+  }
   const csv=rows.map(r=>r.join(",")).join("\n");
   const a=document.createElement("a");
   a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));

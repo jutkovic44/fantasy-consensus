@@ -67,3 +67,11 @@ button { cursor: pointer; } button:hover { background: #0b1220; }
   .layout { grid-template-columns: 1fr; }
   #board { grid-template-columns: repeat(2, 1fr); }
 }
+/* My Roster visuals */
+.roster-section { margin-bottom: 10px; }
+.roster-header { color: var(--muted); margin-bottom: 6px; }
+.roster-item { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border: 1px dashed #334155; border-radius: 6px; background: #0b1220; }
+.roster-name { font-weight: 600; font-size: 13px; }
+.roster-meta { font-size: 12px; color: var(--muted); }
+.team-logo-sm { width: 20px; height: 20px; border-radius: 4px; object-fit: contain; background: #0b1220; border: 1px solid #334155; }
+.roster-empty { padding: 6px 8px; border: 1px dashed #334155; border-radius: 6px; background: #0b1220; color: var(--muted); }

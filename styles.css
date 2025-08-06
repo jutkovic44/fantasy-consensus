@@ -63,3 +63,11 @@ button { cursor: pointer; } button:hover { background: #0b1220; }
   .layout { grid-template-columns: 1fr; }
   #board { grid-template-columns: repeat(2, 1fr); }
 }
+/* Empty slot visuals (pre-draft and while drafting) */
+.slot-empty { opacity: 0.7; border-style: dashed; }
+.slot-empty .slot-dot {
+  width: 10px; height: 10px; border-radius: 999px;
+  border: 1px solid #475569; background: transparent; margin-right: 8px;
+}
+.roster-item.slot-empty { display: flex; align-items: center; gap: 10px; }
+.roster-name.muted, .roster-meta.muted { color: #64748b; }

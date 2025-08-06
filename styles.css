@@ -2,7 +2,7 @@
 :root {
   --bg: #0b0f14; --panel: #0f172a; --muted: #94a3b8; --line: #1f2937; --text: #e2e8f0;
   --tier1: #f59e0b; --tier2: #9ca3af; --tier3: #8b5cf6; --tier4: #14b8a6; --tier5: #60a5fa; --tier6: #64748b;
-  --qb: #60a5fa; --rb: #22c55e; --wr: #f97316; --te: #a78bfa;
+  --qb: #60a5fa; --rb: #22c55e; --wr: #f97316; --te: #a78bfa; --stack: #f59e0b;
 }
 body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); }
 header, footer { padding: 16px 20px; background: #111827; border-bottom: 1px solid var(--line); }
@@ -32,6 +32,7 @@ button { cursor: pointer; } button:hover { background: #0b1220; }
 .pick { border: 1px solid #334155; border-radius: 6px; padding: 8px; background: #0b1220; font-size: 13px; }
 .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 11px; border: 1px solid #475569; color: #cbd5e1; }
 .badge.pos.QB { border-color: var(--qb); } .badge.pos.RB { border-color: var(--rb); } .badge.pos.WR { border-color: var(--wr); } .badge.pos.TE { border-color: var(--te); }
+.badge.stack { border-color: var(--stack); background: rgba(245, 158, 11, 0.08); }
 
 .badge.tier.t1 { border-color: var(--tier1); } .badge.tier.t2 { border-color: var(--tier2); }
 .badge.tier.t3 { border-color: var(--tier3); } .badge.tier.t4 { border-color: var(--tier4); }

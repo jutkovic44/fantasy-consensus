@@ -7,16 +7,16 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
+  <div id="app">
     <h1>Fantasy Football War Room</h1>
 
-    <div class="tab-container">
-      <button class="tab active" onclick="switchTab('recommendations')">Recommendations</button>
-      <button class="tab" onclick="switchTab('full-rankings')">Full Rankings</button>
+    <div class="tabs">
+      <button id="recommendationsTab" class="active">Recommendations</button>
+      <button id="fullRankingsTab">Full Rankings</button>
     </div>
 
     <div class="filters">
-      <select id="positionFilter" onchange="applyFilters()">
+      <select id="positionFilter">
         <option value="All">All</option>
         <option value="QB">QB</option>
         <option value="RB">RB</option>
@@ -25,15 +25,17 @@
         <option value="K">K</option>
         <option value="DEF">DEF</option>
       </select>
-      <input type="text" id="searchInput" placeholder="Search name..." oninput="applyFilters()" />
+      <input type="text" id="searchInput" placeholder="Search name..." />
     </div>
 
-    <div class="main-section">
-      <div id="playerList" class="list-container"></div>
-      <div id="myRoster" class="roster-container">
-        <h2>My Roster</h2>
-        <div id="rosterSlots"></div>
-      </div>
+    <div id="playersSection">
+      <div id="recommendations" class="player-list"></div>
+      <div id="fullRankings" class="player-list hidden"></div>
+    </div>
+
+    <div id="rosterSection">
+      <h2>My Roster</h2>
+      <div id="roster"></div>
     </div>
   </div>
 

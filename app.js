@@ -2,13 +2,14 @@ const DATA_URL = "./consensus.json";
 
 let state = {
   settings: { teams:12, rounds:16, pickPos:5, scoring:"PPR",
-    qb:1, rb:2, wr:2, te:1, flex:1, bench:6, pickClock:30 },
+    qb:1, rb:2, wr:2, te:1, flex:1, bench:6 },
   players: [], available: [], draftPicks: [], currentOverall:1, myTeamIndex:0,
-  teamRosters: [], rosterSlots: [], started:false, timerId:null, clockRemaining:0, paused:false,
+  teamRosters: [], rosterSlots: [], started:false, paused:false,
   biasMap: {}, stackBoost:false,
   features: { biases:false, stack:false, compare:false, scarcity:true },
   dataFlags: { hasProj:false, hasADP:false },
-  autoplay: { enabled:true, delayMs:900, loopId:null }
+  autoplay: { enabled:true, delayMs:1000, loopId:null }, // hardcoded delay
+  boardView: localStorage.getItem("boardView") || "overall" // "overall" or "round"
 };
 
 const el = id => document.getElementById(id);
@@ -47,7 +48,7 @@ async function loadConsensus() {
 function init() {
   loadConsensus();
   setInterval(loadConsensus, 30*60*1000);
-  ["teams","rounds","pickPos","scoring","qbSlots","rbSlots","wrSlots","teSlots","flexSlots","benchSlots","pickClock"]
+  ["teams","rounds","pickPos","scoring","qbSlots","rbSlots","wrSlots","teSlots","flexSlots","benchSlots"]
     .forEach(id=> el(id)?.addEventListener("input", syncSettings));
 
   // Draft controls
@@ -60,15 +61,10 @@ function init() {
   el("undoPick").onclick = undoPick;
   el("exportBoard").onclick = exportBoard;
 
-  // Auto-draft others controls
+  // Auto-draft others toggle
   el("autoOthers").onchange = () => {
     state.autoplay.enabled = el("autoOthers").checked;
     if (state.autoplay.enabled) startAutoLoop(); else stopAutoLoop();
-  };
-  el("cpuDelay").oninput = () => {
-    const v = +el("cpuDelay").value || 900;
-    state.autoplay.delayMs = Math.max(200, v);
-    if (state.autoplay.enabled) startAutoLoop(); // restart cadence
   };
 
   // Feature toggles
@@ -87,14 +83,24 @@ function init() {
   el("rankingsSearch").addEventListener("input", renderRankings);
   el("rankingsPos").addEventListener("change", renderRankings);
 
+  // Tabs
+  el("tabOverall").onclick = () => { state.boardView = "overall"; localStorage.setItem("boardView","overall"); updateTabs(); renderBoard(); };
+  el("tabByRound").onclick = () => { state.boardView = "round"; localStorage.setItem("boardView","round"); updateTabs(); renderBoard(); };
+  updateTabs();
+
   render();
 }
 document.addEventListener("DOMContentLoaded", init);
 
+function updateTabs(){
+  el("tabOverall").classList.toggle("active", state.boardView==="overall");
+  el("tabByRound").classList.toggle("active", state.boardView==="round");
+}
+
 function syncSettings(){ const s=state.settings;
   s.teams=+el("teams").value||12; s.rounds=+el("rounds").value||16; s.pickPos=+el("pickPos").value||5;
   s.scoring=el("scoring").value; s.qb=+el("qbSlots").value||1; s.rb=+el("rbSlots").value||2; s.wr=+el("wrSlots").value||2;
-  s.te=+el("teSlots").value||1; s.flex=+el("flexSlots").value||1; s.bench=+el("benchSlots").value||6; s.pickClock=+el("pickClock").value||30;
+  s.te=+el("teSlots").value||1; s.flex=+el("flexSlots").value||1; s.bench=+el("benchSlots").value||6;
 }
 
 // ---------- Draft Engine ----------
@@ -106,17 +112,12 @@ function startMock(){
   state.teamRosters = new Array(T).fill(0).map(()=>[]);
   state.rosterSlots = new Array(T).fill(0).map(()=>({QB:0,RB:0,WR:0,TE:0,FLEX:0,BEN:0}));
   state.draftPicks = []; state.currentOverall = 1; state.started = true; state.paused=false;
-  tickClock(true); render();
+  render();
   if (state.autoplay.enabled) startAutoLoop();
 }
 
-function pauseMock(){ state.paused=true; stopClock(); stopAutoLoop(); }
-function resumeMock(){ if(!state.started) return; state.paused=false; tickClock(false); if(state.autoplay.enabled) startAutoLoop(); }
-function tickClock(reset){ stopClock(); if(reset) state.clockRemaining=state.settings.pickClock; updateClock();
-  state.timerId = setInterval(()=>{ if(state.paused) return; state.clockRemaining -=1;
-    if(state.clockRemaining<=0){ nextPick(true); } updateClock(); }, 1000);}
-function stopClock(){ if(state.timerId) clearInterval(state.timerId); state.timerId=null; }
-function updateClock(){ el("clock").textContent = state.started ? `${state.clockRemaining}s` : "—"; }
+function pauseMock(){ state.paused=true; stopAutoLoop(); }
+function resumeMock(){ if(!state.started) return; state.paused=false; if(state.autoplay.enabled) startAutoLoop(); }
 
 function overallToTeam(overall){ const T=state.settings.teams, r=Math.ceil(overall/T), pos=overall-(r-1)*T; return (r%2===1)?(pos-1):(T-pos); }
 function getRound(overall){ return Math.ceil(overall/state.settings.teams); }
@@ -143,7 +144,7 @@ function stopAutoLoop(){ if(state.autoplay.loopId) clearInterval(state.autoplay.
 function nextPick(auto=false){
   if(!state.started){ alert("Start the draft first."); return; }
   const total=state.settings.teams*state.settings.rounds;
-  if(state.currentOverall>total){ stopClock(); stopAutoLoop(); return; }
+  if(state.currentOverall>total){ stopAutoLoop(); return; }
 
   const team = overallToTeam(state.currentOverall);
 
@@ -153,12 +154,12 @@ function nextPick(auto=false){
     if(list.length){
       draftPlayerById(list[0].id, team);
       state.currentOverall += 1;
-      updateClock(); render(); return;
+      render(); return;
     } else { alert("No candidates available."); return; }
   }
 
   // If CPU turn and user clicked Next => force one pick
-  aiPick(team); state.currentOverall += 1; updateClock(); render();
+  aiPick(team); state.currentOverall += 1; render();
 }
 
 function autoUntilMyPick(){
@@ -168,7 +169,7 @@ function autoUntilMyPick(){
     const total=state.settings.teams*state.settings.rounds; if(state.currentOverall>total) break;
     nextPick(true);
   }
-  state.paused=true; updateClock(); render();
+  state.paused=true; render();
 }
 
 function aiPick(teamIndex){
@@ -217,7 +218,7 @@ function draftByIndex(poolIdx, teamIndex, isKeeper=false, incrementOverall=true)
   state.players[poolIdx].drafted=true;
   const overall=state.currentOverall, round=getRound(overall), pir=pickInRound(overall);
   state.teamRosters[teamIndex].push(poolIdx); bumpRosterSlot(teamIndex, state.players[poolIdx].pos);
-  state.draftPicks.push({overall, team:teamIndex, round, pickInRound:pir, playerIdx:poolIdx, keeper:isKeeper});
+  state.draftPicks.push({overall, team:teamIndex, round, pickInRound:pir, playerIdx:poolIdx});
   if(incrementOverall) state.currentOverall += 1;
 }
 
@@ -235,9 +236,9 @@ function undoPick(){
 
 // ---------- Export ----------
 function exportBoard(){
-  const rows=[["overall","round","pickInRound","team","player","pos","teamAbbr","bye","ecr","adp","proj_ppr","tier","keeper"]];
+  const rows=[["overall","round","pickInRound","team","player","pos","teamAbbr","bye","ecr","adp","proj_ppr","tier"]];
   for(const p of state.draftPicks){ const pl=state.players[p.playerIdx];
-    rows.push([p.overall,p.round,p.pickInRound,p.team+1,pl.player,pl.pos,pl.team,pl.bye,pl.ecr,pl.adp,pl.proj_ppr,pl.tier, p.keeper?1:0]); }
+    rows.push([p.overall,p.round,p.pickInRound,p.team+1,pl.player,pl.pos,pl.team,pl.bye,pl.ecr,pl.adp,pl.proj_ppr,pl.tier]); }
   const csv=rows.map(r=>r.join(",")).join("\n");
   const a=document.createElement("a");
   a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
@@ -322,14 +323,36 @@ function render(){ renderBoard(); renderRecs(); renderMyRoster(); renderScarcity
 
 function renderBoard(){
   const root=el("board"); root.innerHTML="";
-  for(const p of state.draftPicks){
-    const pl=state.players[p.playerIdx];
-    const div=document.createElement("div"); div.className="pick" + (p.keeper?" keeper":"");
-    div.innerHTML = `<div class="flex"><span class="badge">#${p.overall} R${p.round}.${p.pickInRound}</span><span class="small">Team ${p.team+1}</span></div>
-                     <div class="name">${pl.player}</div>
-                     <div class="small"><span class="badge pos ${pl.pos}">${pl.pos}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
-    root.appendChild(div);
+
+  // Ensure all picks render in order
+  const picks = [...state.draftPicks].sort((a,b)=>a.overall-b.overall);
+
+  if(state.boardView === "overall"){
+    picks.forEach(p=> root.appendChild(boardPickElem(p)));
+  } else {
+    // group by round
+    const byRound = new Map();
+    picks.forEach(p=>{
+      if(!byRound.has(p.round)) byRound.set(p.round, []);
+      byRound.get(p.round).push(p);
+    });
+    Array.from(byRound.keys()).sort((a,b)=>a-b).forEach(r=>{
+      const h = document.createElement("div");
+      h.className = "round-header";
+      h.textContent = `Round ${r}`;
+      root.appendChild(h);
+      byRound.get(r).forEach(p=> root.appendChild(boardPickElem(p)));
+    });
   }
+}
+
+function boardPickElem(p){
+  const pl=state.players[p.playerIdx];
+  const div=document.createElement("div"); div.className="pick";
+  div.innerHTML = `<div class="flex"><span class="badge">#${p.overall} R${p.round}.${p.pickInRound}</span><span class="small">Team ${p.team+1}</span></div>
+                   <div class="name">${pl.player}</div>
+                   <div class="small"><span class="badge pos ${pl.pos}">${pl.pos}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
+  return div;
 }
 
 function renderRecs(){
@@ -363,12 +386,37 @@ function renderRecs(){
 
 function renderMyRoster(){
   const root=el("myRoster"); root.innerHTML=""; if(!state.teamRosters.length){ root.textContent="Start the draft to see your roster."; return; }
-  const mine=state.teamRosters[state.myTeamIndex]||[]; const byPos={QB:[],RB:[],WR:[],TE:[],FLEX:[],BEN:[]};
-  for(const idx of mine){ const p=state.players[idx]; if(byPos[p.pos]) byPos[p.pos].push(p); else byPos.BEN.push(p); }
-  const group=(label,arr)=>{ const div=document.createElement("div"); div.innerHTML=`<div class="small">${label}</div>`;
-    arr.forEach(p=>{ const item=document.createElement("div"); item.className="small"; item.textContent=`${p.player} (${p.pos} • ${p.team||""})`; div.appendChild(item); });
-    root.appendChild(div); };
-  group("QB",byPos.QB); group("RB",byPos.RB); group("WR",byPos.WR); group("TE",byPos.TE); group("Bench/Others",byPos.BEN);
+  const mine=state.teamRosters[state.myTeamIndex]||[]; const players=mine.map(i=>state.players[i]);
+
+  // Sort by ECR ascending (best first)
+  players.sort((a,b)=> (a.ecr??9999) - (b.ecr??9999));
+
+  const slots = { QB: state.settings.qb, RB: state.settings.rb, WR: state.settings.wr, TE: state.settings.te };
+  const starters = { QB:[], RB:[], WR:[], TE:[], FLEX:[] };
+  const bench = [];
+
+  for(const p of players){
+    if(slots[p.pos] && starters[p.pos].length < slots[p.pos]){
+      starters[p.pos].push(p);
+    } else if ( (p.pos==="RB" || p.pos==="WR" || p.pos==="TE") && starters.FLEX.length < state.settings.flex ){
+      starters.FLEX.push(p);
+    } else {
+      bench.push(p);
+    }
+  }
+
+  const group=(label,arr)=>{
+    const div=document.createElement("div"); div.innerHTML=`<div class="small">${label}</div>`;
+    arr.forEach(pl=>{ const item=document.createElement("div"); item.className="small"; item.textContent=`${pl.player} (${pl.pos} • ${pl.team||""})`; div.appendChild(item); });
+    root.appendChild(div);
+  };
+
+  group("QB", starters.QB);
+  group("RB", starters.RB);
+  group("WR", starters.WR);
+  group("TE", starters.TE);
+  if (state.settings.flex>0) group("FLEX", starters.FLEX);
+  group("Bench", bench);
 }
 
 function renderScarcityBars(){

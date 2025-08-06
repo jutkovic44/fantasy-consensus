@@ -654,7 +654,7 @@ function playerCardHTML(p){
   const pr = getPosRank(p);
   const t  = p.tier || 6;
   const ecrText = (p.ecr!=null)? `#${p.ecr}` : "#—";
-  const adpBit = (state.dataFlags?.hasADP && p.adp != null) ? ` • ADP ${p.adp}` : "";
+  const adpBit  = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
   const projBit = state.dataFlags.hasProj
       ? (` • Proj ${Number(p.baseProj ?? p.proj_ppr ?? 0).toFixed(1)}`
          + (p.rep!=null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""))

@@ -1,8 +1,8 @@
-/* War Room — unified player card layout for Recommendations & Full Rankings
-   - Smarter AI: needs + scarcity + stacks + bye penalty + late-round upside
-   - K/DEF supported, FLEX = W/R only
-   - Shared filters (persist across tabs), bugfixes for tabs/filters
-   - Instant starters + empty slots pre-draft
+/* War Room — Adds:
+   1) Live Bye Week & Positional Coverage indicators on roster (R/Y/G)
+   2) In-roster ECR Shift: "Upgrade Available" badge in Recommendations
+   3) Bench sorting by position + value
+   (Keeps all earlier features and bugfixes)
 */
 
 const DATA_URL = "./consensus.json";
@@ -22,6 +22,9 @@ const WEIGHTS = {
   lateRoundStartPct: 0.5,
   deepRoundStartPct: 0.75
 };
+
+// How big of an ECR gap counts as a clear "upgrade" over your current starters
+const UPGRADE_ECR_GAP = 5;
 
 let state = {
   settings: {
@@ -92,7 +95,7 @@ function buildPosRankCache(){
   });
 }
 function getPosRank(p){ const m = state.posRankCache[p.pos]; return m ? m.get(p.id ?? p.player) : undefined; }
-// Return only numeric rank; we prepend position separately to avoid WRWR14
+// Return only numeric rank; we prepend position separately
 function posRankLabel(rank) { return rank ? String(rank) : ""; }
 
 // --- team/round helpers
@@ -144,7 +147,6 @@ function byeOverlapPenalty(teamIndex, candidate){
   const bye = candidate.bye || null;
   if(!bye) return 0;
 
-  // Build current starters by pos (best ECR first)
   const roster = rosterIdxs.map(i=>state.players[i]).sort((a,b)=>(a.ecr??9999)-(b.ecr??9999));
   const starters = { QB:[], RB:[], WR:[], TE:[], K:[], DEF:[] };
   for(const p of roster){
@@ -370,7 +372,7 @@ function init() {
   el("tabByRound")?.addEventListener("click", () => { state.boardView="round";   localStorage.setItem("boardView","round");   updateBoardTabs(); renderBoard(); });
   updateBoardTabs();
 
-  // Subtabs via event delegation (ensure buttons have type="button" in HTML)
+  // Subtabs via event delegation
   document.querySelector('.subtabs')?.addEventListener('click', (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
@@ -517,17 +519,68 @@ function replacementLevels(){
   } return baseline;
 }
 
-// Robust shared filters
+// robust shared filters
 function applyFilters(list){
   let out = list.slice();
   const pos = (state.filters.pos || "").toUpperCase().trim();
   const q = (state.filters.q || "").toLowerCase().trim();
-
   if (pos) out = out.filter(p => (p.pos || "").toUpperCase().trim() === pos);
   if (q)   out = out.filter(p => (p.player || "").toLowerCase().includes(q));
   return out;
 }
 
+/* ===== Helpers for "Upgrade Available" & indicators ===== */
+function startersByPosForTeam(teamIndex){
+  const s = state.settings;
+  const targets = { QB:s.qb, RB:s.rb, WR:s.wr, TE:s.te, K:s.k, DEF:s.def };
+  const idxs = (state.teamRosters[teamIndex]||[]);
+  const roster = idxs.map(i=>state.players[i]).sort((a,b)=>(a.ecr??9999)-(b.ecr??9999));
+  const starters = { QB:[], RB:[], WR:[], TE:[], K:[], DEF:[] };
+  for(const p of roster){
+    if (targets[p.pos] && starters[p.pos].length < targets[p.pos]) starters[p.pos].push(p);
+  }
+  return starters;
+}
+function worstStarterEcrByPos(teamIndex){
+  const starters = startersByPosForTeam(teamIndex);
+  const worst = {};
+  for (const pos of Object.keys(starters)){
+    const arr = starters[pos];
+    if (!arr.length) { worst[pos] = null; continue; }
+    worst[pos] = Math.max(...arr.map(p=>p.ecr ?? 9999));
+  }
+  return worst;
+}
+function coverageStatus(fill, target){
+  if (target<=0) return {label:"0/0", color:"#64748b"};
+  if (fill<=0)  return {label:`0/${target}`, color:"#ef4444"}; // red
+  if (fill<target) return {label:`${fill}/${target}`, color:"#f59e0b"}; // yellow
+  return {label:`${fill}/${target}`, color:"#22c55e"}; // green
+}
+function byeStatusBadge(players){
+  // red if any duplicate bye among starters; yellow if any starter missing bye info; green otherwise
+  const byes = players.map(p=>p.bye).filter(b=>b!=null);
+  const hasMissing = players.some(p => p.bye == null);
+  const dup = new Set();
+  const seen = new Set();
+  for(const b of byes){ if(seen.has(b)) dup.add(b); else seen.add(b); }
+  if (dup.size>0) return {text:"BYE!", color:"#ef4444"};
+  if (hasMissing && players.length>0) return {text:"BYE?", color:"#f59e0b"};
+  return {text:"BYE✓", color:"#22c55e"};
+}
+function benchValue(p){
+  // Projection first, fallback to ECR (lower is better)
+  const proj = Number(p.proj_ppr||0);
+  const ecrComp = (p.ecr!=null) ? (300 - p.ecr) * 0.5 : 0;
+  return proj + ecrComp;
+}
+function positionOrder(pos){
+  // Order bench groups: RB, WR, QB, TE, K, DEF
+  const order = { RB:0, WR:1, QB:2, TE:3, K:4, DEF:5 };
+  return order[pos] ?? 9;
+}
+
+/* ====== Recommendations scoring ====== */
 function computeRecommendations(teamIndex){
   const base = replacementLevels();
   const needs = rosterNeeds(teamIndex);
@@ -535,6 +588,7 @@ function computeRecommendations(teamIndex){
   candidates = applyFilters(candidates);
 
   const pct = draftProgressPct();
+  const worstEcr = worstStarterEcrByPos(state.myTeamIndex); // compare against YOUR starters for upgrade badge
 
   const scored = candidates.map(p=>{
     const baseProj = state.dataFlags.hasProj ? (p.proj_ppr||0) : 0;
@@ -561,7 +615,13 @@ function computeRecommendations(teamIndex){
 
     if ((p.pos==="K" || p.pos==="DEF") && pct < 0.6) score -= 3 * (0.6 - pct);
 
-    return {...p, baseProj, rep, vor, score, hasMyStack: hasPrimaryStackForMyTeam(p) };
+    const upgradeForPos = (() => {
+      const worst = worstEcr[p.pos];
+      if (worst==null || p.ecr==null) return false;
+      return p.ecr + UPGRADE_ECR_GAP < worst; // clear upgrade threshold
+    })();
+
+    return {...p, baseProj, rep, vor, score, hasMyStack: hasPrimaryStackForMyTeam(p), upgradeForPos };
   });
 
   scored.sort((a,b)=> b.score-a.score);
@@ -575,19 +635,25 @@ function playerCardHTML(p){
   const t  = p.tier || 6;
   const ecrText = (p.ecr!=null)? `#${p.ecr}` : "#—";
   const adpBit  = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
-  // For recs we compute baseProj/rep; for ranks they may be undefined — guard:
   const projBit = state.dataFlags.hasProj
       ? (` • Proj ${Number(p.baseProj ?? p.proj_ppr ?? 0).toFixed(1)}`
          + (p.rep!=null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""))
       : "";
   const stackBadge = (p.hasMyStack || hasPrimaryStackForMyTeam(p))
       ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
+  const upgradeBadge = p.upgradeForPos
+      ? `<span class="badge" style="background:#22c55e1a;border:1px solid #22c55e;color:#22c55e;">Upgrade Available</span>`
+      : "";
 
   return `<div class="flex">
       <div class="flex" style="gap:10px;">
         ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
         <div>
-          <div class="name">${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span> <span class="badge">${ecrText}</span></div>
+          <div class="name">${p.player} ${stackBadge} ${upgradeBadge}
+            <span class="badge tier t${t}">T${t}</span>
+            <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span>
+            <span class="badge">${ecrText}</span>
+          </div>
           <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
         </div>
       </div>
@@ -668,9 +734,27 @@ function renderMyRoster(){
     bench.push(p);
   }
 
+  // --- Bench sorting by position then value
+  bench.sort((a,b)=>{
+    const pa = positionOrder(a.pos), pb = positionOrder(b.pos);
+    if (pa !== pb) return pa - pb;
+    return benchValue(b) - benchValue(a);
+  });
+
   const section = (label, list, target, benchMode=false) => {
+    // Coverage & bye badges for starters (not for bench)
+    let headerBadges = "";
+    if (!benchMode){
+      const fill = list.length;
+      const cov = coverageStatus(fill, target);
+      const bye = byeStatusBadge(list);
+      headerBadges = `
+        <span style="border:1px solid ${cov.color};color:${cov.color};padding:2px 6px;border-radius:6px;margin-left:6px;font-size:12px;">${cov.label}</span>
+        <span style="border:1px solid ${bye.color};color:${bye.color};padding:2px 6px;border-radius:6px;margin-left:6px;font-size:12px;">${bye.text}</span>`;
+    }
+
     const wrap = document.createElement("div"); wrap.className = "roster-section";
-    wrap.innerHTML = `<div class="roster-header small">${label}${benchMode? "" : ` (${list.length}/${target})`}</div>`;
+    wrap.innerHTML = `<div class="roster-header small">${label}${headerBadges}</div>`;
     for(const pl of list){
       const logo = teamLogoUrl(pl.team); const pr = getPosRank(pl); const ecr = (pl.ecr!=null) ? `#${pl.ecr}` : "#—";
       const row = document.createElement("div"); row.className = "roster-item";

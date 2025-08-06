@@ -69,6 +69,7 @@
 
   <!-- Main Layout -->
   <section class="panel layout">
+    <!-- Left: Draft Board -->
     <div class="col">
       <div class="tabs">
         <button id="tabOverall" class="tab active">Overall</button>
@@ -77,8 +78,12 @@
       <div id="board"></div>
     </div>
 
+    <!-- Middle: Recs/Rankings with shared filters -->
     <div class="col">
-      <h3>Recommendations</h3>
+      <div class="subtabs">
+        <button id="subtabRecs" class="subtab active">Recommendations</button>
+        <button id="subtabRanks" class="subtab">Full Rankings</button>
+      </div>
       <div class="row">
         <select id="filterPos">
           <option value="">All</option>
@@ -89,34 +94,14 @@
         </select>
         <input id="searchName" placeholder="Search name..." />
       </div>
-      <div id="recs" class="mt8"></div>
+      <div id="midList" class="mt8 list"></div>
     </div>
 
+    <!-- Right: My Roster -->
     <div class="col">
       <h3>My Roster</h3>
       <div id="myRoster"></div>
-
-      <div id="scarcityWrap" class="mt12">
-        <h3>Positional Scarcity</h3>
-        <div id="scarcityBars" class="scarcity-bars"></div>
-      </div>
     </div>
-  </section>
-
-  <!-- Rankings always visible -->
-  <section id="rankingsPanel" class="panel">
-    <h2>Full Rankings</h2>
-    <div class="row">
-      <input id="rankingsSearch" placeholder="Search..." />
-      <select id="rankingsPos">
-        <option value="">All</option>
-        <option value="RB">RB</option>
-        <option value="WR">WR</option>
-        <option value="QB">QB</option>
-        <option value="TE">TE</option>
-      </select>
-    </div>
-    <div id="rankingsList" class="mt8 list"></div>
   </section>
 
   <footer>

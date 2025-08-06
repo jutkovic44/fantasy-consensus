@@ -1,29 +1,26 @@
-/* War Room — Smarter AI (needs + scarcity + stacks + bye penalty + late-round upside)
-   - Keeps K/DEF + W/R FLEX only
-   - Shares filters across tabs
+/* War Room — Smarter AI + Bugfixes (tabs, position filter, WR14 label)
+   - K/DEF supported, FLEX is W/R only
+   - Shared search/position filters (persisted)
    - Instant starters + empty slots pre-draft
-   - Accordions already handled in index.html
+   - Stacks, bye-overlap penalty, positional scarcity, late-round upside
 */
 
 const DATA_URL = "./consensus.json";
 
-/* ====== TUNABLE WEIGHTS (edit these to taste) ====== */
+/* ====== TUNABLE WEIGHTS ====== */
 const WEIGHTS = {
-  // Base components
-  vor: 1.0,                 // value over replacement (from projections)
+  vor: 1.0,                 // value over replacement
   tierBoost: 1.0,           // favor earlier tiers
-  valueVsADP: 0.8,          // discount/steal potential
+  valueVsADP: 0.8,          // ADP discount/steal potential
 
-  // Smarts
-  need: 0.9,                // how much current roster needs by position matter
-  scarcity: 0.7,            // boost when a position is drying up
-  stackSynergy: 1.0,        // QB<->WR/TE stack bonus
-  byePenalty: -0.5,         // apply when candidate creates bye overlap among your starters
-  lateUpside: 0.6,          // late-round upside bias
+  need: 0.9,                // roster needs
+  scarcity: 0.7,            // positional scarcity
+  stackSynergy: 1.0,        // QB<->WR/TE stacks
+  byePenalty: -0.5,         // penalize starter bye overlaps
+  lateUpside: 0.6,          // late-round upside
 
-  // Lateness thresholds
-  lateRoundStartPct: 0.5,   // after 50% of draft completed, we lean into upside more
-  deepRoundStartPct: 0.75   // after 75%, even more upside bias
+  lateRoundStartPct: 0.5,
+  deepRoundStartPct: 0.75
 };
 
 let state = {
@@ -95,7 +92,11 @@ function buildPosRankCache(){
   });
 }
 function getPosRank(p){ const m = state.posRankCache[p.pos]; return m ? m.get(p.id ?? p.player) : undefined; }
-function posRankLabel(p, rank){ return rank ? `${p.pos}${rank}` : ""; }
+
+// FIX #1: return only the numeric rank (avoid WRWR14)
+function posRankLabel(rank) {
+  return rank ? String(rank) : "";
+}
 
 // --- team/round helpers
 function overallToTeam(overall){
@@ -138,7 +139,7 @@ function stackBonusForTeam(teamIndex, candidate){
   return bonus;
 }
 
-// Penalty if candidate creates bye overlap among *starters* at that position
+// Penalty if candidate creates bye overlap among starters at that position
 function byeOverlapPenalty(teamIndex, candidate){
   const s = state.settings;
   const startersTarget = { QB:s.qb, RB:s.rb, WR:s.wr, TE:s.te, K:s.k, DEF:s.def };
@@ -157,46 +158,42 @@ function byeOverlapPenalty(teamIndex, candidate){
   const overlap = list.some(p => (p.bye||-1) === bye);
   if(!overlap) return 0;
 
-  // stronger penalty if this would be the first overlap (i.e., you’re filling your last starter of that pos)
   const fillingLastStarter = list.length+1 >= (startersTarget[candidate.pos]||0);
   return fillingLastStarter ? -3 : -1.5;
 }
 
-// Positional scarcity: fewer remaining relative to total => bigger boost
+// Positional scarcity boost
 function computeScarcityBoost(p){
   const total = state.players.filter(x=>x.pos===p.pos).length;
   const remain = state.available.map(i=>state.players[i]).filter(x=>x.pos===p.pos).length;
   if(total === 0) return 0;
-  const pctRemain = remain/total;          // 1.0 early, approaches 0.0 when scarce
-  const scarcity = (1 - pctRemain);        // 0 early -> 1 late
-  // Make RB/WR scarcity sting a bit more than QB/K/DEF
+  const pctRemain = remain/total;
+  const scarcity = (1 - pctRemain);
   const posFactor = (p.pos==="RB"||p.pos==="WR") ? 1.2 : (p.pos==="TE"? 1.0 : 0.6);
-  return scarcity * posFactor * 4;         // up to ~4.8 raw points
+  return scarcity * posFactor * 4;
 }
 
-// Need weighting: how many starters left to fill at this position
+// Need weighting
 function rosterNeeds(teamIndex){
   const s=state.settings, slots=state.rosterSlots[teamIndex]||{QB:0,RB:0,WR:0,TE:0,FLEX:0,K:0,DEF:0,BEN:0};
   const target={QB:s.qb,RB:s.rb,WR:s.wr,TE:s.te,K:s.k,DEF:s.def}, need={};
   for(const pos of ["QB","RB","WR","TE","K","DEF"]){
     const have=slots[pos]||0, left=Math.max(0,(target[pos]||0)-have);
-    // curve: 1.0 base + bigger multiplier when you still have many to fill
     need[pos]= 1 + (left*0.8);
   }
   return need;
 }
 
-// Late-round upside: boost players who (a) beat replacement by a bit and (b) have ADP discount
+// Late-round upside bonus
 function lateRoundUpsideBonus(p){
   const pct = draftProgressPct();
   if (pct < WEIGHTS.lateRoundStartPct) return 0;
-  // discount vs ADP (positive if ADP is later than current pick)
   const discount = (state.dataFlags.hasADP && p.adp) ? Math.max(0, p.adp - state.currentOverall) : 0;
   if (discount <= 0) return 0;
   const tier = p.tier || 6;
-  const tierLean = Math.max(0, (tier-2)); // later tiers get more upside bias
+  const tierLean = Math.max(0, (tier-2));
   const deep = (pct >= WEIGHTS.deepRoundStartPct) ? 1.25 : 1.0;
-  return (Math.log10(1 + discount) * (0.75 + 0.25*tierLean)) * deep; // ~0–2.5
+  return (Math.log10(1 + discount) * (0.75 + 0.25*tierLean)) * deep;
 }
 
 // ---------- data load ----------
@@ -357,6 +354,7 @@ function init() {
    "qbSlots","rbSlots","wrSlots","teSlots","flexSlots","kSlots","defSlots","benchSlots"]
     .forEach(id=> el(id)?.addEventListener("input", syncSettings));
 
+  // Draft controls
   el("startMock")?.addEventListener("click", startMock);
   el("pauseMock")?.addEventListener("click", ()=>{ state.paused=true; stopAutoLoop(); });
   el("resumeMock")?.addEventListener("click", ()=>{ if(!state.started) return; state.paused=false; if(state.autoplay.enabled) startAutoLoop(); });
@@ -370,15 +368,29 @@ function init() {
     if (state.autoplay.enabled) startAutoLoop(); else stopAutoLoop();
   });
 
+  // Board tabs
   el("tabOverall")?.addEventListener("click", () => { state.boardView="overall"; localStorage.setItem("boardView","overall"); updateBoardTabs(); renderBoard(); });
   el("tabByRound")?.addEventListener("click", () => { state.boardView="round";   localStorage.setItem("boardView","round");   updateBoardTabs(); renderBoard(); });
+  updateBoardTabs();
 
-  el("subtabRecs")?.addEventListener("click", () => { state.midTab="recs"; localStorage.setItem("midTab","recs"); updateMidTabs(); renderMidPanel(); });
-  el("subtabRanks")?.addEventListener("click", () => { state.midTab="ranks"; localStorage.setItem("midTab","ranks"); updateMidTabs(); renderMidPanel(); });
+  // FIX #2: Subtabs via event delegation (and ensure type="button" in HTML)
+  document.querySelector('.subtabs')?.addEventListener('click', (e) => {
+    const t = e.target;
+    if (!(t instanceof HTMLElement)) return;
+    if (t.id === 'subtabRecs' || t.id === 'subtabRanks') {
+      state.midTab = (t.id === 'subtabRecs') ? 'recs' : 'ranks';
+      localStorage.setItem('midTab', state.midTab);
+      updateMidTabs();
+      renderMidPanel();
+    }
+  });
+  updateMidTabs();
 
+  // FIX #3: robust filter change handler
   el("filterPos")?.addEventListener("change", (e) => {
-    state.filters.pos = (e.target.value || "").toUpperCase();
+    state.filters.pos = String(e.target.value || "").toUpperCase().trim();
     localStorage.setItem("filterPos", state.filters.pos);
+    const posSel = el("filterPos"); if (posSel) posSel.value = state.filters.pos;
     renderMidPanel();
   });
   el("searchName")?.addEventListener("input", (e) => {
@@ -387,7 +399,10 @@ function init() {
     renderMidPanel();
   });
 
-  updateBoardTabs(); updateMidTabs();
+  // reflect saved filters on first paint
+  const posSel = el("filterPos"); if (posSel) posSel.value = state.filters.pos;
+  const qInput = el("searchName"); if (qInput) qInput.value = state.filters.q;
+
   render();
 }
 
@@ -444,12 +459,10 @@ function autoUntilMyPick(){
 function advanceAfterPick(shouldRender=true){ state.currentOverall += 1; if (shouldRender) render(); }
 
 function aiPick(teamIndex){
-  // Take the top scored player with a tiny amount of randomness in early rounds only
   const {list}=computeRecommendations(teamIndex);
   if(!list.length) return;
   const early = draftProgressPct() < 0.2;
   const k = early ? Math.min(6, list.length) : Math.min(3, list.length);
-  // soft random choice favoring top
   const weights = Array.from({length:k},(_,i)=>(k-i));
   const sum=weights.reduce((a,b)=>a+b,0);
   let r=Math.random()*sum, pick=list[0];
@@ -506,12 +519,19 @@ function replacementLevels(){
     const idx=Math.min(idxAt[pos]-1, Math.max(0,pool.length-1)); baseline[pos]=pool[idx]? (pool[idx].proj_ppr||0):0;
   } return baseline;
 }
+
+// FIX #3: robust shared filters (pos + search)
 function applyFilters(list){
   let out = list.slice();
-  const pos = state.filters.pos;
-  const q = state.filters.q.toLowerCase().trim();
-  if (pos) out = out.filter(p => p.pos === pos);
-  if (q)   out = out.filter(p => p.player.toLowerCase().includes(q));
+  const pos = (state.filters.pos || "").toUpperCase().trim();
+  const q = (state.filters.q || "").toLowerCase().trim();
+
+  if (pos) {
+    out = out.filter(p => (p.pos || "").toUpperCase().trim() === pos);
+  }
+  if (q) {
+    out = out.filter(p => (p.player || "").toLowerCase().includes(q));
+  }
   return out;
 }
 
@@ -526,17 +546,16 @@ function computeRecommendations(teamIndex){
   const scored = candidates.map(p=>{
     const baseProj = state.dataFlags.hasProj ? (p.proj_ppr||0) : 0;
     const rep = state.dataFlags.hasProj ? (base[p.pos]||0) : 0;
-    const vor = baseProj - rep;                                              // value over replacement
-    const tierBoost = (6 - Math.min(p.tier||6,6));                           // T1 > T6
+    const vor = baseProj - rep;
+    const tierBoost = (6 - Math.min(p.tier||6,6));
     const valueBoost = state.dataFlags.hasADP ? Math.max(0,(p.adp||state.currentOverall)-state.currentOverall)/10 : 0;
 
-    const needW = (needs[p.pos]||1.0);                                       // roster need
-    const scarcity = computeScarcityBoost(p);                                 // positional scarcity
-    const stackSynergy = stackBonusForTeam(teamIndex, p);                     // stacks
-    const byePen = byeOverlapPenalty(teamIndex, p);                           // bye conflict
-    const upside = lateRoundUpsideBonus(p);                                   // late round upside
+    const needW = (needs[p.pos]||1.0);
+    const scarcity = computeScarcityBoost(p);
+    const stackSynergy = stackBonusForTeam(teamIndex, p);
+    const byePen = byeOverlapPenalty(teamIndex, p);
+    const upside = lateRoundUpsideBonus(p);
 
-    // Weighted sum
     let score =
       WEIGHTS.vor * (state.dataFlags.hasProj ? vor : 0) +
       WEIGHTS.tierBoost * tierBoost +
@@ -544,10 +563,9 @@ function computeRecommendations(teamIndex){
       WEIGHTS.need * needW +
       WEIGHTS.scarcity * scarcity +
       WEIGHTS.stackSynergy * stackSynergy +
-      WEIGHTS.byePenalty * Math.min(0, byePen) +    // byePen is negative
+      WEIGHTS.byePenalty * Math.min(0, byePen) +
       WEIGHTS.lateUpside * upside;
 
-    // Slightly dampen K/DEF early
     if ((p.pos==="K" || p.pos==="DEF") && pct < 0.6) score -= 3 * (0.6 - pct);
 
     return {...p, baseProj, rep, vor, score, hasMyStack: hasPrimaryStackForMyTeam(p) };
@@ -574,15 +592,16 @@ function renderBoard(){
     });
   }
 }
+
 function boardPickElem(p){
-  const pl=state.players[p.playerIdx]; const logo = teamLogoUrl(pl.team); const posRank = getPosRank(pl);
+  const pl=state.players[p.playerIdx]; const logo = teamLogoUrl(pl.team); const pr = getPosRank(pl);
   const div=document.createElement("div"); div.className="pick";
   div.innerHTML = `<div class="flex"><span class="badge">#${p.overall} R${p.round}.${p.pickInRound}</span><span class="small">Team ${p.team+1}</span></div>
                    <div class="flex" style="justify-content:flex-start; gap:8px;">
                      ${logo ? `<img src="${logo}" alt="${pl.team||''}" class="team-logo">` : ""}
                      <div class="name">${pl.player}</div>
                    </div>
-                   <div class="small"><span class="badge pos ${pl.pos}">${p.pos}${posRank?posRankLabel(pl,posRank):""}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
+                   <div class="small"><span class="badge pos ${pl.pos}">${pl.pos}${pr ? posRankLabel(pr) : ""}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
   return div;
 }
 
@@ -594,7 +613,7 @@ function renderMidPanel(){
     const { list } = computeRecommendations(team);
     list.forEach((p,idx)=>{
       const t = p.tier || 6;
-      const logo = teamLogoUrl(p.team); const posRank = getPosRank(p);
+      const logo = teamLogoUrl(p.team); const pr = getPosRank(p);
       const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
       const projBit = state.dataFlags.hasProj ? ` • Proj ${p.baseProj?.toFixed?.(1) || "0.0"} (rep ${p.rep?.toFixed?.(1) || "0.0"})` : "";
       const stackBadge = p.hasMyStack ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
@@ -603,7 +622,7 @@ function renderMidPanel(){
           <div class="flex" style="gap:10px;">
             ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
             <div>
-              <div class="name">${idx+1}. ${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span></div>
+              <div class="name">${idx+1}. ${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span></div>
               <div class="small">${p.team||""} • Bye ${p.bye||"-"} • ECR ${p.ecr||"-"}${projBit}${adpBit}</div>
             </div>
           </div>
@@ -621,14 +640,14 @@ function renderMidPanel(){
       const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
       const projBit = state.dataFlags.hasProj ? ` • Proj ${Number(p.proj_ppr||0).toFixed(1)}` : "";
       const ecr = (p.ecr!=null)? `#${p.ecr}` : "#—";
-      const posRank = getPosRank(p);
+      const pr = getPosRank(p);
       const stackBadge = hasPrimaryStackForMyTeam(p) ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
       const d=document.createElement("div"); d.className="item";
       d.innerHTML = `<div class="flex">
           <div class="flex" style="gap:10px;">
             ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
             <div>
-              <div class="name">${idx+1}. ${p.player} ${stackBadge} <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span> <span class="badge">${ecr}</span></div>
+              <div class="name">${idx+1}. ${p.player} ${stackBadge} <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span> <span class="badge">${ecr}</span></div>
               <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
             </div>
           </div>
@@ -663,11 +682,11 @@ function renderMyRoster(){
     const wrap = document.createElement("div"); wrap.className = "roster-section";
     wrap.innerHTML = `<div class="roster-header small">${label}${benchMode? "" : ` (${list.length}/${target})`}</div>`;
     for(const pl of list){
-      const logo = teamLogoUrl(pl.team); const posRank = getPosRank(pl); const ecr = (pl.ecr!=null) ? `#${pl.ecr}` : "#—";
+      const logo = teamLogoUrl(pl.team); const pr = getPosRank(pl); const ecr = (pl.ecr!=null) ? `#${pl.ecr}` : "#—";
       const row = document.createElement("div"); row.className = "roster-item";
       row.innerHTML = `${logo ? `<img src="${logo}" alt="${pl.team||''}" class="team-logo team-logo-sm">` : ""}
         <div class="roster-main"><div class="roster-name">${pl.player}</div>
-        <div class="roster-meta"><span class="badge pos ${pl.pos}">${pl.pos}${posRank?posRankLabel(pl,posRank):""}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${ecr}</div></div>`;
+        <div class="roster-meta"><span class="badge pos ${pl.pos}">${pl.pos}${pr ? posRankLabel(pr) : ""}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${ecr}</div></div>`;
       wrap.appendChild(row);
     }
     if (!benchMode){
@@ -712,10 +731,10 @@ function updateMidTabs(){
 
 // ---------- small utils ----------
 function boardPickElem(p){
-  const pl=state.players[p.playerIdx]; const logo = teamLogoUrl(pl.team); const posRank = getPosRank(pl);
+  const pl=state.players[p.playerIdx]; const logo = teamLogoUrl(pl.team); const pr = getPosRank(pl);
   const div=document.createElement("div"); div.className="pick";
   div.innerHTML=`<div class="flex"><span class="badge">#${p.overall} R${p.round}.${p.pickInRound}</span><span class="small">Team ${p.team+1}</span></div>
   <div class="flex" style="justify-content:flex-start; gap:8px;">${logo?`<img src="${logo}" class="team-logo">`:""}<div class="name">${pl.player}</div></div>
-  <div class="small"><span class="badge pos ${pl.pos}">${pl.pos}${posRank?posRankLabel(pl,posRank):""}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
+  <div class="small"><span class="badge pos ${pl.pos}">${pl.pos}${pr ? posRankLabel(pr) : ""}</span> • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${pl.ecr||"-"}</div>`;
   return div;
 }

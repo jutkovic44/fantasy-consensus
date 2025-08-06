@@ -1,38 +1,83 @@
 body {
+  background-color: #121212;
+  color: white;
   font-family: Arial, sans-serif;
-  background: #0d1117;
-  color: #e6edf3;
-}
-.app {
-  display: flex;
-  gap: 20px;
   padding: 20px;
 }
-.subtabs {
-  display: flex;
-  gap: 10px;
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
 }
-.subtabs button {
-  background: #161b22;
-  color: white;
-  padding: 6px 12px;
+
+.tabs {
+  margin-bottom: 10px;
+}
+
+.tab {
+  padding: 8px 12px;
+  margin-right: 5px;
+  background-color: #222;
   border: none;
+  color: white;
   cursor: pointer;
+  border-radius: 4px;
 }
-.subtabs button.active {
-  background: #238636;
+
+.tab.active {
+  background-color: #2d6cdf;
 }
+
 .filters {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.player-list,
+.roster {
   margin-top: 10px;
 }
-#midList .item,
-#myRoster .item {
-  padding: 8px;
-  border: 1px dashed #30363d;
-  margin-top: 5px;
+
+.player-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: 1px dashed #666;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  background-color: #1e1e1e;
+}
+
+.player-card .info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-card .team-logo {
+  height: 28px;
+  width: 28px;
+}
+
+.player-card button {
+  padding: 4px 10px;
+  background-color: #2d6cdf;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.slot {
+  margin-bottom: 8px;
+  padding: 10px;
+  border: 1px dashed #888;
+  background-color: #1c1c1c;
+  border-radius: 6px;
+}
+
+.roster-section {
+  margin-top: 16px;
 }

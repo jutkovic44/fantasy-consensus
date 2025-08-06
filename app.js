@@ -1,8 +1,9 @@
-/* War Room — Adds:
-   1) Live Bye Week & Positional Coverage indicators on roster (R/Y/G)
-   2) In-roster ECR Shift: "Upgrade Available" badge in Recommendations
-   3) Bench sorting by position + value
-   (Keeps all earlier features and bugfixes)
+/* War Room — Team-wide BYE awareness
+   - Global BYE indicator based on ALL starters
+   - Player cards show BYE DUP badge if candidate shares any starter bye
+   - Small AI penalty for team-wide bye duplication (in addition to same-position penalty)
+   - Keeps: smarter AI (needs/scarcity/stacks/late-upside), stacks badge, shared filters,
+            unified cards, instant starters, bench sorting, coverage indicator
 */
 
 const DATA_URL = "./consensus.json";
@@ -16,12 +17,15 @@ const WEIGHTS = {
   need: 0.9,                // roster needs
   scarcity: 0.7,            // positional scarcity
   stackSynergy: 1.0,        // QB<->WR/TE stacks
-  byePenalty: -0.5,         // penalize starter bye overlaps
+  byePenalty: -0.5,         // same-position starter bye overlap penalty (existing)
   lateUpside: 0.6,          // late-round upside
 
   lateRoundStartPct: 0.5,
   deepRoundStartPct: 0.75
 };
+
+// Extra team-wide bye duplication penalty (applied when candidate shares any starter's bye)
+const TEAM_WIDE_BYE_DUP_PENALTY = -1.5;
 
 // How big of an ECR gap counts as a clear "upgrade" over your current starters
 const UPGRADE_ECR_GAP = 5;
@@ -139,7 +143,7 @@ function stackBonusForTeam(teamIndex, candidate){
   return bonus;
 }
 
-// Penalty if candidate creates bye overlap among starters at that position
+// Same-position bye penalty (existing behavior)
 function byeOverlapPenalty(teamIndex, candidate){
   const s = state.settings;
   const startersTarget = { QB:s.qb, RB:s.rb, WR:s.wr, TE:s.te, K:s.k, DEF:s.def };
@@ -159,6 +163,39 @@ function byeOverlapPenalty(teamIndex, candidate){
 
   const fillingLastStarter = list.length+1 >= (startersTarget[candidate.pos]||0);
   return fillingLastStarter ? -3 : -1.5;
+}
+
+/* ===== NEW: team-wide starters + bye helpers ===== */
+function startersByPosForTeam(teamIndex){
+  const s = state.settings;
+  const targets = { QB:s.qb, RB:s.rb, WR:s.wr, TE:s.te, K:s.k, DEF:s.def };
+  const idxs = (state.teamRosters[teamIndex]||[]);
+  const roster = idxs.map(i=>state.players[i]).sort((a,b)=>(a.ecr??9999)-(b.ecr??9999));
+  const starters = { QB:[], RB:[], WR:[], TE:[], K:[], DEF:[] };
+  const flex = [];
+  for(const p of roster){
+    if (targets[p.pos] && starters[p.pos].length < targets[p.pos]) { starters[p.pos].push(p); continue; }
+    if ((p.pos==="RB" || p.pos==="WR") && flex.length < s.flex) { flex.push(p); continue; }
+  }
+  return { starters, flex };
+}
+function startersAllForTeam(teamIndex){
+  const { starters, flex } = startersByPosForTeam(teamIndex);
+  return [...starters.QB, ...starters.RB, ...starters.WR, ...starters.TE, ...starters.K, ...starters.DEF, ...flex];
+}
+function teamByeStatus(startersAll){
+  const byes = startersAll.map(p=>p?.bye).filter(b=>b!=null);
+  const hasMissing = startersAll.some(p => p?.bye == null);
+  const seen = new Set(); let dup=false;
+  for(const b of byes){ if(seen.has(b)) { dup=true; break; } seen.add(b); }
+  if (dup)        return { text:"BYE!", color:"#ef4444" };  // red
+  if (hasMissing) return { text:"BYE?", color:"#f59e0b" };  // yellow
+  return { text:"BYE✓", color:"#22c55e" };                  // green
+}
+function candidateSharesTeamBye(teamIndex, candidate){
+  if (!candidate.bye) return false;
+  const starters = startersAllForTeam(teamIndex);
+  return starters.some(p => (p?.bye||-1) === candidate.bye);
 }
 
 // Positional scarcity boost
@@ -529,20 +566,9 @@ function applyFilters(list){
   return out;
 }
 
-/* ===== Helpers for "Upgrade Available" & indicators ===== */
-function startersByPosForTeam(teamIndex){
-  const s = state.settings;
-  const targets = { QB:s.qb, RB:s.rb, WR:s.wr, TE:s.te, K:s.k, DEF:s.def };
-  const idxs = (state.teamRosters[teamIndex]||[]);
-  const roster = idxs.map(i=>state.players[i]).sort((a,b)=>(a.ecr??9999)-(b.ecr??9999));
-  const starters = { QB:[], RB:[], WR:[], TE:[], K:[], DEF:[] };
-  for(const p of roster){
-    if (targets[p.pos] && starters[p.pos].length < targets[p.pos]) starters[p.pos].push(p);
-  }
-  return starters;
-}
+/* ===== scoring with team-wide bye consideration & upgrade badge ===== */
 function worstStarterEcrByPos(teamIndex){
-  const starters = startersByPosForTeam(teamIndex);
+  const { starters } = startersByPosForTeam(teamIndex);
   const worst = {};
   for (const pos of Object.keys(starters)){
     const arr = starters[pos];
@@ -551,36 +577,7 @@ function worstStarterEcrByPos(teamIndex){
   }
   return worst;
 }
-function coverageStatus(fill, target){
-  if (target<=0) return {label:"0/0", color:"#64748b"};
-  if (fill<=0)  return {label:`0/${target}`, color:"#ef4444"}; // red
-  if (fill<target) return {label:`${fill}/${target}`, color:"#f59e0b"}; // yellow
-  return {label:`${fill}/${target}`, color:"#22c55e"}; // green
-}
-function byeStatusBadge(players){
-  // red if any duplicate bye among starters; yellow if any starter missing bye info; green otherwise
-  const byes = players.map(p=>p.bye).filter(b=>b!=null);
-  const hasMissing = players.some(p => p.bye == null);
-  const dup = new Set();
-  const seen = new Set();
-  for(const b of byes){ if(seen.has(b)) dup.add(b); else seen.add(b); }
-  if (dup.size>0) return {text:"BYE!", color:"#ef4444"};
-  if (hasMissing && players.length>0) return {text:"BYE?", color:"#f59e0b"};
-  return {text:"BYE✓", color:"#22c55e"};
-}
-function benchValue(p){
-  // Projection first, fallback to ECR (lower is better)
-  const proj = Number(p.proj_ppr||0);
-  const ecrComp = (p.ecr!=null) ? (300 - p.ecr) * 0.5 : 0;
-  return proj + ecrComp;
-}
-function positionOrder(pos){
-  // Order bench groups: RB, WR, QB, TE, K, DEF
-  const order = { RB:0, WR:1, QB:2, TE:3, K:4, DEF:5 };
-  return order[pos] ?? 9;
-}
 
-/* ====== Recommendations scoring ====== */
 function computeRecommendations(teamIndex){
   const base = replacementLevels();
   const needs = rosterNeeds(teamIndex);
@@ -588,7 +585,8 @@ function computeRecommendations(teamIndex){
   candidates = applyFilters(candidates);
 
   const pct = draftProgressPct();
-  const worstEcr = worstStarterEcrByPos(state.myTeamIndex); // compare against YOUR starters for upgrade badge
+  const worstEcr = worstStarterEcrByPos(state.myTeamIndex); // compare upgrades vs YOUR starters
+  const myTeamIndex = state.myTeamIndex;
 
   const scored = candidates.map(p=>{
     const baseProj = state.dataFlags.hasProj ? (p.proj_ppr||0) : 0;
@@ -600,7 +598,8 @@ function computeRecommendations(teamIndex){
     const needW = (needs[p.pos]||1.0);
     const scarcity = computeScarcityBoost(p);
     const stackSynergy = stackBonusForTeam(teamIndex, p);
-    const byePen = byeOverlapPenalty(teamIndex, p);
+    const byePenSamePos = byeOverlapPenalty(teamIndex, p);
+    const teamByeDup = candidateSharesTeamBye(teamIndex, p) ? TEAM_WIDE_BYE_DUP_PENALTY : 0;
     const upside = lateRoundUpsideBonus(p);
 
     let score =
@@ -610,7 +609,8 @@ function computeRecommendations(teamIndex){
       WEIGHTS.need * needW +
       WEIGHTS.scarcity * scarcity +
       WEIGHTS.stackSynergy * stackSynergy +
-      WEIGHTS.byePenalty * Math.min(0, byePen) +
+      WEIGHTS.byePenalty * Math.min(0, byePenSamePos) +
+      teamByeDup +
       WEIGHTS.lateUpside * upside;
 
     if ((p.pos==="K" || p.pos==="DEF") && pct < 0.6) score -= 3 * (0.6 - pct);
@@ -618,10 +618,14 @@ function computeRecommendations(teamIndex){
     const upgradeForPos = (() => {
       const worst = worstEcr[p.pos];
       if (worst==null || p.ecr==null) return false;
-      return p.ecr + UPGRADE_ECR_GAP < worst; // clear upgrade threshold
+      return p.ecr + UPGRADE_ECR_GAP < worst;
     })();
 
-    return {...p, baseProj, rep, vor, score, hasMyStack: hasPrimaryStackForMyTeam(p), upgradeForPos };
+    const sharesTeamBye = candidateSharesTeamBye(myTeamIndex, p);
+
+    return {...p, baseProj, rep, vor, score,
+            hasMyStack: hasPrimaryStackForMyTeam(p),
+            upgradeForPos, sharesTeamBye };
   });
 
   scored.sort((a,b)=> b.score-a.score);
@@ -644,12 +648,15 @@ function playerCardHTML(p){
   const upgradeBadge = p.upgradeForPos
       ? `<span class="badge" style="background:#22c55e1a;border:1px solid #22c55e;color:#22c55e;">Upgrade Available</span>`
       : "";
+  const byeDupBadge = p.sharesTeamBye
+      ? `<span class="badge" style="background:#ef44441a;border:1px solid #ef4444;color:#ef4444;" title="Shares a bye week with one of your starters">BYE DUP</span>`
+      : "";
 
   return `<div class="flex">
       <div class="flex" style="gap:10px;">
         ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
         <div>
-          <div class="name">${p.player} ${stackBadge} ${upgradeBadge}
+          <div class="name">${p.player} ${stackBadge} ${upgradeBadge} ${byeDupBadge}
             <span class="badge tier t${t}">T${t}</span>
             <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span>
             <span class="badge">${ecrText}</span>
@@ -707,12 +714,30 @@ function renderMidPanel(){
     list = applyFilters(list);
     list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
     list.slice(0,600).forEach(p=>{
+      // for Full Rankings we still want to show BYE DUP if applicable
+      p.sharesTeamBye = candidateSharesTeamBye(state.myTeamIndex, p);
       const d=document.createElement("div"); d.className="item";
       d.innerHTML = playerCardHTML(p);
       d.querySelector("button").onclick = ()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
       root.appendChild(d);
     });
   }
+}
+
+function benchValue(p){
+  const proj = Number(p.proj_ppr||0);
+  const ecrComp = (p.ecr!=null) ? (300 - p.ecr) * 0.5 : 0;
+  return proj + ecrComp;
+}
+function positionOrder(pos){
+  const order = { RB:0, WR:1, QB:2, TE:3, K:4, DEF:5 };
+  return order[pos] ?? 9;
+}
+function coverageStatus(fill, target){
+  if (target<=0) return {label:"0/0", color:"#64748b"};
+  if (fill<=0)  return {label:`0/${target}`, color:"#ef4444"};
+  if (fill<target) return {label:`${fill}/${target}`, color:"#f59e0b"};
+  return {label:`${fill}/${target}`, color:"#22c55e"};
 }
 
 function renderMyRoster(){
@@ -725,32 +750,38 @@ function renderMyRoster(){
     QB: state.settings.qb, RB: state.settings.rb, WR: state.settings.wr,
     TE: state.settings.te, FLEX: state.settings.flex, K: state.settings.k, DEF: state.settings.def
   };
-  const starters = { QB:[], RB:[], WR:[], TE:[], FLEX:[], K:[], DEF:[] };
-  const bench = [];
 
+  // Build starters & bench
+  const starters = { QB:[], RB:[], WR:[], TE:[], K:[], DEF:[], FLEX:[] };
+  const bench = [];
   for(const p of mine){
     if (slotsTarget[p.pos] && starters[p.pos].length < slotsTarget[p.pos]) { starters[p.pos].push(p); continue; }
     if ((p.pos==="RB" || p.pos==="WR") && starters.FLEX.length < slotsTarget.FLEX){ starters.FLEX.push(p); continue; }
     bench.push(p);
   }
 
-  // --- Bench sorting by position then value
+  // Bench sorting
   bench.sort((a,b)=>{
     const pa = positionOrder(a.pos), pb = positionOrder(b.pos);
     if (pa !== pb) return pa - pb;
     return benchValue(b) - benchValue(a);
   });
 
+  // Global team-wide BYE badge for starters (across all)
+  const startersAll = [...starters.QB, ...starters.RB, ...starters.WR, ...starters.TE, ...starters.K, ...starters.DEF, ...starters.FLEX];
+  const bye = teamByeStatus(startersAll);
+  const rosterHeader = el("myRosterHeaderBadge");
+  if (rosterHeader){
+    rosterHeader.innerHTML = `<span style="border:1px solid ${bye.color};color:${bye.color};padding:2px 6px;border-radius:6px;margin-left:8px;font-size:12px;">${bye.text}</span>`;
+  }
+
   const section = (label, list, target, benchMode=false) => {
-    // Coverage & bye badges for starters (not for bench)
+    // Positional coverage only (R/Y/G) — bye is global now
     let headerBadges = "";
     if (!benchMode){
       const fill = list.length;
       const cov = coverageStatus(fill, target);
-      const bye = byeStatusBadge(list);
-      headerBadges = `
-        <span style="border:1px solid ${cov.color};color:${cov.color};padding:2px 6px;border-radius:6px;margin-left:6px;font-size:12px;">${cov.label}</span>
-        <span style="border:1px solid ${bye.color};color:${bye.color};padding:2px 6px;border-radius:6px;margin-left:6px;font-size:12px;">${bye.text}</span>`;
+      headerBadges = `<span style="border:1px solid ${cov.color};color:${cov.color};padding:2px 6px;border-radius:6px;margin-left:6px;font-size:12px;">${cov.label}</span>`;
     }
 
     const wrap = document.createElement("div"); wrap.className = "roster-section";

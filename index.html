@@ -1,87 +1,120 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fantasy Football War Room</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="introOverlay">
-    <div class="centered">
-      <h1>Fantasy Football War Room</h1>
-      <button id="startDraft" class="big-button">Start Mock Draft</button>
+  <header>
+    <h1>Fantasy Football War Room</h1>
+    <div id="lastUpdated" class="small">Loading…</div>
+  </header>
+
+  <section class="panel">
+    <h2>League Settings</h2>
+    <div class="grid grid-5">
+      <label>Teams <input id="teams" type="number" min="4" max="16" value="12"/></label>
+      <label>Rounds <input id="rounds" type="number" min="6" max="24" value="16"/></label>
+      <label>Pick Position (1-based) <input id="pickPos" type="number" min="1" max="16" value="5"/></label>
+      <label>Scoring
+        <select id="scoring">
+          <option value="PPR" selected>PPR</option>
+          <option value="Half">Half-PPR</option>
+          <option value="Std">Standard</option>
+        </select>
+      </label>
+      <label>Pick Clock (sec) <input id="pickClock" type="number" min="10" max="120" value="30"/></label>
     </div>
-  </div>
+    <div class="grid grid-6 mt8">
+      <label>QB Slots <input id="qbSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>RB Slots <input id="rbSlots" type="number" min="0" max="4" value="2"/></label>
+      <label>WR Slots <input id="wrSlots" type="number" min="0" max="4" value="2"/></label>
+      <label>TE Slots <input id="teSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>FLEX Slots <input id="flexSlots" type="number" min="0" max="3" value="1"/></label>
+      <label>Bench Slots <input id="benchSlots" type="number" min="0" max="10" value="6"/></label>
+    </div>
+  </section>
 
-  <div id="app" style="display: none;">
-    <header>
-      <h1>Fantasy Football War Room</h1>
-      <div id="lastUpdated" class="small">Loading…</div>
-    </header>
+  <section class="panel">
+    <h2>Features</h2>
+    <div class="row">
+      <label><input type="checkbox" id="toggleBiases"> Opponent Biases</label>
+      <label><input type="checkbox" id="toggleStack"> Stack Awareness</label>
+      <label><input type="checkbox" id="toggleScarcity" checked> Scarcity Bars</label>
+      <label><input type="checkbox" id="toggleCompare"> Compare Tool</label>
+    </div>
+  </section>
 
-    <section class="panel">
-      <h2>League Settings</h2>
+  <section class="panel">
+    <h2>Draft Controls</h2>
+    <div class="row">
+      <button id="startMock">Start</button>
+      <button id="pauseMock">Pause</button>
+      <button id="resumeMock">Resume</button>
+      <button id="nextPick">Next Pick</button>
+      <button id="prevPick">Prev Pick</button>
+      <button id="autoUntilMyPick">Auto until my pick</button>
+      <button id="undoPick">Undo</button>
+      <button id="exportBoard">Export Board CSV</button>
+      <label class="ml12"><input id="autoOthers" type="checkbox" checked> Auto-draft others</label>
+      <label class="ml12">CPU delay (ms) <input id="cpuDelay" type="number" min="200" step="100" value="900"></label>
+      <button id="toggleRankings" class="ml12">Show Rankings</button>
+    </div>
+    <div class="row small">Clock: <span id="clock">—</span></div>
+  </section>
+
+  <section class="panel layout">
+    <div class="col">
+      <h3>Board & Picks</h3>
+      <div id="board"></div>
+    </div>
+
+    <div class="col">
+      <h3>Recommendations</h3>
       <div class="row">
-        <label>Teams <input id="teams" type="number" value="12" /></label>
-        <label>Rounds <input id="rounds" type="number" value="16" /></label>
-        <label>Pick Position (1-based) <input id="pickPosition" type="number" value="5" /></label>
-        <label>Scoring
-          <select id="scoring">
-            <option value="PPR">PPR</option>
-            <option value="Half">Half PPR</option>
-            <option value="Standard">Standard</option>
-          </select>
-        </label>
-        <label>Pick Clock (sec) <input id="pickClock" type="number" value="30" /></label>
+        <select id="filterPos">
+          <option value="">All</option>
+          <option value="RB">RB</option>
+          <option value="WR">WR</option>
+          <option value="QB">QB</option>
+          <option value="TE">TE</option>
+        </select>
+        <input id="searchName" placeholder="Search name..." />
       </div>
-      <div class="row">
-        <label>QB Slots <input id="qbSlots" type="number" value="1" /></label>
-        <label>RB Slots <input id="rbSlots" type="number" value="2" /></label>
-        <label>WR Slots <input id="wrSlots" type="number" value="2" /></label>
-        <label>TE Slots <input id="teSlots" type="number" value="1" /></label>
-        <label>FLEX Slots <input id="flexSlots" type="number" value="1" /></label>
-        <label>Bench Slots <input id="benchSlots" type="number" value="6" /></label>
-      </div>
-    </section>
+      <div id="recs" class="mt8"></div>
+    </div>
 
-    <section class="panel">
-      <h2>Features</h2>
-      <div class="row">
-        <label><input id="liveMode" type="checkbox" checked /> Live Mode (manual picks)</label>
-        <label><input id="opponentBiases" type="checkbox" /> Opponent Biases</label>
-        <label><input id="stackAwareness" type="checkbox" /> Stack Awareness</label>
-        <label><input id="compareTool" type="checkbox" /> Compare Tool</label>
-        <label><input id="scarcityBars" type="checkbox" checked /> Scarcity Bars</label>
-        <label><input id="advancedScoring" type="checkbox" /> Advanced Scoring</label>
-      </div>
-    </section>
+    <div class="col">
+      <h3>My Roster</h3>
+      <div id="myRoster"></div>
 
-    <section class="panel">
-      <h2>Draft Controls</h2>
-      <div class="row">
-        <button id="pauseResume" style="display:none;">Pause</button>
-        <button id="nextPick">Next Pick</button>
-        <button id="prevPick">Prev Pick</button>
-        <button id="autoUntilMyPick">Auto until my pick</button>
-        <button id="undoPick">Undo</button>
-        <button id="exportBoard">Export Board CSV</button>
-        <label><input id="autoOthers" type="checkbox" checked /> Auto-draft others</label>
-        <label>CPU delay (ms) <input id="cpuDelay" type="number" value="900" /></label>
+      <div id="scarcityWrap" class="mt12">
+        <h3>Positional Scarcity</h3>
+        <div id="scarcityBars" class="scarcity-bars"></div>
       </div>
-      <div class="row small">Clock: <span id="clock">—</span></div>
-    </section>
+    </div>
+  </section>
 
-    <section class="panel">
-      <div class="columns">
-        <div class="column"><h3>Board & Picks</h3><div id="board"></div></div>
-        <div class="column"><h3>Recommendations</h3><div id="recommendations"></div></div>
-        <div class="column"><h3>Stats & Info</h3><div id="info"></div></div>
-      </div>
-    </section>
+  <section id="rankingsPanel" class="panel hidden">
+    <h2>Full Rankings</h2>
+    <div class="row">
+      <input id="rankingsSearch" placeholder="Search..." />
+      <select id="rankingsPos">
+        <option value="">All</option>
+        <option value="RB">RB</option>
+        <option value="WR">WR</option>
+        <option value="QB">QB</option>
+        <option value="TE">TE</option>
+      </select>
+    </div>
+    <div id="rankingsList" class="mt8 list"></div>
+  </section>
 
-    <footer><div class="small">Data URL: <code>./consensus.json</code></div></footer>
-  </div>
+  <footer>
+    <small>Data URL: <code>./consensus.json</code></small>
+  </footer>
 
   <script src="app.js"></script>
 </body>

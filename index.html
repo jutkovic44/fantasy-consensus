@@ -1,10 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fantasy Football War Room</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div id="introOverlay">
@@ -14,26 +14,74 @@
     </div>
   </div>
 
-  <header>
-    <div id="lastUpdated" class="small">Loading…</div>
-  </header>
+  <div id="app" style="display: none;">
+    <header>
+      <h1>Fantasy Football War Room</h1>
+      <div id="lastUpdated" class="small">Loading…</div>
+    </header>
 
-  <section class="panel">
-    <h2>Draft Controls</h2>
-    <div class="row">
-      <button id="pauseResume" style="display:none;">Pause</button>
-      <button id="nextPick">Next Pick</button>
-      <button id="undoPick">Undo</button>
-      <label class="ml12">
-        <input id="autoOthers" type="checkbox" checked> Auto-draft others
-      </label>
-      <label class="ml12">
-        CPU delay (ms)
-        <input id="cpuDelay" type="number" min="200" step="100" value="900">
-      </label>
-    </div>
-    <div class="row small">Clock: <span id="clock">—</span></div>
-  </section>
+    <section class="panel">
+      <h2>League Settings</h2>
+      <div class="row">
+        <label>Teams <input id="teams" type="number" value="12" /></label>
+        <label>Rounds <input id="rounds" type="number" value="16" /></label>
+        <label>Pick Position (1-based) <input id="pickPosition" type="number" value="5" /></label>
+        <label>Scoring
+          <select id="scoring">
+            <option value="PPR">PPR</option>
+            <option value="Half">Half PPR</option>
+            <option value="Standard">Standard</option>
+          </select>
+        </label>
+        <label>Pick Clock (sec) <input id="pickClock" type="number" value="30" /></label>
+      </div>
+      <div class="row">
+        <label>QB Slots <input id="qbSlots" type="number" value="1" /></label>
+        <label>RB Slots <input id="rbSlots" type="number" value="2" /></label>
+        <label>WR Slots <input id="wrSlots" type="number" value="2" /></label>
+        <label>TE Slots <input id="teSlots" type="number" value="1" /></label>
+        <label>FLEX Slots <input id="flexSlots" type="number" value="1" /></label>
+        <label>Bench Slots <input id="benchSlots" type="number" value="6" /></label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Features</h2>
+      <div class="row">
+        <label><input id="liveMode" type="checkbox" checked /> Live Mode (manual picks)</label>
+        <label><input id="opponentBiases" type="checkbox" /> Opponent Biases</label>
+        <label><input id="stackAwareness" type="checkbox" /> Stack Awareness</label>
+        <label><input id="compareTool" type="checkbox" /> Compare Tool</label>
+        <label><input id="scarcityBars" type="checkbox" checked /> Scarcity Bars</label>
+        <label><input id="advancedScoring" type="checkbox" /> Advanced Scoring</label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Draft Controls</h2>
+      <div class="row">
+        <button id="pauseResume" style="display:none;">Pause</button>
+        <button id="nextPick">Next Pick</button>
+        <button id="prevPick">Prev Pick</button>
+        <button id="autoUntilMyPick">Auto until my pick</button>
+        <button id="undoPick">Undo</button>
+        <button id="exportBoard">Export Board CSV</button>
+        <label><input id="autoOthers" type="checkbox" checked /> Auto-draft others</label>
+        <label>CPU delay (ms) <input id="cpuDelay" type="number" value="900" /></label>
+      </div>
+      <div class="row small">Clock: <span id="clock">—</span></div>
+    </section>
+
+    <section class="panel">
+      <div class="columns">
+        <div class="column"><h3>Board & Picks</h3><div id="board"></div></div>
+        <div class="column"><h3>Recommendations</h3><div id="recommendations"></div></div>
+        <div class="column"><h3>Stats & Info</h3><div id="info"></div></div>
+      </div>
+    </section>
+
+    <footer><div class="small">Data URL: <code>./consensus.json</code></div></footer>
+  </div>
 
   <script src="app.js"></script>
 </body>

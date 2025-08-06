@@ -5,8 +5,7 @@ const state = {
   filters: { pos: '', q: '' }
 };
 
-// === Bye Week Tracker ===
-const byeWeekTracker = {}; // bye -> count
+const byeWeekTracker = {};
 
 function trackByeWeek(bye, add = true) {
   if (!bye) return;
@@ -15,25 +14,10 @@ function trackByeWeek(bye, add = true) {
   if (byeWeekTracker[bye] < 0) byeWeekTracker[bye] = 0;
 }
 
-function getByeDotColor(bye) {
-  const count = byeWeekTracker[bye] || 0;
-  if (count >= 4) return 'red';
-  if (count === 3) return 'orange';
-  if (count === 2) return 'yellow';
-  return '';
-}
-
-function getByeDotSpan(bye) {
-  const color = getByeDotColor(bye);
-  return color ? `<span class="bye-dot ${color}"></span>` : '';
-}
-
 function renderPlayerByeText(player) {
-  if (!player.bye) return '';
-  return `Bye ${player.bye} ${getByeDotSpan(player.bye)}`;
+  return player.bye ? `Bye ${player.bye}` : '';
 }
 
-// === Example Data Loader ===
 function loadPlayers() {
   state.players = [
     { id: 1, player: 'Josh Jacobs', pos: 'RB', team: 'GB', bye: 5, drafted: false },
@@ -44,7 +28,6 @@ function loadPlayers() {
   state.available = state.players.map((_, i) => i);
 }
 
-// === Rendering Functions ===
 function renderRecommendations() {
   const root = document.getElementById('midList');
   root.innerHTML = '';
@@ -76,7 +59,6 @@ function renderRoster() {
   });
 }
 
-// === Draft Logic ===
 function draftPlayer(id) {
   const idx = state.players.findIndex(p => p.id === id);
   if (idx === -1) return;
@@ -92,7 +74,6 @@ function draftPlayer(id) {
   renderRoster();
 }
 
-// === Init ===
 document.addEventListener('DOMContentLoaded', () => {
   loadPlayers();
   renderRecommendations();

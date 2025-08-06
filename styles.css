@@ -36,17 +36,3 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-.team-logo {
-  width: 24px;
-  height: 24px;
-}
-.bye-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-left: 6px;
-}
-.bye-dot.yellow { background: #facc15; }
-.bye-dot.orange { background: #f97316; }
-.bye-dot.red { background: #ef4444; }

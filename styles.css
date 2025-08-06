@@ -99,3 +99,20 @@ details.accordion[open] > summary::after { content: "▴"; }
 }
 .roster-item.slot-empty { display: flex; align-items: center; gap: 10px; }
 .roster-name.muted, .roster-meta.muted { color: #64748b; }
+
+.badge-green {
+  background: #14532d1a;
+  border: 1px solid #22c55e;
+  color: #22c55e;
+}
+.badge-yellow {
+  background: #78350f1a;
+  border: 1px solid #facc15;
+  color: #facc15;
+}
+.badge-red {
+  background: #7f1d1d1a;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+}
+

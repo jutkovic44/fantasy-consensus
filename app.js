@@ -1,8 +1,8 @@
-/* War Room — Smarter AI + Bugfixes (tabs, position filter, WR14 label)
-   - K/DEF supported, FLEX is W/R only
-   - Shared search/position filters (persisted)
+/* War Room — unified player card layout for Recommendations & Full Rankings
+   - Smarter AI: needs + scarcity + stacks + bye penalty + late-round upside
+   - K/DEF supported, FLEX = W/R only
+   - Shared filters (persist across tabs), bugfixes for tabs/filters
    - Instant starters + empty slots pre-draft
-   - Stacks, bye-overlap penalty, positional scarcity, late-round upside
 */
 
 const DATA_URL = "./consensus.json";
@@ -92,11 +92,8 @@ function buildPosRankCache(){
   });
 }
 function getPosRank(p){ const m = state.posRankCache[p.pos]; return m ? m.get(p.id ?? p.player) : undefined; }
-
-// FIX #1: return only the numeric rank (avoid WRWR14)
-function posRankLabel(rank) {
-  return rank ? String(rank) : "";
-}
+// Return only numeric rank; we prepend position separately to avoid WRWR14
+function posRankLabel(rank) { return rank ? String(rank) : ""; }
 
 // --- team/round helpers
 function overallToTeam(overall){
@@ -373,7 +370,7 @@ function init() {
   el("tabByRound")?.addEventListener("click", () => { state.boardView="round";   localStorage.setItem("boardView","round");   updateBoardTabs(); renderBoard(); });
   updateBoardTabs();
 
-  // FIX #2: Subtabs via event delegation (and ensure type="button" in HTML)
+  // Subtabs via event delegation (ensure buttons have type="button" in HTML)
   document.querySelector('.subtabs')?.addEventListener('click', (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
@@ -386,7 +383,7 @@ function init() {
   });
   updateMidTabs();
 
-  // FIX #3: robust filter change handler
+  // Filters
   el("filterPos")?.addEventListener("change", (e) => {
     state.filters.pos = String(e.target.value || "").toUpperCase().trim();
     localStorage.setItem("filterPos", state.filters.pos);
@@ -520,18 +517,14 @@ function replacementLevels(){
   } return baseline;
 }
 
-// FIX #3: robust shared filters (pos + search)
+// Robust shared filters
 function applyFilters(list){
   let out = list.slice();
   const pos = (state.filters.pos || "").toUpperCase().trim();
   const q = (state.filters.q || "").toLowerCase().trim();
 
-  if (pos) {
-    out = out.filter(p => (p.pos || "").toUpperCase().trim() === pos);
-  }
-  if (q) {
-    out = out.filter(p => (p.player || "").toLowerCase().includes(q));
-  }
+  if (pos) out = out.filter(p => (p.pos || "").toUpperCase().trim() === pos);
+  if (q)   out = out.filter(p => (p.player || "").toLowerCase().includes(q));
   return out;
 }
 
@@ -575,6 +568,33 @@ function computeRecommendations(teamIndex){
   return { list: scored.slice(0,30), baseline: base, needs };
 }
 
+// ---------- unified player card ----------
+function playerCardHTML(p){
+  const logo = teamLogoUrl(p.team);
+  const pr = getPosRank(p);
+  const t  = p.tier || 6;
+  const ecrText = (p.ecr!=null)? `#${p.ecr}` : "#—";
+  const adpBit  = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
+  // For recs we compute baseProj/rep; for ranks they may be undefined — guard:
+  const projBit = state.dataFlags.hasProj
+      ? (` • Proj ${Number(p.baseProj ?? p.proj_ppr ?? 0).toFixed(1)}`
+         + (p.rep!=null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""))
+      : "";
+  const stackBadge = (p.hasMyStack || hasPrimaryStackForMyTeam(p))
+      ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
+
+  return `<div class="flex">
+      <div class="flex" style="gap:10px;">
+        ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
+        <div>
+          <div class="name">${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span> <span class="badge">${ecrText}</span></div>
+          <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
+        </div>
+      </div>
+      <div><button data-pid="${p.id}">Draft</button></div>
+    </div>`;
+}
+
 // ---------- render ----------
 function render(){ renderBoard(); renderMidPanel(); renderMyRoster(); }
 
@@ -592,7 +612,6 @@ function renderBoard(){
     });
   }
 }
-
 function boardPickElem(p){
   const pl=state.players[p.playerIdx]; const logo = teamLogoUrl(pl.team); const pr = getPosRank(pl);
   const div=document.createElement("div"); div.className="pick";
@@ -611,23 +630,9 @@ function renderMidPanel(){
   if(state.midTab === "recs"){
     const team = state.started ? overallToTeam(state.currentOverall) : state.myTeamIndex;
     const { list } = computeRecommendations(team);
-    list.forEach((p,idx)=>{
-      const t = p.tier || 6;
-      const logo = teamLogoUrl(p.team); const pr = getPosRank(p);
-      const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
-      const projBit = state.dataFlags.hasProj ? ` • Proj ${p.baseProj?.toFixed?.(1) || "0.0"} (rep ${p.rep?.toFixed?.(1) || "0.0"})` : "";
-      const stackBadge = p.hasMyStack ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
+    list.forEach(p=>{
       const d=document.createElement("div"); d.className="item";
-      d.innerHTML = `<div class="flex">
-          <div class="flex" style="gap:10px;">
-            ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
-            <div>
-              <div class="name">${idx+1}. ${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span></div>
-              <div class="small">${p.team||""} • Bye ${p.bye||"-"} • ECR ${p.ecr||"-"}${projBit}${adpBit}</div>
-            </div>
-          </div>
-          <div><button data-pick="${p.id}">Draft</button></div>
-        </div>`;
+      d.innerHTML = playerCardHTML(p);
       d.querySelector("button").onclick=()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
       root.appendChild(d);
     });
@@ -635,30 +640,14 @@ function renderMidPanel(){
     let list = state.available.map(i=>state.players[i]);
     list = applyFilters(list);
     list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
-    list.slice(0,600).forEach((p)=>{
-  const logo = teamLogoUrl(p.team);
-  const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
-  const projBit = state.dataFlags.hasProj ? ` • Proj ${Number(p.proj_ppr||0).toFixed(1)}` : "";
-  const ecr = (p.ecr!=null)? `#${p.ecr}` : "#—";
-  const pr = getPosRank(p);
-  const t = p.tier || 6;
-  const stackBadge = hasPrimaryStackForMyTeam(p) ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
-  
-  const d=document.createElement("div"); d.className="item";
-  d.innerHTML = `<div class="flex">
-      <div class="flex" style="gap:10px;">
-        ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
-        <div>
-          <div class="name">${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span> <span class="badge">${ecr}</span></div>
-          <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
-        </div>
-      </div>
-      <div><button data-id="${p.id}">Draft</button></div>
-    </div>`;
-  d.querySelector("button").onclick = ()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
-  root.appendChild(d);
-});
-
+    list.slice(0,600).forEach(p=>{
+      const d=document.createElement("div"); d.className="item";
+      d.innerHTML = playerCardHTML(p);
+      d.querySelector("button").onclick = ()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
+      root.appendChild(d);
+    });
+  }
+}
 
 function renderMyRoster(){
   const root=el("myRoster"); if(!root) return; root.innerHTML="";

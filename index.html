@@ -7,21 +7,25 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div id="introOverlay">
+    <div class="centered">
+      <h1>Fantasy Football War Room</h1>
+      <button id="startDraft" class="big-button">Start Mock Draft</button>
+    </div>
+  </div>
+
   <header>
-    <h1>Fantasy Football War Room</h1>
     <div id="lastUpdated" class="small">Loading…</div>
   </header>
 
   <section class="panel">
     <h2>Draft Controls</h2>
     <div class="row">
-      <button id="startMock">Start</button>
-      <button id="pauseResume">Pause</button>
+      <button id="pauseResume" style="display:none;">Pause</button>
       <button id="nextPick">Next Pick</button>
       <button id="undoPick">Undo</button>
       <label class="ml12">
-        <input id="autoOthers" type="checkbox" checked>
-        Auto-draft others
+        <input id="autoOthers" type="checkbox" checked> Auto-draft others
       </label>
       <label class="ml12">
         CPU delay (ms)

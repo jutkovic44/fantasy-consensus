@@ -1,1 +1,12 @@
-/* Simplified dark theme CSS placeholder */
+
+body { background: #0d1117; color: #fff; font-family: sans-serif; margin: 0; padding: 0; }
+header, .panel { padding: 1rem; }
+.big-button {
+  font-size: 1.25rem; padding: 1rem 2rem; background: #1f6feb; color: #fff;
+  border: none; border-radius: 6px; cursor: pointer;
+}
+#introOverlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+  display: flex; justify-content: center; align-items: center; z-index: 1000;
+}
+#introOverlay .centered { text-align: center; }

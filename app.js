@@ -653,17 +653,34 @@ function playerCardHTML(p){
   const logo = teamLogoUrl(p.team);
   const pr = getPosRank(p);
   const t  = p.tier || 6;
-  const adpBit  = state.dataFlags.hasADP ? ` • ADP ${p.adp ?? "-"}` : "";
-  const ecrBit  = p.ecr != null ? ` • ECR #${p.ecr}` : "";
+
+  // ECR + ADP logic
+  let ecrBit = "", adpBit = "";
+  if (p.ecr != null && state.dataFlags.hasADP && p.adp != null) {
+    const delta = p.adp - p.ecr;
+    const color =
+      delta >= 2 ? '#22c55e' :     // Value pick
+      delta <= -2 ? '#ef4444' :    // Reach
+      '#475569';                   // Neutral
+    adpBit = `<span class="badge" style="border-color:${color}; color:${color};">ADP ${p.adp}</span>`;
+    ecrBit = `<span class="badge">ECR #${p.ecr}</span>`;
+  } else {
+    ecrBit = p.ecr != null ? `<span class="badge">ECR #${p.ecr}</span>` : "";
+    adpBit = state.dataFlags.hasADP ? `<span class="badge">ADP ${p.adp ?? "-"}</span>` : "";
+  }
+
+  // Projections
   const projBit = state.dataFlags.hasProj
-      ? (` • Proj ${Number(p.baseProj ?? p.proj_ppr ?? 0).toFixed(1)}`
-         + (p.rep != null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""))
-      : "";
+    ? `<span class="badge">Proj ${Number(p.baseProj ?? p.proj_ppr ?? 0).toFixed(1)}${
+        p.rep != null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""
+      }</span>` : "";
+
   const stackBadge = (p.hasMyStack || hasPrimaryStackForMyTeam(p))
-      ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
+    ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
+
   const upgradeBadge = p.upgradeForPos
-      ? `<span class="badge" style="background:#22c55e1a;border:1px solid #22c55e;color:#22c55e;">Upgrade Available</span>`
-      : "";
+    ? `<span class="badge" style="background:#22c55e1a;border:1px solid #22c55e;color:#22c55e;">Upgrade Available</span>` : "";
+
   const byeDot = p.byeWarnColor ? byeDotSpan(p.byeWarnColor) : "";
 
   return `<div class="flex">
@@ -673,10 +690,9 @@ function playerCardHTML(p){
           <div class="name">${p.player} ${stackBadge} ${upgradeBadge}
             <span class="badge tier t${t}">T${t}</span>
             <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span>
+            ${ecrBit} ${adpBit} ${projBit}
           </div>
-          <div class="small">
-            ${p.team || ""} • Bye ${p.bye || "-"} ${byeDot}${ecrBit}${adpBit}${projBit}
-          </div>
+          <div class="small">${p.team || ""} • Bye ${p.bye || "-"} ${byeDot}</div>
         </div>
       </div>
       <div><button data-pid="${p.id}">Draft</button></div>

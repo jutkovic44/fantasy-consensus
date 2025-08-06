@@ -4,39 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fantasy Football War Room</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>Fantasy Football War Room</h1>
-    </header>
+  <h1>Fantasy Football War Room</h1>
 
-    <section id="mid-panel">
-      <div class="subtabs">
-        <button id="subtabRecs" class="active">Recommendations</button>
-        <button id="subtabRanks">Full Rankings</button>
-      </div>
-      <div class="filters">
-        <select id="filterPos">
-          <option value="">All</option>
-          <option value="QB">QB</option>
-          <option value="RB">RB</option>
-          <option value="WR">WR</option>
-          <option value="TE">TE</option>
-          <option value="K">K</option>
-          <option value="DEF">DEF</option>
-        </select>
-        <input id="searchName" placeholder="Search name..." />
-      </div>
-      <div id="midList"></div>
-    </section>
-
-    <section id="roster">
-      <h2>My Roster</h2>
-      <div id="myRoster"></div>
-    </section>
+  <div class="tabs">
+    <button id="recommendationsTab" class="tab active">Recommendations</button>
+    <button id="fullRankingsTab" class="tab">Full Rankings</button>
   </div>
+
+  <div class="filters">
+    <select id="positionFilter">
+      <option value="All">All</option>
+      <option value="QB">QB</option>
+      <option value="RB">RB</option>
+      <option value="WR">WR</option>
+      <option value="TE">TE</option>
+      <option value="FLEX">FLEX</option>
+      <option value="K">K</option>
+      <option value="DEF">DEF</option>
+    </select>
+    <input type="text" id="searchInput" placeholder="Search name..." />
+  </div>
+
+  <div id="playerList" class="player-list"></div>
+
+  <h2>My Roster</h2>
+  <div id="roster" class="roster"></div>
 
   <script src="app.js"></script>
 </body>

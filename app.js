@@ -1,9 +1,11 @@
-/* Fantasy Football War Room — app.js (with CSV uploader)
-   - Client-side CSV import for instant drafts
-   - Download consensus.json built from CSV
+/* Fantasy Football War Room — app.js (features always on)
+   - CSV uploader (client-side) + "Download consensus.json"
+   - Stack Awareness: always ON with scoring boost + visible STACK badge
+   - Scarcity bars: always ON
+   - Opponent bias option removed
    - Logos in Rankings/Recommendations/Board/Roster
-   - Snake draft with CPU auto-drafting between your turns
-   - My Roster auto-fills starters (best ECR), then FLEX, then Bench
+   - Snake draft; CPU auto-drafts between your turns
+   - My Roster auto-fills starters by best ECR, then FLEX, then Bench
 */
 
 const DATA_URL = "./consensus.json";
@@ -20,14 +22,15 @@ let state = {
   rosterSlots: [],
   started: false,
   paused: false,
-  features: { biases:false, stack:false, scarcity:true },
-  biasMap: {},
-  stackBoost: false,
+
+  // Features: always on
+  features: { stack:true, scarcity:true },
+
   dataFlags: { hasProj:false, hasADP:false },
   autoplay: { enabled:true, delayMs:1000, loopId:null },
   boardView: localStorage.getItem("boardView") || "overall",
   posRankCache: {},
-  dataSource: "consensus.json" // or "CSV"
+  dataSource: "consensus.json"
 };
 
 // ---------- helpers ----------
@@ -36,8 +39,8 @@ const show = (id, on)=>{ const n=el(id); if(!n) return; n.classList.toggle("hidd
 
 function teamLogoUrl(abbr){
   if(!abbr) return "";
-  const m = { JAX:"JAC", LA:"LAR", LV:"LV", ARI:"ARI", TB:"TB" }; // light normalization
-  const code = (m[abbr] || abbr).toUpperCase().trim();
+  const map = { JAX:"JAC", LA:"LAR" };
+  const code = (map[abbr] || abbr).toUpperCase().trim();
   return `https://static.www.nfl.com/league/api/clubs/logos/${code}.svg`;
 }
 
@@ -53,6 +56,38 @@ function buildPosRankCache(){
 }
 function getPosRank(p){ const m = state.posRankCache[p.pos]; return m ? m.get(p.id ?? p.player) : undefined; }
 function posRankLabel(p, rank){ return rank ? `${p.pos}${rank}` : ""; }
+
+// Stack detection (for MY team): true if candidate creates QB<->WR/TE stack with any rostered player from same team
+function hasPrimaryStackForMyTeam(candidate){
+  const rosterIdxs = state.teamRosters[state.myTeamIndex] || [];
+  if(!candidate.team || !rosterIdxs.length) return false;
+  for(const idx of rosterIdxs){
+    const pl = state.players[idx];
+    if(!pl || pl.team !== candidate.team) continue;
+    if( (candidate.pos==="QB" && (pl.pos==="WR" || pl.pos==="TE")) ||
+        ((candidate.pos==="WR" || candidate.pos==="TE") && pl.pos==="QB") ){
+      return true;
+    }
+  }
+  return false;
+}
+
+// Additional (smaller) stack synergy for same-team same-pos — used only for scoring
+function stackBonusForTeam(teamIndex, candidate){
+  if(!state.features.stack) return 0;
+  const roster = (state.teamRosters[teamIndex]||[]).map(i=>state.players[i]);
+  let bonus = 0;
+  for(const pl of roster){
+    if(!pl.team || !candidate.team) continue;
+    if(pl.team !== candidate.team) continue;
+    // Primary QB<->WR/TE stack: strong
+    if( (pl.pos==="QB" && (candidate.pos==="WR" || candidate.pos==="TE")) ||
+        (candidate.pos==="QB" && (pl.pos==="WR" || pl.pos==="TE")) ){ bonus += 6; }
+    // Secondary (same-team WR/TE pairs): light
+    else if (pl.pos===candidate.pos && (pl.pos==="WR" || pl.pos==="TE")) { bonus += 2; }
+  }
+  return bonus;
+}
 
 // ---------- data load from consensus.json ----------
 async function loadConsensus() {
@@ -77,7 +112,7 @@ async function loadConsensus() {
     render();
   } catch (e) {
     console.warn("Could not load consensus.json:", e.message);
-    el("lastUpdated").innerHTML = `<span style="color:#f87171; font-weight:bold;">Note:</span> ${e.message}. You can upload a CSV below.`;
+    el("lastUpdated").innerHTML = `<span style="color:#f59e0b; font-weight:bold;">Tip:</span> ${e.message}. You can upload a CSV below.`;
   }
 }
 
@@ -147,8 +182,6 @@ function parseCsvFile(file){
   };
   reader.readAsText(file);
 }
-
-// robust-enough CSV parser for FantasyPros (handles commas & quotes)
 function csvToRows(text){
   const rows = [];
   let i=0, cur="", inQ=false, row=[];
@@ -172,8 +205,6 @@ function csvToRows(text){
   const headers = rows.shift()?.map(h=>h.trim()) || [];
   return { headers, rows };
 }
-
-// map FP headers to our fields
 function mapFantasyProsRow(headers, row){
   const get = (aliases) => {
     for(const a of aliases){
@@ -182,15 +213,13 @@ function mapFantasyProsRow(headers, row){
     }
     return undefined;
   };
-  const player = get(["Player","PLAYER","Name"]);
-  if(!player) return null;
+  const player = get(["Player","PLAYER","Name"]); if(!player) return null;
   const team = (get(["Team","TEAM"])||"").toUpperCase();
   const pos  = (get(["Pos","POS","Position"])||"").toUpperCase().replace(/[^A-Z]/g,"");
   const bye  = parseInt(get(["Bye","BYE","Bye Week"])||"",10) || null;
-  const ecr  = toNum(get(["ECR","Rank","RK"])) ;
-  const adp  = toNum(get(["ADP","Avg. Draft Pos.","AVG"])) ;
-  const tier = toNum(get(["Tier","TIER"])) ;
-  // FantasyPros projections column names vary; try common ones:
+  const ecr  = toNum(get(["ECR","Rank","RK"]));
+  const adp  = toNum(get(["ADP","Avg. Draft Pos.","AVG"]));
+  const tier = toNum(get(["Tier","TIER"]));
   const proj = toNum(get(["FPTS","PROJ","Proj PPR","Projected PPR","Projected Pts","FPTS (PPR)"]));
   return {
     player, team, pos, bye,
@@ -204,7 +233,7 @@ function toNum(x){ const n = Number(String(x||"").replace(/[^0-9.\-]/g,"")); ret
 
 // ---------- init ----------
 function init() {
-  loadConsensus();              // attempt loading existing consensus.json
+  loadConsensus();
   setInterval(loadConsensus, 30*60*1000);
   initCsvUpload();
 
@@ -225,11 +254,6 @@ function init() {
     state.autoplay.enabled = el("autoOthers").checked;
     if (state.autoplay.enabled) startAutoLoop(); else stopAutoLoop();
   };
-
-  // Feature toggles
-  el("toggleBiases")?.addEventListener("change", ()=> state.features.biases = el("toggleBiases").checked );
-  el("toggleStack")?.addEventListener("change", ()=> { state.features.stack = el("toggleStack").checked; state.stackBoost = state.features.stack; });
-  el("toggleScarcity")?.addEventListener("change", ()=> { state.features.scarcity = el("toggleScarcity").checked; renderScarcityBars(); });
 
   // Rankings filters
   el("rankingsSearch").addEventListener("input", renderRankings);
@@ -309,34 +333,17 @@ function advanceAfterPick(shouldRender=true){ state.currentOverall += 1; if (sho
 
 function aiPick(teamIndex){
   const {list}=computeRecommendations(teamIndex); if(!list.length) return;
-  const bias = state.features.biases ? (state.biasMap[teamIndex+1] || "BAL") : "BAL";
-  const weighted = list.slice(0,24).map(p=> ({...p, biasScore: p.score + biasBoost(p, bias) + stackBonusForTeam(teamIndex, p)}));
+  // No opponent biases; rely on tiers, VOR, needs, and stack synergy
+  const weighted = list.slice(0,24).map(p=> ({...p, biasScore: p.score + stackBonusForTeam(teamIndex, p)}));
   weighted.sort((a,b)=>b.biasScore-a.biasScore);
   const k=Math.min(7, weighted.length), weights=Array.from({length:k},(_,i)=>(k-i));
   const sum=weights.reduce((a,b)=>a+b,0); let r=Math.random()*sum, pick=weighted[0];
   for(let i=0;i<k;i++){ r-=weights[i]; if(r<=0){ pick=weighted[i]; break; } }
   draftPlayerById(pick.id,teamIndex);
 }
-function biasBoost(p, bias){
-  const map = {RB:{RB:6,WR:1,QB:0,TE:0}, WR:{WR:6,RB:1,QB:0,TE:0}, QB:{QB:6,WR:0,RB:0,TE:0}, TE:{TE:5,WR:0,RB:0,QB:0}, BAL:{RB:0,WR:0,QB:0,TE:0}};
-  const m = map[bias] || map.BAL; return (m[p.pos]||0);
-}
-function stackBonusForTeam(teamIndex, candidate){
-  if(!state.stackBoost) return 0;
-  const roster = (state.teamRosters[teamIndex]||[]).map(i=>state.players[i]); let bonus = 0;
-  for(const pl of roster){
-    if(!pl.team || !candidate.team) continue;
-    if(pl.team === candidate.team){
-      if( (pl.pos==="QB" && (candidate.pos==="WR" || candidate.pos==="TE")) ||
-          (candidate.pos==="QB" && (pl.pos==="WR" || pl.pos==="TE")) ){ bonus += 5; }
-      else if (pl.pos===candidate.pos && (pl.pos==="WR" || pl.pos==="TE")) { bonus += 2; }
-      else { bonus += 1; }
-    }
-  } return bonus;
-}
 function draftPlayerById(id, teamIndex){
   const poolIdx = state.players.findIndex(p=>p.id===id); if(poolIdx===-1) return;
-  draftByIndex(poolIdx, teamIndex, false);
+  draftByIndex(poolIdx, teamIndex);
 }
 function draftByIndex(poolIdx, teamIndex){
   if(state.players[poolIdx].drafted) return;
@@ -383,9 +390,10 @@ function computeRecommendations(teamIndex){
     const tierBoost = (6 - Math.min(p.tier||6,6)) * 1.2;
     const valueBoost = state.dataFlags.hasADP ? Math.min(Math.max(0,(p.adp||state.currentOverall)-state.currentOverall)/10, 8) : 0;
     const needW = (needs[p.pos]||1.0);
-    let score = (state.dataFlags.hasProj ? vor*needW : 0) + tierBoost + valueBoost;
-    score += stackBonusForTeam(teamIndex, p);
-    return {...p, baseProj, rep, vor, score};
+    // Always include stack synergy
+    const stackSynergy = stackBonusForTeam(teamIndex, p);
+    let score = (state.dataFlags.hasProj ? vor*needW : 0) + tierBoost + valueBoost + stackSynergy;
+    return {...p, baseProj, rep, vor, score, hasMyStack: hasPrimaryStackForMyTeam(p) };
   });
 
   scored.sort((a,b)=>{
@@ -449,12 +457,13 @@ function renderRecs(){
   list.forEach((p)=>{
     const t = p.tier || 6; if(lastTier===null || t!==lastTier){ const sep=document.createElement("div"); sep.className=`tier-divider t${t}`; sep.textContent=`Tier ${t}`; root.appendChild(sep); lastTier=t; }
     const logo = teamLogoUrl(p.team); const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : ""; const projBit = state.dataFlags.hasProj ? ` • Proj ${p.baseProj.toFixed(1)} (rep ${p.rep.toFixed(1)})` : ""; const posRank = getPosRank(p);
+    const stackBadge = p.hasMyStack ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
     const d=document.createElement("div"); d.className="item";
     d.innerHTML = `<div class="flex">
         <div class="flex" style="gap:10px;">
           ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
           <div>
-            <div class="name">${p.player} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span></div>
+            <div class="name">${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span></div>
             <div class="small">${p.team||""} • Bye ${p.bye||"-"} • ECR ${p.ecr||"-"}${projBit}${adpBit}</div>
           </div>
         </div>
@@ -474,12 +483,13 @@ function renderRankings(){
   list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
   list.slice(0,500).forEach(p=>{
     const logo = teamLogoUrl(p.team); const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : ""; const projBit = state.dataFlags.hasProj ? ` • Proj ${Number(p.proj_ppr||0).toFixed(1)}` : ""; const ecr = (p.ecr!=null)? `#${p.ecr}` : "#—"; const posRank = getPosRank(p);
+    const stackBadge = hasPrimaryStackForMyTeam(p) ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
     const d=document.createElement("div"); d.className="item";
     d.innerHTML = `<div class="flex">
       <div class="flex" style="gap:10px;">
         ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
         <div>
-          <div class="name">${p.player} <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span> <span class="badge">${ecr}</span></div>
+          <div class="name">${p.player} ${stackBadge} <span class="badge pos ${p.pos}">${p.pos}${posRank?posRankLabel(p,posRank):""}</span> <span class="badge">${ecr}</span></div>
           <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
         </div>
       </div>
@@ -513,7 +523,8 @@ function renderMyRoster(){
 }
 
 function renderScarcityBars(){
-  show("scarcityWrap", state.features.scarcity); if(!state.features.scarcity){ return; }
+  // always on
+  show("scarcityWrap", true);
   const root = el("scarcityBars"); root.innerHTML="";
   ["QB","RB","WR","TE"].forEach(pos=>{
     const total = state.players.filter(p=>p.pos===pos).length;
@@ -525,3 +536,6 @@ function renderScarcityBars(){
     root.appendChild(bar);
   });
 }
+
+// ---------- boot ----------
+document.addEventListener("DOMContentLoaded", init);

@@ -12,10 +12,10 @@
     <div id="lastUpdated" class="small">Loading…</div>
   </header>
 
-  <!-- Data Source / CSV Uploader -->
-  <section class="panel">
-    <h2>Data</h2>
-    <div class="row wrap">
+  <!-- DATA (accordion, closed by default) -->
+  <details class="panel accordion">
+    <summary>Data</summary>
+    <div class="row wrap mt8">
       <div class="uploader">
         <label for="csvInput" class="button">Upload FantasyPros CSV</label>
         <input id="csvInput" type="file" accept=".csv" />
@@ -24,12 +24,12 @@
       <button id="downloadConsensus" class="secondary">Download consensus.json</button>
       <div class="small muted">Current source: <span id="dataSourceLabel">consensus.json</span></div>
     </div>
-  </section>
+  </details>
 
-  <!-- League Settings -->
-  <section class="panel">
-    <h2>League Settings</h2>
-    <div class="grid grid-5">
+  <!-- LEAGUE SETTINGS (accordion, closed by default) -->
+  <details class="panel accordion">
+    <summary>League Settings</summary>
+    <div class="grid grid-5 mt8">
       <label>Teams <input id="teams" type="number" min="4" max="16" value="12"/></label>
       <label>Rounds <input id="rounds" type="number" min="6" max="24" value="16"/></label>
       <label>Pick Position (1-based) <input id="pickPos" type="number" min="1" max="16" value="5"/></label>
@@ -41,15 +41,17 @@
         </select>
       </label>
     </div>
-    <div class="grid grid-6 mt8">
+    <div class="grid grid-7 mt8">
       <label>QB Slots <input id="qbSlots" type="number" min="0" max="2" value="1"/></label>
       <label>RB Slots <input id="rbSlots" type="number" min="0" max="4" value="2"/></label>
       <label>WR Slots <input id="wrSlots" type="number" min="0" max="4" value="2"/></label>
       <label>TE Slots <input id="teSlots" type="number" min="0" max="2" value="1"/></label>
-      <label>FLEX Slots <input id="flexSlots" type="number" min="0" max="3" value="1"/></label>
-      <label>Bench Slots <input id="benchSlots" type="number" min="0" max="10" value="6"/></label>
+      <label>FLEX (W/R) <input id="flexSlots" type="number" min="0" max="3" value="1"/></label>
+      <label>K Slots <input id="kSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>DEF Slots <input id="defSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>Bench Slots <input id="benchSlots" type="number" min="0" max="12" value="8"/></label>
     </div>
-  </section>
+  </details>
 
   <!-- Draft Controls -->
   <section class="panel">
@@ -91,6 +93,8 @@
           <option value="WR">WR</option>
           <option value="QB">QB</option>
           <option value="TE">TE</option>
+          <option value="K">K</option>
+          <option value="DEF">DEF</option>
         </select>
         <input id="searchName" placeholder="Search name..." />
       </div>

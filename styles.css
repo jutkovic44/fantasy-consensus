@@ -1,83 +1,128 @@
 body {
-  background-color: #121212;
+  background: #111;
   color: white;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
   padding: 20px;
 }
 
 h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
-.tabs {
+.tab-container {
+  display: flex;
   margin-bottom: 10px;
 }
 
 .tab {
-  padding: 8px 12px;
-  margin-right: 5px;
+  padding: 10px 20px;
   background-color: #222;
+  color: #fff;
   border: none;
-  color: white;
   cursor: pointer;
+  margin-right: 5px;
   border-radius: 4px;
 }
 
 .tab.active {
-  background-color: #2d6cdf;
+  background-color: green;
 }
 
 .filters {
   display: flex;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-.player-list,
-.roster {
-  margin-top: 10px;
+input,
+select {
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+}
+
+.main-section {
+  display: flex;
+  gap: 20px;
+}
+
+.list-container,
+.roster-container {
+  flex: 1;
 }
 
 .player-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px dashed #666;
-  padding: 8px 12px;
-  margin-bottom: 8px;
+  background: #1c1c1c;
+  border: 1px dashed #333;
+  padding: 12px;
+  margin-bottom: 10px;
   border-radius: 6px;
-  background-color: #1e1e1e;
 }
 
-.player-card .info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.player-card .badge {
+  display: inline-block;
+  padding: 2px 6px;
+  margin-left: 4px;
+  font-size: 12px;
+  border-radius: 4px;
 }
 
-.player-card .team-logo {
-  height: 28px;
-  width: 28px;
-}
-
-.player-card button {
-  padding: 4px 10px;
-  background-color: #2d6cdf;
-  border: none;
+.badge.tier {
+  background: #333;
   color: white;
+}
+
+.badge.pos {
+  background: #444;
+  color: white;
+}
+
+.badge.ecr {
+  background: #555;
+  color: white;
+}
+
+.badge.bye {
+  background: #888;
+  color: white;
+}
+
+.badge.warning-yellow {
+  background: #ffaa00;
+}
+
+.badge.warning-orange {
+  background: #ff6600;
+}
+
+.badge.warning-red {
+  background: #cc0000;
+}
+
+.draft-button {
+  float: right;
+  padding: 6px 12px;
+  background: #444;
+  color: white;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.slot {
-  margin-bottom: 8px;
-  padding: 10px;
-  border: 1px dashed #888;
-  background-color: #1c1c1c;
-  border-radius: 6px;
+.draft-button:hover {
+  background: #666;
 }
 
-.roster-section {
-  margin-top: 16px;
+.roster-slot {
+  background: #222;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px dashed #555;
+  border-radius: 6px;
 }

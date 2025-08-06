@@ -649,83 +649,36 @@ function computeRecommendations(teamIndex){
 }
 
 // ---------- unified player card ----------
-function playerCardHTML(p) {
+function playerCardHTML(p){
   const logo = teamLogoUrl(p.team);
   const pr = getPosRank(p);
   const t  = p.tier || 6;
-  const ecr = p.ecr != null ? p.ecr : "-";
-  const adp = p.adp != null ? p.adp : "-";
-  const proj = p.baseProj ?? p.proj_ppr ?? null;
-  const projText = proj != null ? Number(proj).toFixed(1) : "-";
-
-  // Color classes for ECR vs ADP diff
-  let ecrAdpClass = "badge";
-  if (p.adp != null && p.ecr != null) {
-    const diff = p.adp - p.ecr;
-    if (diff >= 12) ecrAdpClass += " badge-green";       // value
-    else if (diff >= 6) ecrAdpClass += " badge-yellow";  // mild value
-    else if (diff <= -6) ecrAdpClass += " badge-red";    // overdraft
-  }
-
+  const ecrText = (p.ecr!=null)? `#${p.ecr}` : "#—";
+  const adpBit = (state.dataFlags?.hasADP && p.adp != null) ? ` • ADP ${p.adp}` : "";
+  const projBit = state.dataFlags.hasProj
+      ? (` • Proj ${Number(p.baseProj ?? p.proj_ppr ?? 0).toFixed(1)}`
+         + (p.rep!=null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""))
+      : "";
   const stackBadge = (p.hasMyStack || hasPrimaryStackForMyTeam(p))
       ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
-
   const upgradeBadge = p.upgradeForPos
       ? `<span class="badge" style="background:#22c55e1a;border:1px solid #22c55e;color:#22c55e;">Upgrade Available</span>`
       : "";
-
-  const byeDot = p.byeWarnColor ? byeDotSpan(p.byeWarnColor) : "";
-
-  return `
-    <div class="flex">
-      <div class="flex" style="gap:10px;">
-        ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
-        <div>
-          <div class="name">
-            ${p.player} ${stackBadge} ${upgradeBadge}
-            <span class="badge tier t${t}">T${t}</span>
-            <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span>
-          </div>
-          <div class="small">
-            ${p.team || ""} • Bye ${p.bye || "-"} ${byeDot}
-            <span class="badge">ECR ${ecr}</span>
-            <span class="${ecrAdpClass}">ADP ${adp}</span>
-            <span class="badge">Proj ${projText}</span>
-          </div>
-        </div>
-      </div>
-      <div><button data-pid="${p.id}">Draft</button></div>
-    </div>
-  `;
-}
-
-  // Projections
-  const projBit = state.dataFlags.hasProj
-    ? `<span class="badge">Proj ${Number(p.baseProj ?? p.proj_ppr ?? 0).toFixed(1)}${
-        p.rep != null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""
-      }</span>` : "";
-
-  const stackBadge = (p.hasMyStack || hasPrimaryStackForMyTeam(p))
-    ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
-
-  const upgradeBadge = p.upgradeForPos
-    ? `<span class="badge" style="background:#22c55e1a;border:1px solid #22c55e;color:#22c55e;">Upgrade Available</span>` : "";
-
   const byeDot = p.byeWarnColor ? byeDotSpan(p.byeWarnColor) : "";
 
   return `<div class="flex">
       <div class="flex" style="gap:10px;">
-        ${logo ? `<img src="\${logo}" alt="\${p.team||''}" class="team-logo">` : ""}
+        ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
         <div>
-          <div class="name">\${p.player} \${stackBadge} \${upgradeBadge}
-            <span class="badge tier t\${t}">T\${t}</span>
-            <span class="badge pos \${p.pos}">\${p.pos}\${pr ? posRankLabel(pr) : ""}</span>
-            \${ecrBit} \${adpBit} \${projBit}
+          <div class="name">${p.player} ${stackBadge} ${upgradeBadge}
+            <span class="badge tier t${t}">T${t}</span>
+            <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span>
+            <span class="badge">${ecrText}</span>
           </div>
-          <div class="small">\${p.team || ""} • Bye \${p.bye || "-"} \${byeDot}</div>
+          <div class="small">${p.team||""} • Bye ${p.bye||"-"} ${byeDot}${adpBit}${projBit}</div>
         </div>
       </div>
-      <div><button data-pid="\${p.id}">Draft</button></div>
+      <div><button data-pid="${p.id}">Draft</button></div>
     </div>`;
 }
 

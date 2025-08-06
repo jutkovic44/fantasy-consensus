@@ -1,8 +1,9 @@
-/* Fantasy Football War Room — full app.js (no clock, no compare tool, logos everywhere)
+/* Fantasy Football War Room — full app.js
    - Snake draft logic fixed
    - Auto-drafts others until your pick, waits, then resumes after you pick
    - Every pick is recorded and rendered (no skipping)
-   - Recommendations + Rankings + Draft Board show team logos and rich info
+   - Recommendations + Rankings + Draft Board + My Roster show team logos and rich info
+   - No compare tool, no pick clock
 */
 
 const DATA_URL = "./consensus.json";
@@ -22,7 +23,7 @@ let state = {
 
   // Feature flags
   features: { biases:false, stack:false, scarcity:true }, // compare tool removed
-  biasMap: {},          // optional team biases per CPU (unused unless you enable)
+  biasMap: {},          // optional team biases per CPU (unused unless enabled)
   stackBoost: false,    // derived from features.stack
 
   // Data flags
@@ -550,45 +551,98 @@ function renderRecs(){
   });
 }
 
-// --------- My Roster / Scarcity ----------
+// --------- My Roster (auto-fill by best ECR, with team logos) ----------
 function renderMyRoster(){
-  const root=el("myRoster"); root.innerHTML="";
-  if(!state.teamRosters.length){ root.textContent="Start the draft to see your roster."; return; }
+  const root=el("myRoster"); 
+  root.innerHTML="";
+  if(!state.teamRosters.length){ 
+    root.textContent="Start the draft to see your roster."; 
+    return; 
+  }
 
-  const mine=state.teamRosters[state.myTeamIndex]||[];
-  const players=mine.map(i=>state.players[i]);
+  // Collect my drafted players
+  const mineIdxs = state.teamRosters[state.myTeamIndex] || [];
+  const mine = mineIdxs.map(i=>state.players[i]);
 
-  // Sort by ECR (best first) so starters fill with highest-ranked at each slot
-  players.sort((a,b)=> (a.ecr??9999) - (b.ecr??9999));
+  // Sort by best ECR first so starters fill with the highest-ranked players
+  mine.sort((a,b)=> (a.ecr ?? 9999) - (b.ecr ?? 9999));
 
-  const slots = { QB: state.settings.qb, RB: state.settings.rb, WR: state.settings.wr, TE: state.settings.te };
+  // Target slots
+  const slotsTarget = {
+    QB: state.settings.qb,
+    RB: state.settings.rb,
+    WR: state.settings.wr,
+    TE: state.settings.te,
+    FLEX: state.settings.flex
+  };
+
+  // Build starters & bench
   const starters = { QB:[], RB:[], WR:[], TE:[], FLEX:[] };
   const bench = [];
 
-  for(const p of players){
-    if(slots[p.pos] && starters[p.pos].length < slots[p.pos]){
+  for(const p of mine){
+    // Fill strict position first
+    if (slotsTarget[p.pos] && starters[p.pos].length < slotsTarget[p.pos]) {
       starters[p.pos].push(p);
-    } else if ( (p.pos==="RB" || p.pos==="WR" || p.pos==="TE") && starters.FLEX.length < state.settings.flex ){
-      starters.FLEX.push(p);
-    } else {
-      bench.push(p);
+      continue;
     }
+    // Then FLEX (RB/WR/TE only)
+    if ((p.pos==="RB" || p.pos==="WR" || p.pos==="TE") && starters.FLEX.length < slotsTarget.FLEX){
+      starters.FLEX.push(p);
+      continue;
+    }
+    // Otherwise bench
+    bench.push(p);
   }
 
-  const group=(label,arr)=>{
-    const div=document.createElement("div"); div.innerHTML=`<div class="small">${label}</div>`;
-    arr.forEach(pl=>{ const item=document.createElement("div"); item.className="small"; item.textContent=`${pl.player} (${pl.pos} • ${pl.team||""})`; div.appendChild(item); });
-    root.appendChild(div);
+  // Helper to render a single player row w/ team logo
+  const rowHTML = (pl) => {
+    const logo = teamLogoUrl(pl.team);
+    const posRank = getPosRank(pl);
+    const ecr = (pl.ecr!=null) ? `#${pl.ecr}` : "#—";
+    return `
+      <div class="roster-item">
+        ${logo ? `<img src="${logo}" alt="${pl.team||''}" class="team-logo team-logo-sm">` : ""}
+        <div class="roster-main">
+          <div class="roster-name">${pl.player}</div>
+          <div class="roster-meta">
+            <span class="badge pos ${pl.pos}">${pl.pos}${posRank?posRankLabel(pl,posRank):""}</span>
+            • ${pl.team||""} • Bye ${pl.bye||"-"} • ECR ${ecr}
+          </div>
+        </div>
+      </div>`;
   };
 
-  group("QB", starters.QB);
-  group("RB", starters.RB);
-  group("WR", starters.WR);
-  group("TE", starters.TE);
-  if (state.settings.flex>0) group("FLEX", starters.FLEX);
-  group("Bench", bench);
+  // Helper to render a section (QB/RB/WR/TE/FLEX/Bench)
+  const section = (label, list) => {
+    const wrap = document.createElement("div");
+    wrap.className = "roster-section";
+    const count = list.length;
+    wrap.innerHTML = `<div class="roster-header small">${label}${label!=="Bench" ? ` (${count}/${slotsTarget[label] ?? ""})` : ""}</div>`;
+    if (!count) {
+      const empty = document.createElement("div");
+      empty.className = "roster-empty small";
+      empty.textContent = "—";
+      wrap.appendChild(empty);
+    } else {
+      list.forEach(pl => {
+        const row = document.createElement("div");
+        row.innerHTML = rowHTML(pl);
+        wrap.appendChild(row.firstElementChild);
+      });
+    }
+    root.appendChild(wrap);
+  };
+
+  section("QB", starters.QB);
+  section("RB", starters.RB);
+  section("WR", starters.WR);
+  section("TE", starters.TE);
+  if (state.settings.flex > 0) section("FLEX", starters.FLEX);
+  section("Bench", bench);
 }
 
+// --------- Scarcity ----------
 function renderScarcityBars(){
   show("scarcityWrap", state.features.scarcity);
   if(!state.features.scarcity){ return; }
@@ -597,13 +651,4 @@ function renderScarcityBars(){
     const total = state.players.filter(p=>p.pos===pos).length;
     const remain = state.available.map(i=>state.players[i]).filter(p=>p.pos===pos).length;
     const pct = total? Math.round((remain/total)*100) : 0;
-    const bar = document.createElement("div");
-    bar.className = "scarcity-row";
-    bar.innerHTML = `<div class="scarcity-label">${pos} <span class="small">(${remain}/${total})</span></div>
-      <div class="scarcity-track"><div class="scarcity-fill ${pos}" style="width:${pct}%"></div></div>`;
-    root.appendChild(bar);
-  });
-}
-
-// expose for debugging (optional)
-// window._state = state;
+    const bar = document.createElement("

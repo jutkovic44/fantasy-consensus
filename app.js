@@ -635,29 +635,30 @@ function renderMidPanel(){
     let list = state.available.map(i=>state.players[i]);
     list = applyFilters(list);
     list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
-    list.slice(0,600).forEach((p,idx)=>{
-      const logo = teamLogoUrl(p.team);
-      const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
-      const projBit = state.dataFlags.hasProj ? ` • Proj ${Number(p.proj_ppr||0).toFixed(1)}` : "";
-      const ecr = (p.ecr!=null)? `#${p.ecr}` : "#—";
-      const pr = getPosRank(p);
-      const stackBadge = hasPrimaryStackForMyTeam(p) ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
-      const d=document.createElement("div"); d.className="item";
-      d.innerHTML = `<div class="flex">
-          <div class="flex" style="gap:10px;">
-            ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
-            <div>
-              <div class="name">${idx+1}. ${p.player} ${stackBadge} <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span> <span class="badge">${ecr}</span></div>
-              <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
-            </div>
-          </div>
-          <div><button data-id="${p.id}">Draft</button></div>
-        </div>`;
-      d.querySelector("button").onclick = ()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
-      root.appendChild(d);
-    });
-  }
-}
+    list.slice(0,600).forEach((p)=>{
+  const logo = teamLogoUrl(p.team);
+  const adpBit = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
+  const projBit = state.dataFlags.hasProj ? ` • Proj ${Number(p.proj_ppr||0).toFixed(1)}` : "";
+  const ecr = (p.ecr!=null)? `#${p.ecr}` : "#—";
+  const pr = getPosRank(p);
+  const t = p.tier || 6;
+  const stackBadge = hasPrimaryStackForMyTeam(p) ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
+  
+  const d=document.createElement("div"); d.className="item";
+  d.innerHTML = `<div class="flex">
+      <div class="flex" style="gap:10px;">
+        ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
+        <div>
+          <div class="name">${p.player} ${stackBadge} <span class="badge tier t${t}">T${t}</span> <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span> <span class="badge">${ecr}</span></div>
+          <div class="small">${p.team||""} • Bye ${p.bye||"-"}${adpBit}${projBit}</div>
+        </div>
+      </div>
+      <div><button data-id="${p.id}">Draft</button></div>
+    </div>`;
+  d.querySelector("button").onclick = ()=>{ draftPlayerById(p.id, state.myTeamIndex); advanceAfterPick(); };
+  root.appendChild(d);
+});
+
 
 function renderMyRoster(){
   const root=el("myRoster"); if(!root) return; root.innerHTML="";

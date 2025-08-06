@@ -25,7 +25,6 @@
           <option value="Std">Standard</option>
         </select>
       </label>
-      <label>Pick Clock (sec) <input id="pickClock" type="number" min="10" max="120" value="30"/></label>
     </div>
     <div class="grid grid-6 mt8">
       <label>QB Slots <input id="qbSlots" type="number" min="0" max="2" value="1"/></label>
@@ -44,6 +43,7 @@
       <label><input type="checkbox" id="toggleStack"> Stack Awareness</label>
       <label><input type="checkbox" id="toggleScarcity" checked> Scarcity Bars</label>
       <label><input type="checkbox" id="toggleCompare"> Compare Tool</label>
+      <button id="toggleRankings" class="ml12">Show Rankings</button>
     </div>
   </section>
 
@@ -59,15 +59,15 @@
       <button id="undoPick">Undo</button>
       <button id="exportBoard">Export Board CSV</button>
       <label class="ml12"><input id="autoOthers" type="checkbox" checked> Auto-draft others</label>
-      <label class="ml12">CPU delay (ms) <input id="cpuDelay" type="number" min="200" step="100" value="900"></label>
-      <button id="toggleRankings" class="ml12">Show Rankings</button>
     </div>
-    <div class="row small">Clock: <span id="clock">—</span></div>
   </section>
 
   <section class="panel layout">
     <div class="col">
-      <h3>Board & Picks</h3>
+      <div class="tabs">
+        <button id="tabOverall" class="tab active">Overall</button>
+        <button id="tabByRound" class="tab">By Round</button>
+      </div>
       <div id="board"></div>
     </div>
 

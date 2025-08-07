@@ -12,7 +12,6 @@
     <div id="lastUpdated" class="small">Loading…</div>
   </header>
 
-  <!-- Data Input -->
   <details class="panel accordion">
     <summary>Data</summary>
     <div class="row wrap mt8">
@@ -26,7 +25,6 @@
     </div>
   </details>
 
-  <!-- League Settings -->
   <details class="panel accordion">
     <summary>League Settings</summary>
     <div class="grid grid-5 mt8">
@@ -53,7 +51,6 @@
     </div>
   </details>
 
-  <!-- Draft Controls -->
   <section class="panel">
     <h2>Draft Controls</h2>
     <div class="row">
@@ -66,12 +63,11 @@
       <button id="undoPick">Undo</button>
       <button id="exportBoard">Export Board CSV</button>
       <label class="ml12"><input id="autoOthers" type="checkbox" checked> Auto-draft others</label>
+      <label class="ml12"><input id="manualMode" type="checkbox"> Manual Draft Mode</label>
     </div>
   </section>
 
-  <!-- Main Layout -->
   <section class="panel layout">
-    <!-- Draft Board -->
     <div class="col">
       <div class="tabs">
         <button id="tabOverall" class="tab active">Overall</button>
@@ -80,7 +76,6 @@
       <div id="board"></div>
     </div>
 
-    <!-- Recommendations & Full Rankings -->
     <div class="col">
       <div class="subtabs">
         <button id="subtabRecs" class="subtab active">Recommendations</button>
@@ -101,10 +96,14 @@
       <div id="midList" class="mt8 list"></div>
     </div>
 
-    <!-- My Roster -->
     <div class="col">
       <h3>My Roster</h3>
       <div id="myRoster"></div>
+    </div>
+
+    <div class="col">
+      <h3>All Rosters</h3>
+      <div id="allRosters"></div>
     </div>
   </section>
 

@@ -40,30 +40,31 @@
           <option value="Std">Standard</option>
         </select>
       </label>
-      <label>Manual Draft Mode <input id="manualMode" type="checkbox" /></label>
     </div>
     <div class="grid grid-7 mt8">
-      <label>QB Slots <input id="qbSlots" type="number" value="1"/></label>
-      <label>RB Slots <input id="rbSlots" type="number" value="2"/></label>
-      <label>WR Slots <input id="wrSlots" type="number" value="2"/></label>
-      <label>TE Slots <input id="teSlots" type="number" value="1"/></label>
-      <label>FLEX (W/R) <input id="flexSlots" type="number" value="1"/></label>
-      <label>K Slots <input id="kSlots" type="number" value="1"/></label>
-      <label>DEF Slots <input id="defSlots" type="number" value="1"/></label>
-      <label>Bench Slots <input id="benchSlots" type="number" value="8"/></label>
+      <label>QB Slots <input id="qbSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>RB Slots <input id="rbSlots" type="number" min="0" max="4" value="2"/></label>
+      <label>WR Slots <input id="wrSlots" type="number" min="0" max="4" value="2"/></label>
+      <label>TE Slots <input id="teSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>FLEX Slots <input id="flexSlots" type="number" min="0" max="3" value="1"/></label>
+      <label>K Slots <input id="kSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>DEF Slots <input id="defSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>Bench Slots <input id="benchSlots" type="number" min="0" max="12" value="8"/></label>
+    </div>
+    <div class="mt8">
+      <label><input id="manualMode" type="checkbox"> Manual Draft Mode</label>
     </div>
   </details>
 
   <!-- Draft Controls -->
   <section class="panel">
     <h2>Draft Controls</h2>
-    <div class="row" id="manualControls" style="display:none;">
-      <input id="pickNumber" type="number" placeholder="Pick # from recommendations" />
-      <button id="pickBtn">Pick</button>
-      <button id="startDraft">Start Draft</button>
+    <div class="row">
+      <button id="startMock">Start</button>
+      <button id="nextPick">Next Pick</button>
       <button id="undoPick">Undo</button>
       <button id="exportBoard">Export Board CSV</button>
-      <label><input id="autoOthers" type="checkbox" checked> Auto-draft others</label>
+      <label class="ml12"><input id="autoOthers" type="checkbox" checked> Auto-draft others</label>
     </div>
   </section>
 
@@ -78,7 +79,7 @@
       <div id="board"></div>
     </div>
 
-    <!-- Recommendations & Full Rankings -->
+    <!-- Recommendations / Full Rankings -->
     <div class="col">
       <div class="subtabs">
         <button id="subtabRecs" class="subtab active">Recommendations</button>

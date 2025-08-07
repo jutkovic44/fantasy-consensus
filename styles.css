@@ -1,1 +1,40 @@
-/* full styles.css content copied */
+* { box-sizing: border-box; }
+:root {
+  --bg: #0b0f14; --panel: #0f172a; --muted: #94a3b8; --line: #1f2937; --text: #e2e8f0;
+  --qb: #60a5fa; --rb: #22c55e; --wr: #f97316; --te: #a78bfa; --stack: #f59e0b;
+}
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); }
+header, footer { padding: 16px 20px; background: #111827; border-bottom: 1px solid var(--line); }
+h1 { margin: 0 0 6px 0; font-size: 20px; }
+.panel { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+.grid { display: grid; gap: 10px; }
+.grid-5 { grid-template-columns: repeat(5, minmax(140px, 1fr)); }
+.grid-7 { grid-template-columns: repeat(7, minmax(120px, 1fr)); }
+.mt8 { margin-top: 8px; } .ml12 { margin-left: 12px; }
+.row { display: flex; gap: 10px; align-items: center; }
+.row.wrap { flex-wrap: wrap; }
+input, select, button { padding: 8px 10px; border: 1px solid #334155; border-radius: 6px; background: #111827; color: var(--text); }
+button { cursor: pointer; } button:hover { background: #0b1220; }
+.secondary { background: #0b1220; }
+
+.layout { display: grid; gap: 16px; grid-template-columns: 2fr 1.4fr 1fr; }
+.col { border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: var(--panel); }
+
+.tabs, .subtabs { display: flex; gap: 8px; margin-bottom: 8px; }
+.tab, .subtab { padding: 6px 10px; border: 1px solid #334155; background: #0b1220; border-radius: 6px; cursor: pointer; }
+.tab.active, .subtab.active { outline: 2px solid #475569; }
+
+#board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.pick { border: 1px solid #334155; border-radius: 6px; padding: 8px; background: #0b1220; font-size: 13px; }
+.badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 11px; border: 1px solid #475569; color: #cbd5e1; }
+.badge.pos.QB { border-color: var(--qb); } .badge.pos.RB { border-color: var(--rb); } .badge.pos.WR { border-color: var(--wr); } .badge.pos.TE { border-color: var(--te); }
+.badge.stack { border-color: var(--stack); background: rgba(245, 158, 11, 0.08); }
+
+.list { display: grid; gap: 8px; }
+.item { border: 1px dashed #334155; border-radius: 6px; padding: 8px; background: #0b1220; }
+.small { font-size: 12px; color: var(--muted); }
+.flex { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.name { font-weight: 600; }
+
+/* Accordions */
+details.accordion > summary { cursor: pointer; padding: 8px 0; font-weight: 600; }

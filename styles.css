@@ -44,11 +44,9 @@ button { cursor: pointer; } button:hover { background: #0b1220; }
 .flex { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
 .name { font-weight: 600; }
 
-/* Team logos */
 .team-logo { width: 24px; height: 24px; object-fit: contain; border-radius: 4px; background: #0b1220; border: 1px solid #334155; }
 .team-logo-sm { width: 20px; height: 20px; border-radius: 4px; object-fit: contain; background: #0b1220; border: 1px solid #334155; }
 
-/* My Roster */
 .roster-section { margin-bottom: 10px; }
 .roster-header { color: var(--muted); margin-bottom: 6px; }
 .roster-item { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border: 1px dashed #334155; border-radius: 6px; background: #0b1220; }
@@ -56,14 +54,13 @@ button { cursor: pointer; } button:hover { background: #0b1220; }
 .roster-meta { font-size: 12px; color: var(--muted); }
 .roster-empty { padding: 6px 8px; border: 1px dashed #334155; border-radius: 6px; background: #0b1220; color: var(--muted); }
 
-/* Mobile */
 @media (max-width: 900px){
   .grid-5 { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
   .grid-6 { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
   .layout { grid-template-columns: 1fr; }
   #board { grid-template-columns: repeat(2, 1fr); }
 }
-/* Empty slot visuals (pre-draft and while drafting) */
+
 .slot-empty { opacity: 0.7; border-style: dashed; }
 .slot-empty .slot-dot {
   width: 10px; height: 10px; border-radius: 999px;
@@ -72,7 +69,6 @@ button { cursor: pointer; } button:hover { background: #0b1220; }
 .roster-item.slot-empty { display: flex; align-items: center; gap: 10px; }
 .roster-name.muted, .roster-meta.muted { color: #64748b; }
 
-/* Accordions */
 details.accordion > summary {
   list-style: none;
   cursor: pointer;
@@ -88,17 +84,7 @@ details.accordion > summary::after {
 }
 details.accordion[open] > summary::after { content: "▴"; }
 
-/* Grid with 7 items (adds K/DEF fields) */
 .grid-7 { display: grid; gap: 10px; grid-template-columns: repeat(7, minmax(120px, 1fr)); }
-
-/* Empty slot visuals (keep if not present) */
-.slot-empty { opacity: 0.7; border-style: dashed; }
-.slot-empty .slot-dot {
-  width: 10px; height: 10px; border-radius: 999px;
-  border: 1px solid #475569; background: transparent; margin-right: 8px;
-}
-.roster-item.slot-empty { display: flex; align-items: center; gap: 10px; }
-.roster-name.muted, .roster-meta.muted { color: #64748b; }
 
 .badge-green {
   background: #14532d1a;
@@ -115,4 +101,3 @@ details.accordion[open] > summary::after { content: "▴"; }
   border: 1px solid #ef4444;
   color: #ef4444;
 }
-

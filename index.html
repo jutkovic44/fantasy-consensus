@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,7 +32,7 @@
     <div class="grid grid-5 mt8">
       <label>Teams <input id="teams" type="number" min="4" max="16" value="12"/></label>
       <label>Rounds <input id="rounds" type="number" min="6" max="24" value="16"/></label>
-      <label>Pick Position (1-based) <input id="pickPos" type="number" min="1" max="16" value="5"/></label>
+      <label>Pick Position <input id="pickPos" type="number" min="1" max="16" value="5"/></label>
       <label>Scoring
         <select id="scoring">
           <option value="PPR" selected>PPR</option>
@@ -40,9 +40,7 @@
           <option value="Std">Standard</option>
         </select>
       </label>
-      <label>Manual Draft Mode
-        <input id="manualMode" type="checkbox" />
-      </label>
+      <label class="manual-mode">Manual Draft Mode <input id="manualMode" type="checkbox" /></label>
     </div>
     <div class="grid grid-7 mt8">
       <label>QB Slots <input id="qbSlots" type="number" min="0" max="2" value="1"/></label>
@@ -60,10 +58,11 @@
   <section class="panel">
     <h2>Draft Controls</h2>
     <div class="row">
-      <button id="startDraft">Start Draft</button>
-      <button id="pick">Pick</button>
+      <button id="startMock">Start</button>
+      <button id="nextPick">Pick</button>
       <button id="undoPick">Undo</button>
       <button id="exportBoard">Export Board CSV</button>
+      <label class="ml12 auto-label"><input id="autoOthers" type="checkbox" checked> Auto-draft others</label>
     </div>
   </section>
 

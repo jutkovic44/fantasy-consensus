@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,7 +32,7 @@
     <div class="grid grid-5 mt8">
       <label>Teams <input id="teams" type="number" min="4" max="16" value="12"/></label>
       <label>Rounds <input id="rounds" type="number" min="6" max="24" value="16"/></label>
-      <label>Pick Position (1-based) <input id="pickPos" type="number" min="1" max="16" value="5"/></label>
+      <label>Pick Position <input id="pickPos" type="number" min="1" max="16" value="5"/></label>
       <label>Scoring
         <select id="scoring">
           <option value="PPR" selected>PPR</option>
@@ -57,6 +57,10 @@
   <section class="panel">
     <h2>Draft Controls</h2>
     <div class="row">
+      <label><input type="checkbox" id="manualMode" /> Manual Draft Mode</label>
+      <select id="manualTeamSelect" style="display:none;">
+        <!-- populated via JS -->
+      </select>
       <button id="startMock">Start</button>
       <button id="pauseMock">Pause</button>
       <button id="resumeMock">Resume</button>
@@ -65,7 +69,7 @@
       <button id="autoUntilMyPick">Auto until my pick</button>
       <button id="undoPick">Undo</button>
       <button id="exportBoard">Export Board CSV</button>
-      <label class="ml12"><input id="autoOthers" type="checkbox" checked> Auto-draft others</label>
+      <label class="ml12"><input id="autoOthers" type="checkbox" checked /> Auto-draft others</label>
     </div>
   </section>
 
@@ -96,7 +100,7 @@
           <option value="K">K</option>
           <option value="DEF">DEF</option>
         </select>
-        <input id="searchName" placeholder="Search name..." />
+        <input id="searchName" placeholder="Search name…" />
       </div>
       <div id="midList" class="mt8 list"></div>
     </div>

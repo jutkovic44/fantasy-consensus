@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="app-header">
-    <div>
+  <header class="hdr">
+    <div class="hdr-row">
       <h1>Fantasy Football War Room</h1>
       <div id="lastUpdated" class="small muted">Loading…</div>
     </div>
@@ -23,6 +23,7 @@
         <input id="csvInput" type="file" accept=".csv" />
         <span class="small muted">Drag &amp; drop allowed</span>
       </div>
+
       <button id="downloadConsensus" class="secondary">Download consensus.json</button>
       <div class="small muted">Current source: <span id="dataSourceLabel">consensus.json</span></div>
     </div>
@@ -31,8 +32,7 @@
   <!-- League Settings -->
   <details class="panel accordion">
     <summary>League Settings</summary>
-
-    <div class="grid grid-6 mt8">
+    <div class="grid grid-5 mt8">
       <label>Teams
         <input id="teams" type="number" min="4" max="16" value="12" />
       </label>
@@ -49,10 +49,12 @@
           <option value="Std">Standard</option>
         </select>
       </label>
-      <label>Manual Draft Mode
-        <input id="manualMode" type="checkbox" />
+      <label>Draft Mode
+        <select id="draftMode">
+          <option value="regular" selected>Regular</option>
+          <option value="manual">Manual</option>
+        </select>
       </label>
-      <div></div>
     </div>
 
     <div class="grid grid-7 mt8">
@@ -65,25 +67,23 @@
       <label>DEF Slots <input id="defSlots" type="number" min="0" max="2" value="1" /></label>
       <label>Bench Slots <input id="benchSlots" type="number" min="0" max="12" value="8" /></label>
     </div>
-
-    <p class="tiny muted mt8">
-      <strong>Manual Mode:</strong> You assign every pick to whichever team is on the clock. Only your team’s picks
-      auto-add to the roster panel. <strong>Regular Mode:</strong> Other teams auto-draft; you draft only for your team.
-    </p>
   </details>
+
+  <!-- Helper strip: explains modes -->
+  <section class="panel">
+    <div id="modeHelp" class="small muted">
+      <strong>Regular Mode:</strong> Other teams auto-draft; you draft on your turn.
+    </div>
+  </section>
 
   <!-- Draft Controls -->
   <section class="panel">
     <h2>Draft Controls</h2>
-    <div class="row">
-      <button id="startDraft">Start Draft</button>
+    <div class="row controls">
+      <button id="startMock">Start Draft</button>
       <button id="nextPick">Next Pick</button>
-      <button id="backOne">Back One</button>
-      <button id="undoPick">Undo</button>
-    </div>
-    <div class="tiny muted mt8">
-      In <strong>Regular Mode</strong>, other teams pick automatically. In <strong>Manual Mode</strong>, the “Draft” button on a
-      player assigns that player to the current team on the clock.
+      <button id="prevPick" class="secondary">Back One</button>
+      <button id="undoPick" class="secondary">Undo</button>
     </div>
   </section>
 
@@ -95,20 +95,24 @@
         <button id="tabOverall" class="tab active">Overall</button>
         <button id="tabByRound" class="tab">By Round</button>
       </div>
-      <div id="board" class="board-empty-hint small muted">
-        No picks yet. Start the draft and make your first selection.
+      <div id="board" class="board-empty">
+        <div class="empty-hint">
+          <div class="empty-card dashed">
+            <div class="hint-title">No picks yet. Start the draft and make your first selection.</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Rankings / Recommendations -->
-    <div class="col">
+    <div class="col col-wide">
       <div class="subtabs">
-        <!-- per request: Full Rankings is default/first -->
         <button id="subtabRanks" class="subtab active">Full Rankings</button>
         <button id="subtabRecs" class="subtab">Recommendations</button>
       </div>
+
       <div class="row">
-        <select id="filterPos" aria-label="Filter position">
+        <select id="filterPos">
           <option value="">All</option>
           <option value="RB">RB</option>
           <option value="WR">WR</option>
@@ -117,38 +121,38 @@
           <option value="K">K</option>
           <option value="DEF">DEF</option>
         </select>
-        <input id="searchName" placeholder="Search name..." aria-label="Search name" />
+        <input id="searchName" placeholder="Search name..." />
       </div>
+
       <div id="midList" class="mt8 list"></div>
     </div>
 
-    <!-- Roster -->
+    <!-- My Roster / Team Viewer -->
     <div class="col">
-      <div class="panel-heading">
-        <h3 id="rosterHeaderTeam">Roster — Team 1 (You)</h3>
-        <select id="rosterViewer" class="roster-viewer" aria-label="View Roster"></select>
+      <div class="roster-head">
+        <h3 class="roster-title">Roster</h3>
+        <select id="rosterViewerSelect" title="View another team's roster"></select>
       </div>
       <div id="myRoster"></div>
     </div>
   </section>
 
-  <footer class="app-footer">
+  <!-- Footer -->
+  <footer class="ftr">
     <small>Data URL: <code>./consensus.json</code></small>
   </footer>
 
-  <!-- Draft Results Modal -->
+  <!-- Results Modal -->
   <div id="resultsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="resultsTitle">
     <div class="modal-content">
       <div class="modal-head">
         <h3 id="resultsTitle">Draft Results</h3>
-        <button id="closeResults" class="icon-btn" aria-label="Close">✕</button>
+        <button id="resultsClose" class="icon-btn" aria-label="Close">✕</button>
       </div>
-      <div id="resultsBody" class="modal-body">
-        <!-- JS renders summary/grades table here -->
-      </div>
+      <div id="resultsBody" class="modal-body"></div>
       <div class="modal-foot">
-        <button id="downloadResultsCsv" class="secondary">Download Results CSV</button>
-        <button id="closeResultsFooter">Close</button>
+        <button id="downloadResults" class="secondary">Download Results CSV</button>
+        <button id="resultsOk">OK</button>
       </div>
     </div>
   </div>

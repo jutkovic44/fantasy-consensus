@@ -2,27 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fantasy Football War Room</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <div class="row wrap" style="justify-content: space-between;">
-      <div>
-        <h1>Fantasy Football War Room</h1>
-        <div id="lastUpdated" class="small">Loading…</div>
-      </div>
-      <div class="small muted">
-        Data source: <code id="dataSourceLabel">consensus.json</code>
-      </div>
+  <header class="app-header">
+    <div>
+      <h1>Fantasy Football War Room</h1>
+      <div id="lastUpdated" class="small muted">Loading…</div>
     </div>
   </header>
 
-  <!-- Data Input -->
+  <!-- Data -->
   <details class="panel accordion" open>
     <summary>Data</summary>
     <div class="row wrap mt8">
@@ -32,25 +24,23 @@
         <span class="small muted">Drag &amp; drop allowed</span>
       </div>
       <button id="downloadConsensus" class="secondary">Download consensus.json</button>
-      <div class="small muted">
-        Tip: If <code>consensus.json</code> is present, it will auto-load.
-      </div>
+      <div class="small muted">Current source: <span id="dataSourceLabel">consensus.json</span></div>
     </div>
   </details>
 
   <!-- League Settings -->
-  <details class="panel accordion" open>
+  <details class="panel accordion">
     <summary>League Settings</summary>
 
-    <div class="grid grid-5 mt8">
+    <div class="grid grid-6 mt8">
       <label>Teams
-        <input id="teams" type="number" min="4" max="16" value="12"/>
+        <input id="teams" type="number" min="4" max="16" value="12" />
       </label>
       <label>Rounds
-        <input id="rounds" type="number" min="6" max="24" value="16"/>
+        <input id="rounds" type="number" min="6" max="24" value="16" />
       </label>
       <label>Pick Position (1-based)
-        <input id="pickPos" type="number" min="1" max="16" value="5"/>
+        <input id="pickPos" type="number" min="1" max="16" value="5" />
       </label>
       <label>Scoring
         <select id="scoring">
@@ -59,56 +49,41 @@
           <option value="Std">Standard</option>
         </select>
       </label>
-      <label class="row" style="gap:8px; align-items:center;">
+      <label>Manual Draft Mode
         <input id="manualMode" type="checkbox" />
-        <span>Manual Draft Mode</span>
       </label>
+      <div></div>
     </div>
 
     <div class="grid grid-7 mt8">
-      <label>QB Slots
-        <input id="qbSlots" type="number" min="0" max="2" value="1"/>
-      </label>
-      <label>RB Slots
-        <input id="rbSlots" type="number" min="0" max="4" value="2"/>
-      </label>
-      <label>WR Slots
-        <input id="wrSlots" type="number" min="0" max="4" value="2"/>
-      </label>
-      <label>TE Slots
-        <input id="teSlots" type="number" min="0" max="2" value="1"/>
-      </label>
-      <label>FLEX (W/R)
-        <input id="flexSlots" type="number" min="0" max="3" value="1"/>
-      </label>
-      <label>K Slots
-        <input id="kSlots" type="number" min="0" max="2" value="1"/>
-      </label>
-      <label>DEF Slots
-        <input id="defSlots" type="number" min="0" max="2" value="1"/>
-      </label>
-      <label>Bench Slots
-        <input id="benchSlots" type="number" min="0" max="12" value="8"/>
-      </label>
+      <label>QB Slots <input id="qbSlots" type="number" min="0" max="2" value="1" /></label>
+      <label>RB Slots <input id="rbSlots" type="number" min="0" max="4" value="2" /></label>
+      <label>WR Slots <input id="wrSlots" type="number" min="0" max="4" value="2" /></label>
+      <label>TE Slots <input id="teSlots" type="number" min="0" max="2" value="1" /></label>
+      <label>FLEX (W/R) <input id="flexSlots" type="number" min="0" max="3" value="1" /></label>
+      <label>K Slots <input id="kSlots" type="number" min="0" max="2" value="1" /></label>
+      <label>DEF Slots <input id="defSlots" type="number" min="0" max="2" value="1" /></label>
+      <label>Bench Slots <input id="benchSlots" type="number" min="0" max="12" value="8" /></label>
     </div>
 
-    <div class="small muted mt8">
-      <strong>Manual Draft Mode</strong>: You select every pick for every team; only your picks add to your roster automatically, but all teams’ rosters are filled.  
-      <strong>Regular Mode</strong>: Other teams auto-draft; you draft on your turn.
-    </div>
+    <p class="tiny muted mt8">
+      <strong>Manual Mode:</strong> You assign every pick to whichever team is on the clock. Only your team’s picks
+      auto-add to the roster panel. <strong>Regular Mode:</strong> Other teams auto-draft; you draft only for your team.
+    </p>
   </details>
 
-  <!-- Draft Controls (simplified) -->
+  <!-- Draft Controls -->
   <section class="panel">
     <h2>Draft Controls</h2>
     <div class="row">
-      <button id="startMock" title="Initialize the draft with current settings">Start Draft</button>
-      <button id="nextPick" title="Make the next pick (Manual Mode: you pick for current team; Regular: picks until your team)">Next Pick</button>
-      <button id="prevPick" title="Undo last pick and step back one pick">Back One</button>
-      <button id="undoPick" title="Undo last pick">Undo</button>
+      <button id="startDraft">Start Draft</button>
+      <button id="nextPick">Next Pick</button>
+      <button id="backOne">Back One</button>
+      <button id="undoPick">Undo</button>
     </div>
-    <div class="small muted mt8">
-      In <strong>Regular Mode</strong>, other teams pick automatically. In <strong>Manual Mode</strong>, each “Draft” button assigns the player to the current team on the clock.
+    <div class="tiny muted mt8">
+      In <strong>Regular Mode</strong>, other teams pick automatically. In <strong>Manual Mode</strong>, the “Draft” button on a
+      player assigns that player to the current team on the clock.
     </div>
   </section>
 
@@ -120,17 +95,20 @@
         <button id="tabOverall" class="tab active">Overall</button>
         <button id="tabByRound" class="tab">By Round</button>
       </div>
-      <div id="board"></div>
+      <div id="board" class="board-empty-hint small muted">
+        No picks yet. Start the draft and make your first selection.
+      </div>
     </div>
 
-    <!-- Recommendations & Full Rankings -->
+    <!-- Rankings / Recommendations -->
     <div class="col">
       <div class="subtabs">
-        <button id="subtabRecs" class="subtab active">Recommendations</button>
-        <button id="subtabRanks" class="subtab">Full Rankings</button>
+        <!-- per request: Full Rankings is default/first -->
+        <button id="subtabRanks" class="subtab active">Full Rankings</button>
+        <button id="subtabRecs" class="subtab">Recommendations</button>
       </div>
       <div class="row">
-        <select id="filterPos" title="Filter by position">
+        <select id="filterPos" aria-label="Filter position">
           <option value="">All</option>
           <option value="RB">RB</option>
           <option value="WR">WR</option>
@@ -139,33 +117,39 @@
           <option value="K">K</option>
           <option value="DEF">DEF</option>
         </select>
-        <input id="searchName" placeholder="Search name..." />
+        <input id="searchName" placeholder="Search name..." aria-label="Search name" />
       </div>
       <div id="midList" class="mt8 list"></div>
     </div>
 
-    <!-- My Roster (team switcher) -->
+    <!-- Roster -->
     <div class="col">
-      <div class="roster-header-row">
-        <h3 id="rosterTitle">Roster — Team 1 (You)</h3>
-        <select id="teamSelect" title="View team"></select>
+      <div class="panel-heading">
+        <h3 id="rosterHeaderTeam">Roster — Team 1 (You)</h3>
+        <select id="rosterViewer" class="roster-viewer" aria-label="View Roster"></select>
       </div>
       <div id="myRoster"></div>
     </div>
   </section>
 
-  <footer>
+  <footer class="app-footer">
     <small>Data URL: <code>./consensus.json</code></small>
   </footer>
 
-  <!-- Draft Grades Modal -->
-  <div id="gradesModal" class="modal hidden">
-    <div class="modal-box">
+  <!-- Draft Results Modal -->
+  <div id="resultsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="resultsTitle">
+    <div class="modal-content">
       <div class="modal-head">
-        <h3>Draft Results &amp; Grades</h3>
-        <button id="closeGrades" class="icon-btn" aria-label="Close">×</button>
+        <h3 id="resultsTitle">Draft Results</h3>
+        <button id="closeResults" class="icon-btn" aria-label="Close">✕</button>
       </div>
-      <div id="gradesTableWrap" class="grades-wrap"></div>
+      <div id="resultsBody" class="modal-body">
+        <!-- JS renders summary/grades table here -->
+      </div>
+      <div class="modal-foot">
+        <button id="downloadResultsCsv" class="secondary">Download Results CSV</button>
+        <button id="closeResultsFooter">Close</button>
+      </div>
     </div>
   </div>
 

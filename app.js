@@ -338,7 +338,7 @@ function parseCsvFile(file){
     const text = String(reader.result || "");
     const { headers, rows } = csvToRows(text);
     const players = rows.map(r => mapFantasyProsRow(headers, r)).filter(Boolean);
-    if(!players.length){ alert("Could not parse any rows from CSV. Check the file format."); return; }
+    if(!players.length){ alert("Could not parse any rows from CSV: unexpected format."); return; }
     const label = el("dataSourceLabel"); if (label) label.textContent = "CSV (uploaded)";
     const lu = el("lastUpdated"); if (lu) lu.textContent = `Loaded from CSV: ${file.name} • players: ${players.length}`;
     ingestPlayers(players);
@@ -476,7 +476,7 @@ function populateTeamSelect(){
   for(let i=0;i<T;i++){
     const opt = document.createElement("option");
     opt.value = String(i);
-    opt.textContent = `Team ${i+1}`; // intentionally no "(You)" label per request
+    opt.textContent = `Team ${i+1}`;
     sel.appendChild(opt);
   }
   sel.value = String(Math.max(0, Math.min(T-1, state.viewTeamIndex||0)));
@@ -501,10 +501,8 @@ function startDraft(){
   state.rosterSlots = new Array(T).fill(0).map(()=>({QB:0,RB:0,WR:0,TE:0,FLEX:0,K:0,DEF:0,BEN:0}));
   state.draftPicks = []; state.currentOverall = 1; state.started = true; state.paused=false;
 
-  // UI feedback
   disableStartButton();
 
-  // First paint so the UI changes are visible right away
   render();
   renderDraftStatus();
 
@@ -532,23 +530,27 @@ function autoUntilYourPick(){
     const team = overallToTeam(state.currentOverall);
     if (team === state.myTeamIndex) break; // stop on your pick
     aiPick(team);
-    advanceAfterPick(false);
+    // advance without triggering nested auto:
+    state.currentOverall += 1;
   }
+  render(); renderDraftStatus(); checkDraftEnd();
 }
 
-function nextPick(){ // not exposed in UI; used by manual flow
+function nextPick(){ /* not exposed; kept for completeness */
   const total=state.settings.teams*rosterSizePerTeam();
   if(state.currentOverall>total){ return; }
   const team = overallToTeam(state.currentOverall);
   if(state.settings.manualMode){
-    // In manual mode, user must click "Draft" on a player card.
-    return;
+    return; // user will click a player
   }
   if(team===state.myTeamIndex){
     const {list}=computeRecommendations(team); if(!list.length){ alert("No candidates available."); return; }
-    draftPlayerById(list[0].id, team); advanceAfterPick(); return;
+    draftPlayerById(list[0].id, team);
+    state.currentOverall += 1;
+    autoUntilYourPick();
+    return;
   }
-  aiPick(team); advanceAfterPick();
+  aiPick(team); state.currentOverall += 1; autoUntilYourPick();
 }
 
 function advanceAfterPick(shouldRender=true){
@@ -764,7 +766,6 @@ function playerCardHTML(p){
       : "";
   const byeDot = p.byeWarnColor ? byeDotSpan(p.byeWarnColor) : "";
 
-  // Which team will this draft to?
   const onClock = overallToTeam(state.currentOverall);
   const targetTeam = state.settings.manualMode ? onClock : state.myTeamIndex;
   const canClick = (!state.started) ? false
@@ -805,7 +806,6 @@ function renderBoard(){
       picks.forEach(p=> root.appendChild(boardPickElem(p)));
     }
   } else {
-    // Group by round, show rounds from latest to earliest
     const byRound = new Map();
     picks.forEach(p=>{ if(!byRound.has(p.round)) byRound.set(p.round, []); byRound.get(p.round).push(p); });
     Array.from(byRound.keys()).sort((a,b)=>b-a).forEach(r=>{
@@ -842,6 +842,15 @@ function renderMidPanel(){
           const pid = Number(btn.getAttribute("data-pid"));
           const team = Number(btn.getAttribute("data-team"));
           draftPlayerById(pid, team);
+
+          // AFTER USER PICK IN REGULAR MODE: auto others until your next pick
+          if (!state.settings.manualMode){
+            advanceAfterPick(false);   // increment once for your pick
+            autoUntilYourPick();       // burn through other teams
+            return;                    // render happens inside autoUntilYourPick()
+          }
+
+          // Manual mode just advances one pick
           advanceAfterPick();
         };
       }
@@ -852,7 +861,6 @@ function renderMidPanel(){
     list = applyFilters(list);
     list.sort((a,b)=> (a.ecr??1e9) - (b.ecr??1e9));
 
-    // We need bye warning color for full rankings too (hypothetical add)
     const countsNow = byeOverlapCounts(startersAllForTeam(state.myTeamIndex));
 
     list.slice(0,600).forEach(p=>{
@@ -866,6 +874,14 @@ function renderMidPanel(){
           const pid = Number(btn.getAttribute("data-pid"));
           const team = Number(btn.getAttribute("data-team"));
           draftPlayerById(pid, team);
+
+          // AFTER USER PICK IN REGULAR MODE: auto others until your next pick
+          if (!state.settings.manualMode){
+            advanceAfterPick(false);
+            autoUntilYourPick();
+            return;
+          }
+
           advanceAfterPick();
         };
       }
@@ -907,7 +923,6 @@ function renderMyRoster(){
     TE: state.settings.te, FLEX: state.settings.flex, K: state.settings.k, DEF: state.settings.def
   };
 
-  // Build starters & bench
   const starters = { QB:[], RB:[], WR:[], TE:[], K:[], DEF:[], FLEX:[] };
   const bench = [];
   for(const p of mine){
@@ -916,19 +931,16 @@ function renderMyRoster(){
     bench.push(p);
   }
 
-  // Bench sorting
   bench.sort((a,b)=>{
     const pa = positionOrder(a.pos), pb = positionOrder(b.pos);
     if (pa !== pb) return pa - pb;
     return benchValue(b) - benchValue(a);
   });
 
-  // Map bye overlaps among ALL starters (including FLEX)
   const startersAll = [...starters.QB, ...starters.RB, ...starters.WR, ...starters.TE, ...starters.K, ...starters.DEF, ...starters.FLEX];
   const counts = byeOverlapCounts(startersAll);
 
   const section = (label, list, target, benchMode=false) => {
-    // Positional coverage only
     let headerBadges = "";
     if (!benchMode){
       const fill = list.length;

@@ -1,35 +1,39 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Fantasy Football War Room</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <header class="site-header">
-    <h1>Fantasy Football War Room</h1>
-    <div id="lastUpdated" class="small">Loading…</div>
+  <header>
+    <div class="header-row">
+      <h1>Fantasy Football War Room</h1>
+      <div id="lastUpdated" class="small">Loading…</div>
+    </div>
+    <div id="draftStatus" class="status" style="display:none;"></div>
   </header>
 
-  <!-- Data -->
+  <!-- Data Input -->
   <details class="panel accordion" open>
     <summary>Data</summary>
     <div class="row wrap mt8">
       <div class="uploader">
         <label for="csvInput" class="button">Upload FantasyPros CSV</label>
-        <input id="csvInput" type="file" accept=".csv" />
+        <input id="csvInput" type="file" accept=".csv"/>
         <span class="small muted">Drag & drop allowed</span>
       </div>
-      <button id="downloadConsensus" class="secondary">Download consensus.json</button>
       <div class="small muted">Current source: <span id="dataSourceLabel">consensus.json</span></div>
+      <button id="downloadConsensus" class="secondary">Download consensus.json</button>
     </div>
   </details>
 
   <!-- League Settings -->
-  <details class="panel accordion">
+  <details class="panel accordion" open>
     <summary>League Settings</summary>
-    <div class="grid grid-5 mt8">
+
+    <div class="grid grid-6 mt8">
       <label>Teams <input id="teams" type="number" min="4" max="16" value="12"/></label>
       <label>Rounds <input id="rounds" type="number" min="6" max="24" value="16"/></label>
       <label>Pick Position (1-based) <input id="pickPos" type="number" min="1" max="16" value="5"/></label>
@@ -40,9 +44,11 @@
           <option value="Std">Standard</option>
         </select>
       </label>
-      <label class="checkbox-row">
-        <input id="manualMode" type="checkbox" />
-        Manual Draft Mode
+      <label>Draft Mode
+        <select id="draftMode">
+          <option value="regular" selected>Regular</option>
+          <option value="manual">Manual</option>
+        </select>
       </label>
     </div>
 
@@ -58,42 +64,33 @@
     </div>
   </details>
 
-  <!-- Controls (no visible heading) -->
+  <!-- Minimal Draft Controls -->
   <section class="panel">
-    <nav class="row" aria-label="Draft controls">
-      <button id="startMock">Start Draft</button>
-      <button id="nextPick">Next Pick</button>
-      <button id="prevPick">Back One</button>
-      <button id="undoPick">Undo</button>
-    </nav>
+    <div class="row">
+      <button id="startDraft" class="btn-primary">Start Draft</button>
+      <button id="undoPick" class="btn-ghost">Undo Last Pick</button>
+    </div>
   </section>
 
-  <!-- Main Layout – fixed 50 / 25 / 25 distribution -->
-  <section class="panel layout layout-50-25-25">
-
+  <!-- Main Layout -->
+  <section class="panel layout">
     <!-- Draft Board -->
-    <div class="col">
+    <div class="col board-col">
       <div class="tabs">
         <button id="tabOverall" class="tab active">Overall</button>
         <button id="tabByRound" class="tab">By Round</button>
       </div>
-      <div id="board" class="board-empty">
-        <div class="placeholder">
-          <div class="placeholder-box">
-            <p>No picks yet. Start the draft and make your first selection.</p>
-          </div>
-        </div>
-      </div>
+      <div id="board" class="board"></div>
     </div>
 
     <!-- Rankings / Recommendations -->
-    <div class="col">
+    <div class="col mid-col">
       <div class="subtabs">
         <button id="subtabRanks" class="subtab active">Full Rankings</button>
         <button id="subtabRecs" class="subtab">Recommendations</button>
       </div>
       <div class="row">
-        <select id="filterPos" aria-label="Filter by position">
+        <select id="filterPos">
           <option value="">All</option>
           <option value="RB">RB</option>
           <option value="WR">WR</option>
@@ -102,31 +99,35 @@
           <option value="K">K</option>
           <option value="DEF">DEF</option>
         </select>
-        <input id="searchName" placeholder="Search name..." aria-label="Search by name" />
+        <input id="searchName" placeholder="Search name…"/>
       </div>
       <div id="midList" class="mt8 list"></div>
     </div>
 
-    <!-- Roster -->
-    <div class="col">
+    <!-- Roster Viewer -->
+    <div class="col roster-col">
       <div class="roster-head">
         <h3>Roster</h3>
-        <select id="rosterViewSelect" aria-label="View roster for team"></select>
+        <select id="viewTeamSelect"></select>
       </div>
       <div id="myRoster"></div>
     </div>
   </section>
 
-  <!-- Results Modal (hidden until draft ends) -->
-  <div id="resultsModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="resultsTitle">
-    <div class="modal__dialog">
-      <div class="modal__header">
-        <h3 id="resultsTitle">Draft Results</h3>
-        <button class="icon-btn" id="resultsClose" aria-label="Close results">✕</button>
+  <!-- Results Modal -->
+  <div id="resultsModal" class="modal" style="display:none;">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Draft Results</h3>
       </div>
-      <div id="resultsBody" class="modal__body"></div>
-      <div class="modal__footer">
-        <button id="resultsOk" class="button">Done</button>
+      <div class="modal-body">
+        <div id="resultsSummary" class="results-summary"></div>
+        <div id="resultsTableWrap" class="results-table-wrap"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="resultsOk" class="btn-primary">OK</button>
+        <button id="resultsClose" class="btn-ghost">Close</button>
       </div>
     </div>
   </div>

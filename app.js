@@ -1,61 +1,74 @@
-/* Fantasy Football War Room — Full App
-   - Regular / Manual Draft modes (League Settings)
-   - Minimal controls (Start Draft, Undo)
-   - Status bar updates while drafting
-   - Rankings visible pre-draft; Recommendations available
-   - Player cards: ADP + Proj (+ rep), stack badge, upgrade badge, bye overlap dot
-   - Board shows most recent pick first
-   - Roster viewer dropdown to view any team's roster
-   - End-of-draft grades modal for all teams
+/* Fantasy Football War Room — FULL app.js (unabridged)
+   Key features:
+   - Manual vs Regular draft modes
+   - Rankings shown pre-draft (default "Full Rankings")
+   - Rec engine: VOR + need + scarcity + ADP + tier + SoS + Health + conditional stacking + upside
+   - Bye overlap dots
+   - Draft board newest-first
+   - View any team's roster via dropdown
+   - Draft ends when all teams reach total roster size; show results modal with grades
 */
 
 const DATA_URL = "./consensus.json";
 
-/* ====== TUNABLE WEIGHTS ====== */
+/* ====== WEIGHTS & CONSTANTS ====== */
 const WEIGHTS = {
-  vor: 1.0,
+  // core value
+  vor: 1.0,           // projection - replacement baseline
   tierBoost: 1.0,
-  valueVsADP: 0.8,
+  valueVsADP: 0.7,
 
-  need: 0.9,
-  scarcity: 0.7,
-  stackSynergy: 1.0,
-  byePenalty: -0.5,      // same-position starter bye overlap (kept small)
+  // roster/draft dynamics
+  need: 1.0,
+  scarcity: 0.6,
+  stackSynergy: 0.45, // softened; also gated by proximity (STACK_PROXIMITY_THRESHOLD)
+  byePenalty: -0.5,
   lateUpside: 0.6,
+
+  // NEW signals
+  sos: 0.6,           // strength of schedule (easier = better)
+  health: -0.8,       // injury/availability risk penalty
+  ecrAssist: 0.35,    // nudge if ECR agrees when VOR ties
 
   lateRoundStartPct: 0.5,
   deepRoundStartPct: 0.75
 };
 
+// Stacking only if candidate is near best non-stack option
+const STACK_PROXIMITY_THRESHOLD = 0.08; // within 8% of best base score
+
 const TEAM_WIDE_BYE_DUP_PENALTY = -1.5; // small nudge away from team-wide overlaps
 const UPGRADE_ECR_GAP = 5;
 
+/* ====== GLOBAL STATE ====== */
 let state = {
   settings: {
-    teams: 12, rounds: 16, pickPos: 5, scoring: "PPR",
+    teams: 12,
+    rounds: 16,
+    pickPos: 5,
+    scoring: "PPR",
     qb: 1, rb: 2, wr: 2, te: 1, flex: 1, k: 1, def: 1, bench: 8,
-    manualMode: false
+    mode: "regular" // "regular" | "manual"
   },
 
   players: [],
-  available: [],
-  draftPicks: [],
+  available: [],            // pool indexes into players
+  draftPicks: [],           // { overall, round, pickInRound, team, playerIdx }
   currentOverall: 1,
 
   myTeamIndex: 0,
-  viewTeamIndex: 0,
-  teamRosters: [],
-  rosterSlots: [],
+  teamRosters: [],          // array of arrays of pool indexes
+  rosterSlots: [],          // counts filled per team {QB,RB,WR,TE,FLEX,K,DEF,BEN}
   started: false,
-  paused: false,
+  paused: false,            // unused for now (kept for compatibility)
 
   features: { stack:true },
 
   dataFlags: { hasProj:false, hasADP:false },
-  autoplay: { enabled:true, delayMs:120 },
+  autoplay: { enabled:true, delayMs:650, loopId:null }, // Regular mode uses burst loops, no checkbox
 
   boardView: localStorage.getItem("boardView") || "overall",
-  midTab: localStorage.getItem("midTab") || "ranks",
+  midTab: localStorage.getItem("midTab") || "ranks",   // default Full Rankings pre-draft
 
   filters: {
     pos: (localStorage.getItem("filterPos") || "").toUpperCase(),
@@ -63,12 +76,14 @@ let state = {
   },
 
   posRankCache: {},
-  dataSource: "consensus.json"
+  dataSource: "consensus.json",
+
+  // roster viewing
+  viewTeamIndex: 0
 };
 
-// ---------- helpers ----------
+/* ====== HELPERS ====== */
 const el = id => document.getElementById(id);
-const fmt1 = (x) => Number(x||0).toFixed(1);
 
 function normalizeTeam(abbr){
   if(!abbr) return "";
@@ -94,7 +109,8 @@ function teamLogoUrl(abbr){
 function buildPosRankCache(){
   state.posRankCache = {};
   ["QB","RB","WR","TE","K","DEF"].forEach(pos=>{
-    const arr = state.players.filter(p=>p.pos===pos && p.ecr!=null)
+    const arr = state.players
+      .filter(p=>p.pos===pos && p.ecr!=null)
       .sort((a,b)=>(a.ecr)-(b.ecr));
     const map = new Map();
     arr.forEach((p,idx)=> map.set(p.id ?? p.player, idx+1));
@@ -104,7 +120,7 @@ function buildPosRankCache(){
 function getPosRank(p){ const m = state.posRankCache[p.pos]; return m ? m.get(p.id ?? p.player) : undefined; }
 function posRankLabel(rank) { return rank ? String(rank) : ""; }
 
-// --- draft math
+/* ====== DRAFT MATH ====== */
 function overallToTeam(overall){
   const T=state.settings.teams; const r=Math.ceil(overall/T); const pos=overall-(r-1)*T;
   return (r%2===1) ? (pos-1) : (T - pos);
@@ -112,15 +128,12 @@ function overallToTeam(overall){
 function getRound(overall){ return Math.ceil(overall/state.settings.teams); }
 function pickInRound(overall){ const r=getRound(overall), start=(r-1)*state.settings.teams+1; return overall-start+1; }
 function draftProgressPct(){
-  const total = state.settings.teams * rosterSizePerTeam();
-  return Math.min(1, (state.draftPicks.length)/Math.max(1,total));
-}
-function rosterSizePerTeam(){
-  const s=state.settings;
-  return (s.qb+s.rb+s.wr+s.te+s.flex+s.k+s.def) + s.bench;
+  const total = state.settings.teams * totalRosterSize();
+  // progress by picks relative to total player slots (more intuitive than rounds)
+  return Math.min(1, (state.draftPicks.length) / Math.max(1,total));
 }
 
-// ---------- stacks / bye / needs ----------
+/* ====== STACKS / BYE / NEEDS ====== */
 function hasPrimaryStackForMyTeam(candidate){
   const rosterIdxs = state.teamRosters[state.myTeamIndex] || [];
   const candTeam = normalizeTeam(candidate.team);
@@ -149,7 +162,7 @@ function stackBonusForTeam(teamIndex, candidate){
   return bonus;
 }
 
-// Same-position bye overlap (minor)
+/* same-position bye overlap (minor) */
 function byeOverlapPenalty(teamIndex, candidate){
   const s = state.settings;
   const startersTarget = { QB:s.qb, RB:s.rb, WR:s.wr, TE:s.te, K:s.k, DEF:s.def };
@@ -171,7 +184,7 @@ function byeOverlapPenalty(teamIndex, candidate){
   return fillingLastStarter ? -3 : -1.5;
 }
 
-/* ===== Team-wide starters & bye helpers ===== */
+/* starters helpers */
 function startersByPosForTeam(teamIndex){
   const s = state.settings;
   const targets = { QB:s.qb, RB:s.rb, WR:s.wr, TE:s.te, K:s.k, DEF:s.def };
@@ -206,13 +219,21 @@ function byeDotColor(count){
 function byeDotSpan(color){
   return `<span style="display:inline-block;width:8px;height:8px;border-radius:9999px;background:${color};margin-left:6px;vertical-align:middle"></span>`;
 }
+function wouldCreateOverlapColor(teamIndex, candidate){
+  if (candidate?.bye == null) return null;
+  const starters = startersAllForTeam(teamIndex);
+  const counts = byeOverlapCounts(starters);
+  const current = counts.get(candidate.bye) || 0;
+  const resulting = current + 1;
+  return byeDotColor(resulting); // null if <2
+}
 function candidateSharesTeamBye(teamIndex, candidate){
   if (!candidate.bye) return false;
   const starters = startersAllForTeam(teamIndex);
   return starters.some(p => (p?.bye||-1) === candidate.bye);
 }
 
-// Positional scarcity boost
+/* scarcity boost */
 function computeScarcityBoost(p){
   const total = state.players.filter(x=>x.pos===p.pos).length;
   const remain = state.available.map(i=>state.players[i]).filter(x=>x.pos===p.pos).length;
@@ -223,7 +244,7 @@ function computeScarcityBoost(p){
   return scarcity * posFactor * 4;
 }
 
-// Need weighting
+/* needs */
 function rosterNeeds(teamIndex){
   const s=state.settings, slots=state.rosterSlots[teamIndex]||{QB:0,RB:0,WR:0,TE:0,FLEX:0,K:0,DEF:0,BEN:0};
   const target={QB:s.qb,RB:s.rb,WR:s.wr,TE:s.te,K:s.k,DEF:s.def}, need={};
@@ -234,11 +255,11 @@ function rosterNeeds(teamIndex){
   return need;
 }
 
-// Late-round upside bonus
+/* upside */
 function lateRoundUpsideBonus(p){
   const pct = draftProgressPct();
   if (pct < WEIGHTS.lateRoundStartPct) return 0;
-  const discount = (state.dataFlags.hasADP && p.adp) ? Math.max(0, p.adp - (state.currentOverall||1)) : 0;
+  const discount = (state.dataFlags.hasADP && p.adp) ? Math.max(0, p.adp - (state.draftPicks.length+1)) : 0;
   if (discount <= 0) return 0;
   const tier = p.tier || 6;
   const tierLean = Math.max(0, (tier-2));
@@ -246,7 +267,35 @@ function lateRoundUpsideBonus(p){
   return (Math.log10(1 + discount) * (0.75 + 0.25*tierLean)) * deep;
 }
 
-// ---------- data load ----------
+/* ====== SOS & HEALTH ====== */
+function normalizeSOS(raw) {
+  if (raw == null || !isFinite(raw)) return 0;
+  const v = Number(raw);
+  if (Math.abs(v) <= 5) return Math.max(-1, Math.min(1, v / 2.5));
+  const centered = (v - 50) / 50; // -1..+1
+  return Math.max(-1, Math.min(1, centered));
+}
+function getSOSFactor(p) { return normalizeSOS(p.sos); }
+
+function healthRiskPenalty(p) {
+  let risk = p.injury_risk;
+  if (risk == null) risk = 0;
+  if (risk > 1) risk = Math.min(1, risk/100);
+
+  const missed = Math.max(0, Number(p.games_missed||0));
+  const missedFactor = Math.min(1, missed / 6); // 6+ missed games ~ full signal
+
+  const s = String(p.status||"").toUpperCase();
+  let statusPen = 0;
+  if (s === "Q") statusPen = 0.15;
+  if (s === "D") statusPen = 0.35;
+  if (s === "O" || s === "IR" || s === "PUP") statusPen = 0.6;
+
+  const combined = 0.6*risk + 0.25*missedFactor + 0.15*statusPen;
+  return Math.max(0, Math.min(1, combined)); // 0..1 where 1 = very risky
+}
+
+/* ====== DATA LOAD ====== */
 async function loadConsensus() {
   const lastUpdatedEl = el("lastUpdated");
   const srcLabel = el("dataSourceLabel");
@@ -258,11 +307,10 @@ async function loadConsensus() {
 
     state.dataSource = "consensus.json";
     if (srcLabel) srcLabel.textContent = "consensus.json";
-    lastUpdatedEl.textContent = `Last updated: ${data.updated_at || "unknown"} • players: ${data.players.length}`;
+    if (lastUpdatedEl) lastUpdatedEl.textContent = `Last updated: ${data.updated_at || "unknown"} • players: ${data.players.length}`;
 
     ingestPlayers(data.players);
     render();
-    renderDraftStatus();
   } catch (e) {
     console.warn("Could not load consensus.json:", e.message);
     if (lastUpdatedEl)
@@ -285,7 +333,13 @@ function ingestPlayers(raw){
       adp: p.adp ?? p.ADP ?? null,
       proj_ppr: p.proj_ppr ?? p.Projection_PPR ?? p.proj ?? null,
       tier: p.tier ?? p.Tier ?? null,
-      bye: p.bye ?? p.Bye ?? p.bye_week ?? null
+      bye: p.bye ?? p.Bye ?? p.bye_week ?? null,
+
+      // Optional fields
+      sos: toNum(p.sos ?? p.SOS) ?? null,
+      injury_risk: toNum(p.injury_risk ?? p.InjuryRisk) ?? null,
+      games_missed: toNum(p.games_missed ?? p.GamesMissed) ?? 0,
+      status: String(p.status ?? p.Status ?? "").trim().toUpperCase()
     };
   }).filter(p => allowed.has(p.pos));
 
@@ -293,10 +347,9 @@ function ingestPlayers(raw){
   state.dataFlags.hasProj = state.players.some(p=> (p.proj_ppr||0) > 0);
   state.dataFlags.hasADP  = state.players.some(p=> p.adp !== null && p.adp !== undefined);
   buildPosRankCache();
-  populateTeamSelect();
 }
 
-// ---------- CSV Upload ----------
+/* ====== CSV UPLOAD ====== */
 function initCsvUpload(){
   const input = el("csvInput");
   if (input){
@@ -338,7 +391,7 @@ function parseCsvFile(file){
     const text = String(reader.result || "");
     const { headers, rows } = csvToRows(text);
     const players = rows.map(r => mapFantasyProsRow(headers, r)).filter(Boolean);
-    if(!players.length){ alert("Could not parse any rows from CSV: unexpected format."); return; }
+    if(!players.length){ alert("Could not parse any rows from CSV. Check the file format."); return; }
     const label = el("dataSourceLabel"); if (label) label.textContent = "CSV (uploaded)";
     const lu = el("lastUpdated"); if (lu) lu.textContent = `Loaded from CSV: ${file.name} • players: ${players.length}`;
     ingestPlayers(players);
@@ -385,55 +438,55 @@ function mapFantasyProsRow(headers, row){
   const adp  = toNum(get(["ADP","Avg. Draft Pos.","AVG"]));
   const tier = toNum(get(["Tier","TIER"]));
   const proj = toNum(get(["FPTS","PROJ","Proj PPR","Projected PPR","Projected Pts","FPTS (PPR)"]));
+
+  // Optional new columns (OK if missing)
+  const sos       = toNum(get(["sos","SOS"]));
+  const injury    = toNum(get(["injury_risk","InjuryRisk","Injury Risk"]));
+  const missed    = toNum(get(["games_missed","GamesMissed","Games Missed"]));
+  const status    = (get(["status","Status"]) || "").toUpperCase();
+
   return {
     player, team, pos, bye,
     ecr: isFinite(ecr)? ecr : null,
     adp: isFinite(adp)? adp : null,
     tier: isFinite(tier)? tier : null,
-    proj_ppr: isFinite(proj)? proj : null
+    proj_ppr: isFinite(proj)? proj : null,
+    sos: isFinite(sos) ? sos : null,
+    injury_risk: isFinite(injury)? injury : null,
+    games_missed: isFinite(missed)? missed : 0,
+    status
   };
 }
 function toNum(x){ const n = Number(String(x||"").replace(/[^0-9.\-]/g,"")); return isFinite(n)? n : null; }
 
-// ---------- init ----------
+/* ====== INIT ====== */
 document.addEventListener("DOMContentLoaded", init);
 function init() {
-  syncSettings();
-  state.myTeamIndex = Math.max(0, (state.settings.pickPos || 1) - 1);
-  state.viewTeamIndex = state.myTeamIndex;
-
   loadConsensus();
   setInterval(loadConsensus, 30*60*1000);
   initCsvUpload();
 
-  // Settings inputs...
-  ["teams","rounds","pickPos","scoring","draftMode",
-   "qbSlots","rbSlots","wrSlots","teSlots","flexSlots","kSlots","defSlots","benchSlots"]
-    .forEach(id=> el(id)?.addEventListener("input", ()=>{
-      syncSettings();
-      populateTeamSelect();
-      renderDraftStatus();
-    }));
+  const ids = ["teams","rounds","pickPos","scoring",
+   "qbSlots","rbSlots","wrSlots","teSlots","flexSlots","kSlots","defSlots","benchSlots","draftMode"];
+  ids.forEach(id=> el(id)?.addEventListener("input", syncSettings));
 
-  // Draft controls (support both ids just in case)
-  (el("startDraft") || el("startMock"))?.addEventListener("click", startDraft);
-  el("undoPick")?.addEventListener("click", undoPick);
+  // Start buttons (support both old/new IDs)
+  el("startDraft")?.addEventListener("click", startDraft);
+  el("startMock")?.addEventListener("click", startDraft);
 
   // Board tabs
   el("tabOverall")?.addEventListener("click", () => { state.boardView="overall"; localStorage.setItem("boardView","overall"); updateBoardTabs(); renderBoard(); });
   el("tabByRound")?.addEventListener("click", () => { state.boardView="round";   localStorage.setItem("boardView","round");   updateBoardTabs(); renderBoard(); });
   updateBoardTabs();
 
-  // Subtabs (Rankings/Recs) — default to Full Rankings
-  state.midTab = "ranks";
-  localStorage.setItem("midTab", state.midTab);
+  // Subtabs (default "ranks" pre-draft)
   document.querySelector('.subtabs')?.addEventListener('click', (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
     if (t.id === 'subtabRecs' || t.id === 'subtabRanks') {
       state.midTab = (t.id === 'subtabRecs') ? 'recs' : 'ranks';
-      updateMidTabs();
       localStorage.setItem('midTab', state.midTab);
+      updateMidTabs();
       renderMidPanel();
     }
   });
@@ -452,206 +505,183 @@ function init() {
     renderMidPanel();
   });
 
-  // Roster viewer
-  el("viewTeamSelect")?.addEventListener("change", (e) => {
+  // Roster viewer dropdown
+  el("rosterTeamSelect")?.addEventListener("change", (e)=>{
     const v = Number(e.target.value || 0);
-    state.viewTeamIndex = Math.max(0, Math.min(state.settings.teams-1, v));
-    renderMyRoster();
+    if (Number.isFinite(v) && v >= 0 && v < state.settings.teams){
+      state.viewTeamIndex = v;
+      renderMyRoster();
+    }
   });
-  populateTeamSelect();
 
-  // Modal buttons
-  el("resultsClose")?.addEventListener("click", closeResultsModal);
-  el("resultsOk")?.addEventListener("click", closeResultsModal);
+  // default the dropdown once teams known
+  state.viewTeamIndex = state.myTeamIndex;
+
+  // reflect saved filters on first paint
+  const posSel = el("filterPos"); if (posSel) posSel.value = state.filters.pos;
+  const qInput = el("searchName"); if (qInput) qInput.value = state.filters.q;
 
   render();
-  renderDraftStatus();
 }
 
-function populateTeamSelect(){
-  const sel = el("viewTeamSelect");
-  if(!sel) return;
-  const T = Number(el("teams")?.value || state.settings.teams || 12);
-  sel.innerHTML = "";
-  for(let i=0;i<T;i++){
-    const opt = document.createElement("option");
-    opt.value = String(i);
-    opt.textContent = `Team ${i+1}`;
-    sel.appendChild(opt);
-  }
-  sel.value = String(Math.max(0, Math.min(T-1, state.viewTeamIndex||0)));
+function syncSettings(){
+  const s=state.settings;
+  s.teams=+el("teams")?.value||12;
+  s.rounds=+el("rounds")?.value||16;
+  s.pickPos=+el("pickPos")?.value||5;
+  s.scoring=el("scoring")?.value || "PPR";
+  s.qb=+el("qbSlots")?.value||1;
+  s.rb=+el("rbSlots")?.value||2;
+  s.wr=+el("wrSlots")?.value||2;
+  s.te=+el("teSlots")?.value||1;
+  s.flex=+el("flexSlots")?.value||1;
+  s.k=+el("kSlots")?.value||1;
+  s.def=+el("defSlots")?.value||1;
+  s.bench=+el("benchSlots")?.value||8;
+  s.mode=(el("draftMode")?.value||"regular");
 }
 
-function syncSettings(){ const s=state.settings;
-  s.teams=+el("teams").value||12; s.rounds=+el("rounds").value||16; s.pickPos=+el("pickPos").value||5;
-  s.scoring=el("scoring").value; s.qb=+el("qbSlots").value||1; s.rb=+el("rbSlots").value||2; s.wr=+el("wrSlots").value||2;
-  s.te=+el("teSlots").value||1; s.flex=+el("flexSlots").value||1; s.k=+el("kSlots").value||1; s.def=+el("defSlots").value||1; s.bench=+el("benchSlots").value||8;
-  s.manualMode = (el("draftMode")?.value === "manual");
+/* ====== DRAFT ENGINE ====== */
+function totalRosterSize(){
+  const s=state.settings;
+  return s.qb+s.rb+s.wr+s.te+s.k+s.def+s.flex + s.bench; // all starters + bench
+}
+function totalDraftPicksNeeded(){
+  return totalRosterSize() * state.settings.teams;
 }
 
-// ---------- draft engine ----------
 function startDraft(){
   if (!state.players.length){ alert("Load players first (consensus.json or upload CSV)."); return; }
-
-  // reset structures
-  state.myTeamIndex = Math.max(0, state.settings.pickPos - 1);
+  syncSettings();
+  state.myTeamIndex = Math.max(0, Math.min(state.settings.teams-1, (state.settings.pickPos|0)-1));
   state.viewTeamIndex = state.myTeamIndex;
+
   const T = state.settings.teams;
   state.teamRosters = new Array(T).fill(0).map(()=>[]);
   state.rosterSlots = new Array(T).fill(0).map(()=>({QB:0,RB:0,WR:0,TE:0,FLEX:0,K:0,DEF:0,BEN:0}));
-  state.draftPicks = []; state.currentOverall = 1; state.started = true; state.paused=false;
+  state.draftPicks = [];
+  state.currentOverall = 1;
+  state.started = true;
 
-  disableStartButton();
+  render(); // show empty board + rankings
 
-  render();
-  renderDraftStatus();
-
-  // If Regular mode, auto-draft others until it's your pick
-  if(!state.settings.manualMode){
-    autoUntilYourPick();
-    render();
-    renderDraftStatus();
+  if (state.settings.mode === "regular"){
+    autoUntilMyPick();
+  } else {
+    // manual: user makes every selection
+    flashOnTheClock();
   }
 }
 
-function disableStartButton(){
-  const btn = document.getElementById("startDraft") || document.getElementById("startMock");
-  if (btn){
-    btn.disabled = true;
-    btn.textContent = "Drafting…";
-    btn.style.opacity = "0.7";
-    btn.style.cursor = "default";
-  }
+function currentTeamOnClock(){
+  return overallToTeam(state.currentOverall);
 }
 
-function autoUntilYourPick(){
-  const total=state.settings.teams*rosterSizePerTeam();
-  while(state.currentOverall<=total){
-    const team = overallToTeam(state.currentOverall);
-    if (team === state.myTeamIndex) break; // stop on your pick
-    aiPick(team);
-    // advance without triggering nested auto:
-    state.currentOverall += 1;
-  }
-  render(); renderDraftStatus(); checkDraftEnd();
-}
-
-function nextPick(){ /* not exposed; kept for completeness */
-  const total=state.settings.teams*rosterSizePerTeam();
-  if(state.currentOverall>total){ return; }
-  const team = overallToTeam(state.currentOverall);
-  if(state.settings.manualMode){
-    return; // user will click a player
-  }
-  if(team===state.myTeamIndex){
-    const {list}=computeRecommendations(team); if(!list.length){ alert("No candidates available."); return; }
-    draftPlayerById(list[0].id, team);
-    state.currentOverall += 1;
-    autoUntilYourPick();
+function handleUserDraft(playerId){
+  if (!state.started) { startDraft(); } // let them draft to start
+  const team = currentTeamOnClock();
+  if (state.settings.mode === "regular" && team !== state.myTeamIndex){
+    // In regular mode you can only draft for your team when it's your pick
+    alert("It's not your pick. In Regular mode, other teams auto-draft.");
     return;
   }
-  aiPick(team); state.currentOverall += 1; autoUntilYourPick();
+  draftPlayerById(playerId, team);
+  advanceAfterPick();
+  if (isDraftComplete()){
+    showResultsModal();
+    return;
+  }
+
+  if (state.settings.mode === "regular"){
+    autoUntilMyPick();
+  } else {
+    flashOnTheClock();
+  }
+}
+
+function autoUntilMyPick(){
+  // Auto-draft until my turn or draft completes
+  while(!isDraftComplete()){
+    const team = currentTeamOnClock();
+    if (team === state.myTeamIndex) break;
+    aiPick(team);
+    advanceAfterPick(false);
+  }
+  render();
+  if (isDraftComplete()){
+    showResultsModal();
+  } else {
+    flashOnTheClock();
+  }
+}
+
+function isDraftComplete(){
+  const target = totalRosterSize();
+  for (let t=0; t<state.settings.teams; t++){
+    if ((state.teamRosters[t]?.length||0) < target) return false;
+  }
+  return true;
 }
 
 function advanceAfterPick(shouldRender=true){
   state.currentOverall += 1;
-  if (shouldRender) { render(); renderDraftStatus(); }
-  checkDraftEnd();
+  if (shouldRender) render();
 }
 
 function aiPick(teamIndex){
   const {list}=computeRecommendations(teamIndex);
   if(!list.length) return;
-  const early = draftProgressPct() < 0.2;
-  const k = early ? Math.min(6, list.length) : Math.min(3, list.length);
+  const earlyPct = draftProgressPct();
+  // sample from top candidates — wider early, tighter later
+  const k = (earlyPct < 0.2) ? Math.min(6, list.length) : Math.min(3, list.length);
   const weights = Array.from({length:k},(_,i)=>(k-i));
   const sum=weights.reduce((a,b)=>a+b,0);
   let r=Math.random()*sum, pick=list[0];
   for(let i=0;i<k;i++){ r-=weights[i]; if(r<=0){ pick=list[i]; break; } }
   draftPlayerById(pick.id,teamIndex);
 }
+
 function draftPlayerById(id, teamIndex){
-  const poolIdx = state.players.findIndex(p=>p.id===id); if(poolIdx===-1) return;
+  const poolIdx = state.players.findIndex(p=>p.id===id);
+  if(poolIdx===-1) return;
   draftByIndex(poolIdx, teamIndex);
 }
 function draftByIndex(poolIdx, teamIndex){
   if(state.players[poolIdx].drafted) return;
-  const idxAvail = state.available.indexOf(poolIdx); if(idxAvail!==-1) state.available.splice(idxAvail,1);
+  // remove from available
+  const idxAvail = state.available.indexOf(poolIdx);
+  if(idxAvail!==-1) state.available.splice(idxAvail,1);
+
   state.players[poolIdx].drafted=true;
+
   const overall=state.currentOverall, round=getRound(overall), pir=pickInRound(overall);
-  state.teamRosters[teamIndex].push(poolIdx); bumpRosterSlot(teamIndex, state.players[poolIdx].pos);
+  state.teamRosters[teamIndex].push(poolIdx);
+  bumpRosterSlot(teamIndex, state.players[poolIdx].pos);
   state.draftPicks.push({overall, team:teamIndex, round, pickInRound:pir, playerIdx:poolIdx});
-}
-function bumpRosterSlot(teamIndex,pos){ const s=state.rosterSlots[teamIndex]; if(!s) return; if(pos in s) s[pos]++; else s.BEN++; }
 
-function undoPick(){
-  if(!state.draftPicks.length) return;
-  const last=state.draftPicks.pop(); const {playerIdx, team, overall}=last;
-  state.players[playerIdx].drafted=false; if(!state.available.includes(playerIdx)) state.available.push(playerIdx);
-  const r=state.teamRosters[team]; const ix=r.lastIndexOf(playerIdx); if(ix>=0) r.splice(ix,1);
-  const pos=state.players[playerIdx].pos; if(pos in state.rosterSlots[team]) state.rosterSlots[team][pos]=Math.max(0, state.rosterSlots[team][pos]-1);
-  state.currentOverall = overall; // step back to that pick
-  render(); renderDraftStatus();
+  // Update roster viewer dropdown (show counts)
+  populateRosterTeamSelect();
+}
+function bumpRosterSlot(teamIndex,pos){
+  const s=state.rosterSlots[teamIndex]; if(!s) return;
+  if(pos in s && pos!=="FLEX") s[pos]++; else s.BEN++;
 }
 
-function checkDraftEnd(){
-  const totalNeeded = state.settings.teams * rosterSizePerTeam();
-  if (state.draftPicks.length >= totalNeeded){
-    showResultsModal();
+/* ====== EXPORT (disabled in UI, kept for internal) ====== */
+function exportBoard(){
+  const rows=[["overall","round","pickInRound","team","player","pos","teamAbbr","bye","ecr","adp","proj_ppr","tier"]];
+  for(const p of [...state.draftPicks].sort((a,b)=>a.overall-b.overall)){
+    const pl=state.players[p.playerIdx];
+    rows.push([p.overall,p.round,p.pickInRound,p.team+1,pl.player,pl.pos,pl.team,pl.bye,pl.ecr,pl.adp,pl.proj_ppr,pl.tier]);
   }
+  const csv=rows.map(r=>r.join(",")).join("\n");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download="draft_board.csv";
+  a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1500);
 }
 
-// ---------- results / grades ----------
-function showResultsModal(){
-  const modal = el("resultsModal");
-  if(!modal) return;
-  const { tableHtml, summary } = buildResultsTable();
-  el("resultsSummary").textContent = summary;
-  el("resultsTableWrap").innerHTML = tableHtml;
-  modal.style.display = "block";
-}
-function closeResultsModal(){
-  const modal = el("resultsModal");
-  if(modal) modal.style.display = "none";
-}
-
-function buildResultsTable(){
-  const T = state.settings.teams;
-  const rows = [];
-  const totals = []; // team projected total (starters+flex)
-  for(let t=0;t<T;t++){
-    const { starters, flex } = startersByPosForTeam(t);
-    const startersAll = [...starters.QB, ...starters.RB, ...starters.WR, ...starters.TE, ...starters.K, ...starters.DEF, ...flex];
-    const totalProj = startersAll.reduce((acc,p)=> acc + (Number(p.proj_ppr)||0), 0);
-    totals.push({ team:t, totalProj, startersAll });
-  }
-  // rank and grade
-  const sorted = [...totals].sort((a,b)=> b.totalProj - a.totalProj);
-  const max = sorted[0]?.totalProj || 1;
-  const min = sorted[sorted.length-1]?.totalProj || 0;
-  const table = [];
-  table.push(`<table class="results-table"><thead><tr><th>Team</th><th>Projected (Starters)</th><th>Grade</th></tr></thead><tbody>`);
-  let yourLine="";
-  for(const row of sorted){
-    const pct = (max===min)? 1 : (row.totalProj - min) / (max - min);
-    const grade = pctToLetter(pct);
-    const cls = `grade ${grade}`;
-    const tr = `<tr><td>Team ${row.team+1}</td><td>${fmt1(row.totalProj)}</td><td class="${cls}">${grade}</td></tr>`;
-    table.push(tr);
-    if (row.team === state.myTeamIndex) yourLine = `Your team finished ${(sorted.findIndex(x=>x.team===row.team))+1}/${T} — Grade ${grade} — ${fmt1(row.totalProj)} projected points.`;
-  }
-  table.push(`</tbody></table>`);
-  return { tableHtml: table.join(""), summary: yourLine || "Draft complete." };
-}
-function pctToLetter(p){
-  if (p>=0.9) return "A";
-  if (p>=0.7) return "B";
-  if (p>=0.4) return "C";
-  if (p>=0.2) return "D";
-  return "F";
-}
-
-// ---------- scoring / filters / recommendations ----------
+/* ====== SCORING / FILTERS ====== */
 function replacementLevels(){
   if(!state.dataFlags.hasProj){ return {QB:0,RB:0,WR:0,TE:0,K:0,DEF:0}; }
   const s=state.settings, T=s.teams, flexShare=s.flex;
@@ -664,8 +694,10 @@ function replacementLevels(){
   const baseline={};
   for(const pos of ["QB","RB","WR","TE","K","DEF"]){
     const pool=state.available.map(i=>state.players[i]).filter(p=>p.pos===pos).sort((a,b)=>(b.proj_ppr||0)-(a.proj_ppr||0));
-    const idx=Math.min(idxAt[pos]-1, Math.max(0,pool.length-1)); baseline[pos]=pool[idx]? (pool[idx].proj_ppr||0):0;
-  } return baseline;
+    const idx=Math.min(idxAt[pos]-1, Math.max(0,pool.length-1));
+    baseline[pos]=pool[idx]? (pool[idx].proj_ppr||0):0;
+  }
+  return baseline;
 }
 
 function applyFilters(list){
@@ -688,6 +720,7 @@ function worstStarterEcrByPos(teamIndex){
   return worst;
 }
 
+/* ====== RECOMMENDATIONS (smart, two-pass) ====== */
 function computeRecommendations(teamIndex){
   const base = replacementLevels();
   const needs = rosterNeeds(teamIndex);
@@ -697,58 +730,80 @@ function computeRecommendations(teamIndex){
   const pct = draftProgressPct();
   const worstEcr = worstStarterEcrByPos(state.myTeamIndex);
 
-  // Precompute current team-wide bye counts for the viewer's team
   const myStartersNow = startersAllForTeam(state.myTeamIndex);
   const countsNow = byeOverlapCounts(myStartersNow);
 
-  const scored = candidates.map(p=>{
+  // PASS 1 — base score without stack
+  let bestBaseScore = -Infinity;
+  const prelim = candidates.map(p=>{
     const baseProj = state.dataFlags.hasProj ? (p.proj_ppr||0) : 0;
     const rep = state.dataFlags.hasProj ? (base[p.pos]||0) : 0;
     const vor = baseProj - rep;
+
     const tierBoost = (6 - Math.min(p.tier||6,6));
-    const valueBoost = state.dataFlags.hasADP ? Math.max(0,(p.adp||state.currentOverall)-state.currentOverall)/10 : 0;
+    const valueBoost = state.dataFlags.hasADP ? Math.max(0,(p.adp|| (state.draftPicks.length+1))- (state.draftPicks.length+1))/10 : 0;
 
     const needW = (needs[p.pos]||1.0);
     const scarcity = computeScarcityBoost(p);
-    const stackSynergy = stackBonusForTeam(teamIndex, p);
     const byePenSamePos = byeOverlapPenalty(teamIndex, p);
     const teamByeDup = candidateSharesTeamBye(teamIndex, p) ? TEAM_WIDE_BYE_DUP_PENALTY : 0;
     const upside = lateRoundUpsideBonus(p);
 
-    let score =
+    // NEW signals
+    const sos = getSOSFactor(p);             // -1..+1
+    const health = healthRiskPenalty(p);     // 0..1
+    const ecrAssist = (p.ecr!=null) ? Math.max(0, (300 - p.ecr)/300) : 0;
+
+    let baseScore =
       WEIGHTS.vor * (state.dataFlags.hasProj ? vor : 0) +
       WEIGHTS.tierBoost * tierBoost +
       WEIGHTS.valueVsADP * valueBoost +
       WEIGHTS.need * needW +
       WEIGHTS.scarcity * scarcity +
-      WEIGHTS.stackSynergy * stackSynergy +
       WEIGHTS.byePenalty * Math.min(0, byePenSamePos) +
       teamByeDup +
-      WEIGHTS.lateUpside * upside;
+      WEIGHTS.lateUpside * upside +
+      WEIGHTS.sos * sos +
+      WEIGHTS.health * health +
+      WEIGHTS.ecrAssist * ecrAssist;
 
-    if ((p.pos==="K" || p.pos==="DEF") && pct < 0.6) score -= 3 * (0.6 - pct);
+    if ((p.pos==="K" || p.pos==="DEF") && pct < 0.6) baseScore -= 3 * (0.6 - pct);
 
-    const upgradeForPos = (() => {
-      const worst = worstEcr[p.pos];
-      if (worst==null || p.ecr==null) return false;
-      return p.ecr + UPGRADE_ECR_GAP < worst;
-    })();
+    if (baseScore > bestBaseScore) bestBaseScore = baseScore;
 
-    // Dot color if selecting p would bring that bye to 2/3/4+
     const resulting = (p.bye!=null) ? ( (countsNow.get(p.bye) || 0) + 1 ) : 0;
     const byeWarnColor = byeDotColor(resulting);
 
-    return {...p, baseProj, rep, vor, score,
-            hasMyStack: hasPrimaryStackForMyTeam(p),
-            upgradeForPos,
-            byeWarnColor };
+    const worst = worstEcr[p.pos];
+    const upgradeForPos = (worst!=null && p.ecr!=null) ? (p.ecr + UPGRADE_ECR_GAP < worst) : false;
+
+    return {
+      ...p,
+      baseProj, rep, vor,
+      baseScore,
+      hasMyStack: hasPrimaryStackForMyTeam(p),
+      upgradeForPos,
+      byeWarnColor
+    };
+  });
+
+  // PASS 2 — add conditional stack bonus
+  const scored = prelim.map(p=>{
+    const within = (bestBaseScore > -Infinity)
+      ? ((bestBaseScore - p.baseScore) / Math.max(1, Math.abs(bestBaseScore))) <= STACK_PROXIMITY_THRESHOLD
+      : true;
+
+    const rawStack = stackBonusForTeam(teamIndex, p);
+    const stackAdj = within ? (WEIGHTS.stackSynergy * rawStack) : 0;
+
+    return { ...p, score: p.baseScore + stackAdj };
   });
 
   scored.sort((a,b)=> b.score-a.score);
   return { list: scored.slice(0,40), baseline: base, needs };
 }
 
-// ---------- unified player card ----------
+/* ====== PLAYER CARD ====== */
 function playerCardHTML(p){
   const logo = teamLogoUrl(p.team);
   const pr = getPosRank(p);
@@ -756,9 +811,14 @@ function playerCardHTML(p){
   const ecrText = (p.ecr!=null)? `#${p.ecr}` : "#—";
   const adpBit  = state.dataFlags.hasADP ? ` • ADP ${p.adp||"-"}` : "";
   const projBit = state.dataFlags.hasProj
-      ? (` • Proj ${fmt1(p.baseProj ?? p.proj_ppr ?? 0)}`
-         + (p.rep!=null ? ` (rep ${fmt1(p.rep)})` : ""))
+      ? (` • Proj ${Number(p.baseProj ?? p.proj_ppr ?? 0).toFixed(1)}`
+         + (p.rep!=null ? ` (rep ${Number(p.rep).toFixed(1)})` : ""))
       : "";
+
+  // optional small cues
+  const sosStr = (()=>{ const s = getSOSFactor(p); if (s > 0.2) return " • SoS 👍"; if (s < -0.2) return " • SoS 👎"; return "";})();
+  const riskStr = (()=>{ const h = healthRiskPenalty(p); if (h >= 0.5) return " • Risk ⚠️"; if (h >= 0.25) return " • Risk ⬆️"; return "";})();
+
   const stackBadge = (p.hasMyStack || hasPrimaryStackForMyTeam(p))
       ? `<span class="badge stack" title="Stacks with your roster">🔗 STACK</span>` : "";
   const upgradeBadge = p.upgradeForPos
@@ -766,16 +826,10 @@ function playerCardHTML(p){
       : "";
   const byeDot = p.byeWarnColor ? byeDotSpan(p.byeWarnColor) : "";
 
-  const onClock = overallToTeam(state.currentOverall);
-  const targetTeam = state.settings.manualMode ? onClock : state.myTeamIndex;
-  const canClick = (!state.started) ? false
-                 : (state.settings.manualMode ? true
-                                              : (onClock===state.myTeamIndex));
+  const onClickAttr = `data-pid="${p.id}"`;
 
-  const btnAttr = canClick ? `data-pid="${p.id}" data-team="${targetTeam}"` : `disabled`;
-
-  return `<div class="flex">
-      <div class="flex" style="gap:8px;">
+  return `<div class="flex item-row">
+      <div class="flex" style="gap:10px;">
         ${logo ? `<img src="${logo}" alt="${p.team||''}" class="team-logo">` : ""}
         <div>
           <div class="name">${p.player} ${stackBadge} ${upgradeBadge}
@@ -783,38 +837,42 @@ function playerCardHTML(p){
             <span class="badge pos ${p.pos}">${p.pos}${pr ? posRankLabel(pr) : ""}</span>
             <span class="badge">${ecrText}</span>
           </div>
-          <div class="small">${p.team||""} • Bye ${p.bye||"-"} ${byeDot}${adpBit}${projBit}</div>
+          <div class="small">${p.team||""} • Bye ${p.bye||"-"} ${byeDot}${adpBit}${projBit}${sosStr}${riskStr}</div>
         </div>
       </div>
-      <div><button class="btn-primary" ${btnAttr}>Draft</button></div>
+      <div><button class="draft-btn" ${onClickAttr}>Draft</button></div>
     </div>`;
 }
 
-// ---------- render ----------
-function render(){ renderBoard(); renderMidPanel(); renderMyRoster(); }
+/* ====== RENDER ====== */
+function render(){
+  populateRosterTeamSelect(); // keep dropdown synced
+  renderBoard();
+  renderMidPanel();
+  renderMyRoster();
+}
 
 function renderBoard(){
   const root=el("board"); if(!root) return; root.innerHTML="";
-  const picks = [...state.draftPicks].sort((a,b)=>b.overall-a.overall); // newest first
+
+  // newest first
+  const picks = [...state.draftPicks].sort((a,b)=>b.overall-a.overall);
+
   if(state.boardView === "overall"){
-    if(!picks.length){
-      const empty = document.createElement("div");
-      empty.className = "small";
-      empty.textContent = "No picks yet.";
-      root.appendChild(empty);
-    } else {
-      picks.forEach(p=> root.appendChild(boardPickElem(p)));
-    }
+    picks.forEach(p=> root.appendChild(boardPickElem(p)));
   } else {
     const byRound = new Map();
-    picks.forEach(p=>{ if(!byRound.has(p.round)) byRound.set(p.round, []); byRound.get(p.round).push(p); });
+    for (const p of picks){
+      if(!byRound.has(p.round)) byRound.set(p.round, []);
+      byRound.get(p.round).push(p);
+    }
+    // show latest rounds first (descending)
     Array.from(byRound.keys()).sort((a,b)=>b-a).forEach(r=>{
       const h = document.createElement("div"); h.className = "round-header"; h.textContent = `Round ${r}`; root.appendChild(h);
       byRound.get(r).forEach(p=> root.appendChild(boardPickElem(p)));
     });
   }
 }
-
 function boardPickElem(p){
   const pl=state.players[p.playerIdx]; const logo = teamLogoUrl(pl.team); const pr = getPosRank(pl);
   const div=document.createElement("div"); div.className="pick";
@@ -830,32 +888,35 @@ function boardPickElem(p){
 function renderMidPanel(){
   const root = el("midList"); if(!root) return; root.innerHTML = "";
 
+  const teamOnClock = state.started ? currentTeamOnClock() : state.myTeamIndex;
+  const isMyTurn = state.started && (teamOnClock === state.myTeamIndex);
+
+  const hookDraftButtons = (container) => {
+    container.querySelectorAll("button.draft-btn").forEach(btn=>{
+      btn.onclick = ()=>{
+        const pid = Number(btn.getAttribute("data-pid"));
+        if (!Number.isFinite(pid)) return;
+
+        if (state.settings.mode === "regular"){
+          // only allow on my pick
+          if (!isMyTurn){
+            alert("Not your pick. Other teams will auto-draft.");
+            return;
+          }
+        }
+        handleUserDraft(pid);
+      };
+    });
+  };
+
   if(state.midTab === "recs"){
-    const team = state.started ? overallToTeam(state.currentOverall) : state.myTeamIndex;
-    const { list } = computeRecommendations(team);
+    const { list } = computeRecommendations(teamOnClock);
     list.forEach(p=>{
       const d=document.createElement("div"); d.className="item";
       d.innerHTML = playerCardHTML(p);
-      const btn = d.querySelector("button");
-      if (btn && btn.hasAttribute("data-pid")){
-        btn.onclick = ()=>{
-          const pid = Number(btn.getAttribute("data-pid"));
-          const team = Number(btn.getAttribute("data-team"));
-          draftPlayerById(pid, team);
-
-          // AFTER USER PICK IN REGULAR MODE: auto others until your next pick
-          if (!state.settings.manualMode){
-            advanceAfterPick(false);   // increment once for your pick
-            autoUntilYourPick();       // burn through other teams
-            return;                    // render happens inside autoUntilYourPick()
-          }
-
-          // Manual mode just advances one pick
-          advanceAfterPick();
-        };
-      }
       root.appendChild(d);
     });
+    hookDraftButtons(root);
   } else {
     let list = state.available.map(i=>state.players[i]);
     list = applyFilters(list);
@@ -863,35 +924,14 @@ function renderMidPanel(){
 
     const countsNow = byeOverlapCounts(startersAllForTeam(state.myTeamIndex));
 
-    list.slice(0,600).forEach(p=>{
+    list.slice(0,800).forEach(p=>{
       const resulting = (p.bye!=null) ? ((countsNow.get(p.bye) || 0) + 1) : 0;
       p.byeWarnColor = byeDotColor(resulting);
       const d=document.createElement("div"); d.className="item";
       d.innerHTML = playerCardHTML(p);
-      const btn = d.querySelector("button");
-      if (btn && btn.hasAttribute("data-pid")){
-        btn.onclick = ()=>{
-          const pid = Number(btn.getAttribute("data-pid"));
-          const team = Number(btn.getAttribute("data-team"));
-          draftPlayerById(pid, team);
-
-          // AFTER USER PICK IN REGULAR MODE: auto others until your next pick
-          if (!state.settings.manualMode){
-            advanceAfterPick(false);
-            autoUntilYourPick();
-            return;
-          }
-
-          advanceAfterPick();
-        };
-      }
       root.appendChild(d);
     });
-
-    if (!list.length){
-      const d=document.createElement("div"); d.className="small"; d.textContent="No available players (did you load data?)";
-      root.appendChild(d);
-    }
+    hookDraftButtons(root);
   }
 }
 
@@ -914,14 +954,13 @@ function coverageStatus(fill, target){
 function renderMyRoster(){
   const root=el("myRoster"); if(!root) return; root.innerHTML="";
 
-  const viewTeam = Math.max(0, Math.min(state.settings.teams-1, state.viewTeamIndex||0));
-  const mineIdxs = (state.teamRosters[viewTeam] || []);
+  // Which team to show?
+  const tIndex = Math.max(0, Math.min(state.settings.teams-1, state.viewTeamIndex|0));
+  const mineIdxs = (state.teamRosters[tIndex] || []);
   const mine = mineIdxs.map(i=>state.players[i]).sort((a,b)=> (a.ecr ?? 9999) - (b.ecr ?? 9999));
 
-  const slotsTarget = {
-    QB: state.settings.qb, RB: state.settings.rb, WR: state.settings.wr,
-    TE: state.settings.te, FLEX: state.settings.flex, K: state.settings.k, DEF: state.settings.def
-  };
+  const s = state.settings;
+  const slotsTarget = { QB:s.qb, RB:s.rb, WR:s.wr, TE:s.te, FLEX:s.flex, K:s.k, DEF:s.def };
 
   const starters = { QB:[], RB:[], WR:[], TE:[], K:[], DEF:[], FLEX:[] };
   const bench = [];
@@ -969,7 +1008,7 @@ function renderMyRoster(){
         wrap.appendChild(empty);
       }
     } else {
-      for(let i=list.length; i<state.settings.bench; i++){
+      for(let i=list.length; i<s.bench; i++){
         const empty = document.createElement("div"); empty.className = "roster-item slot-empty";
         empty.innerHTML = `<div class="slot-dot"></div><div class="roster-main">
           <div class="roster-name muted">Empty Bench</div>
@@ -987,10 +1026,10 @@ function renderMyRoster(){
   section("FLEX (W/R)", starters.FLEX, slotsTarget.FLEX);
   section("K", starters.K, slotsTarget.K);
   section("DEF", starters.DEF, slotsTarget.DEF);
-  section("Bench", bench, state.settings.bench, true);
+  section("Bench", bench, s.bench, true);
 }
 
-// ---------- ui tabs ----------
+/* ====== UI TABS ====== */
 function updateBoardTabs(){
   el("tabOverall")?.classList.toggle("active", state.boardView==="overall");
   el("tabByRound")?.classList.toggle("active", state.boardView==="round");
@@ -1000,28 +1039,152 @@ function updateMidTabs(){
   el("subtabRanks")?.classList.toggle("active", state.midTab==="ranks");
 }
 
-// ---------- utility ----------
-function renderDraftStatus(){
-  const bar = document.getElementById("draftStatus");
-  if (!bar) return;
+/* ====== ROSTER VIEW DROPDOWN ====== */
+function populateRosterTeamSelect(){
+  const sel = el("rosterTeamSelect");
+  if(!sel) return;
+  const T = state.settings.teams;
+  const prev = String(sel.value ?? "");
+  sel.innerHTML = "";
+  for (let i=0;i<T;i++){
+    const opt = document.createElement("option");
+    // Do NOT append "(You)" per request
+    opt.value = String(i);
+    opt.textContent = `Team ${i+1}`;
+    sel.appendChild(opt);
+  }
+  // set selected to current viewTeamIndex
+  sel.value = String(Math.max(0, Math.min(T-1, state.viewTeamIndex|0)));
+}
 
-  if (!state.started){
-    bar.style.display = "none";
-    bar.textContent = "";
-    return;
+/* ====== RESULTS MODAL ====== */
+function showResultsModal(){
+  const existing = document.querySelector(".modal-overlay");
+  if (existing) existing.remove();
+
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  const modal = document.createElement("div");
+  modal.className = "modal";
+
+  const title = document.createElement("h2");
+  title.textContent = "Draft Results";
+  modal.appendChild(title);
+
+  const desc = document.createElement("div");
+  desc.className = "small";
+  desc.textContent = "Grades by position and overall for every team.";
+  modal.appendChild(desc);
+
+  // Compute grades
+  const grades = computeLeagueGrades();
+  const container = document.createElement("div");
+  container.className = "grades-grid";
+
+  grades.forEach((g, idx)=>{
+    const card = document.createElement("div");
+    card.className = "grade-card";
+    const hdr = document.createElement("div");
+    hdr.className = "grade-card-head";
+    hdr.innerHTML = `<strong>Team ${idx+1}</strong> • Overall: <span class="grade">${g.overallGrade}</span>`;
+    const body = document.createElement("div");
+    body.className = "grade-card-body small";
+    body.innerHTML = `
+      QB: <strong>${g.byPos.QB.grade}</strong> &nbsp;
+      RB: <strong>${g.byPos.RB.grade}</strong> &nbsp;
+      WR: <strong>${g.byPos.WR.grade}</strong> &nbsp;
+      TE: <strong>${g.byPos.TE.grade}</strong> &nbsp;
+      K: <strong>${g.byPos.K.grade}</strong> &nbsp;
+      DEF: <strong>${g.byPos.DEF.grade}</strong>
+    `;
+    card.appendChild(hdr); card.appendChild(body);
+    container.appendChild(card);
+  });
+
+  modal.appendChild(container);
+
+  const actions = document.createElement("div");
+  actions.className = "row";
+  const closeBtn = document.createElement("button");
+  closeBtn.textContent = "Close";
+  closeBtn.onclick = ()=> overlay.remove();
+  actions.appendChild(closeBtn);
+  modal.appendChild(actions);
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+}
+
+function computeLeagueGrades(){
+  const T = state.settings.teams;
+  const positions = ["QB","RB","WR","TE","K","DEF"];
+
+  // For each team, compute starter projections per position
+  const perTeam = [];
+  for (let t=0; t<T; t++){
+    const { starters, flex } = startersByPosForTeam(t);
+
+    // Build sums of projected PPR (use 0 if missing)
+    const sumProj = (arr)=> arr.reduce((acc,p)=> acc + Number(p?.proj_ppr||0), 0);
+    const byPosProj = {
+      QB: sumProj(starters.QB),
+      RB: sumProj(starters.RB) + sumProj(flex.filter(x=>x.pos==="RB")),
+      WR: sumProj(starters.WR) + sumProj(flex.filter(x=>x.pos==="WR")),
+      TE: sumProj(starters.TE),
+      K:  sumProj(starters.K),
+      DEF: sumProj(starters.DEF)
+    };
+
+    const total = byPosProj.QB + byPosProj.RB + byPosProj.WR + byPosProj.TE + byPosProj.K + byPosProj.DEF;
+    perTeam.push({ t, byPosProj, total });
   }
 
-  const total = state.settings.teams * rosterSizePerTeam();
-  const on = Math.min(state.currentOverall, total);
-  const r = getRound(on);
-  const pir = pickInRound(on);
-  const team = overallToTeam(on);
-  const you = (team === state.myTeamIndex);
+  // Compute league means & stddevs for z-scores
+  const stats = {};
+  const mean = (vals)=> vals.reduce((a,b)=>a+b,0) / Math.max(1,vals.length);
+  const std = (vals, m)=> Math.sqrt(mean(vals.map(v=> (v-m)*(v-m))));
+  positions.concat(["TOTAL"]).forEach(pos=>{
+    const vals = (pos==="TOTAL") ? perTeam.map(x=>x.total) : perTeam.map(x=>x.byPosProj[pos]);
+    const m = mean(vals); const s = std(vals, m) || 1;
+    stats[pos] = { m, s };
+  });
 
-  const prefix = `Round ${r} • Pick ${pir}/${state.settings.teams}`;
-  const who = you ? `You’re on the clock (Team ${team+1})`
-                  : `Auto-drafting for Team ${team+1}…`;
+  // Convert to letter grades
+  const toGrade = (z)=>{
+    if (z >= 1.25) return "A+";
+    if (z >= 0.75) return "A";
+    if (z >= 0.35) return "A-";
+    if (z >= 0.15) return "B+";
+    if (z >= -0.1) return "B";
+    if (z >= -0.35) return "B-";
+    if (z >= -0.75) return "C+";
+    if (z >= -1.25) return "C";
+    if (z >= -1.75) return "C-";
+    return "D";
+  };
 
-  bar.style.display = "block";
-  bar.textContent = `${prefix} — ${who}`;
+  const out = perTeam.map(team=>{
+    const byPos = {};
+    positions.forEach(pos=>{
+      const z = (team.byPosProj[pos] - stats[pos].m) / stats[pos].s;
+      byPos[pos] = { z, grade: toGrade(z) };
+    });
+    const zTot = (team.total - stats.TOTAL.m) / stats.TOTAL.s;
+    const overallGrade = toGrade(zTot);
+    return { team: team.t, byPos, overallGrade };
+  });
+
+  return out;
 }
+
+/* ====== SMALL UI ====== */
+function flashOnTheClock(){
+  const elOTC = el("onTheClock");
+  if (!elOTC) return;
+  const t = currentTeamOnClock();
+  elOTC.textContent = `On the clock: Team ${t+1}`;
+  elOTC.classList.add("flash");
+  setTimeout(()=> elOTC.classList.remove("flash"), 350);
+}
+
+/* ====== UTIL ====== */

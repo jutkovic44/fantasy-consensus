@@ -4,14 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fantasy Football War Room</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="hdr">
-    <div class="hdr-row">
-      <h1>Fantasy Football War Room</h1>
-      <div id="lastUpdated" class="small muted">Loading…</div>
-    </div>
+  <header class="site-header">
+    <h1>Fantasy Football War Room</h1>
+    <div id="lastUpdated" class="small">Loading…</div>
   </header>
 
   <!-- Data -->
@@ -21,9 +19,8 @@
       <div class="uploader">
         <label for="csvInput" class="button">Upload FantasyPros CSV</label>
         <input id="csvInput" type="file" accept=".csv" />
-        <span class="small muted">Drag &amp; drop allowed</span>
+        <span class="small muted">Drag & drop allowed</span>
       </div>
-
       <button id="downloadConsensus" class="secondary">Download consensus.json</button>
       <div class="small muted">Current source: <span id="dataSourceLabel">consensus.json</span></div>
     </div>
@@ -33,15 +30,9 @@
   <details class="panel accordion">
     <summary>League Settings</summary>
     <div class="grid grid-5 mt8">
-      <label>Teams
-        <input id="teams" type="number" min="4" max="16" value="12" />
-      </label>
-      <label>Rounds
-        <input id="rounds" type="number" min="6" max="24" value="16" />
-      </label>
-      <label>Pick Position (1-based)
-        <input id="pickPos" type="number" min="1" max="16" value="5" />
-      </label>
+      <label>Teams <input id="teams" type="number" min="4" max="16" value="12"/></label>
+      <label>Rounds <input id="rounds" type="number" min="6" max="24" value="16"/></label>
+      <label>Pick Position (1-based) <input id="pickPos" type="number" min="1" max="16" value="5"/></label>
       <label>Scoring
         <select id="scoring">
           <option value="PPR" selected>PPR</option>
@@ -49,46 +40,37 @@
           <option value="Std">Standard</option>
         </select>
       </label>
-      <label>Draft Mode
-        <select id="draftMode">
-          <option value="regular" selected>Regular</option>
-          <option value="manual">Manual</option>
-        </select>
+      <label class="checkbox-row">
+        <input id="manualMode" type="checkbox" />
+        Manual Draft Mode
       </label>
     </div>
 
     <div class="grid grid-7 mt8">
-      <label>QB Slots <input id="qbSlots" type="number" min="0" max="2" value="1" /></label>
-      <label>RB Slots <input id="rbSlots" type="number" min="0" max="4" value="2" /></label>
-      <label>WR Slots <input id="wrSlots" type="number" min="0" max="4" value="2" /></label>
-      <label>TE Slots <input id="teSlots" type="number" min="0" max="2" value="1" /></label>
-      <label>FLEX (W/R) <input id="flexSlots" type="number" min="0" max="3" value="1" /></label>
-      <label>K Slots <input id="kSlots" type="number" min="0" max="2" value="1" /></label>
-      <label>DEF Slots <input id="defSlots" type="number" min="0" max="2" value="1" /></label>
-      <label>Bench Slots <input id="benchSlots" type="number" min="0" max="12" value="8" /></label>
+      <label>QB Slots <input id="qbSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>RB Slots <input id="rbSlots" type="number" min="0" max="4" value="2"/></label>
+      <label>WR Slots <input id="wrSlots" type="number" min="0" max="4" value="2"/></label>
+      <label>TE Slots <input id="teSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>FLEX (W/R) <input id="flexSlots" type="number" min="0" max="3" value="1"/></label>
+      <label>K Slots <input id="kSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>DEF Slots <input id="defSlots" type="number" min="0" max="2" value="1"/></label>
+      <label>Bench Slots <input id="benchSlots" type="number" min="0" max="12" value="8"/></label>
     </div>
   </details>
 
-  <!-- Helper strip: explains modes -->
+  <!-- Controls (no visible heading) -->
   <section class="panel">
-    <div id="modeHelp" class="small muted">
-      <strong>Regular Mode:</strong> Other teams auto-draft; you draft on your turn.
-    </div>
-  </section>
-
-  <!-- Draft Controls -->
-  <section class="panel">
-    <h2>Draft Controls</h2>
-    <div class="row controls">
+    <nav class="row" aria-label="Draft controls">
       <button id="startMock">Start Draft</button>
       <button id="nextPick">Next Pick</button>
-      <button id="prevPick" class="secondary">Back One</button>
-      <button id="undoPick" class="secondary">Undo</button>
-    </div>
+      <button id="prevPick">Back One</button>
+      <button id="undoPick">Undo</button>
+    </nav>
   </section>
 
-  <!-- Main Layout -->
-  <section class="panel layout">
+  <!-- Main Layout – fixed 50 / 25 / 25 distribution -->
+  <section class="panel layout layout-50-25-25">
+
     <!-- Draft Board -->
     <div class="col">
       <div class="tabs">
@@ -96,23 +78,22 @@
         <button id="tabByRound" class="tab">By Round</button>
       </div>
       <div id="board" class="board-empty">
-        <div class="empty-hint">
-          <div class="empty-card dashed">
-            <div class="hint-title">No picks yet. Start the draft and make your first selection.</div>
+        <div class="placeholder">
+          <div class="placeholder-box">
+            <p>No picks yet. Start the draft and make your first selection.</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Rankings / Recommendations -->
-    <div class="col col-wide">
+    <div class="col">
       <div class="subtabs">
         <button id="subtabRanks" class="subtab active">Full Rankings</button>
         <button id="subtabRecs" class="subtab">Recommendations</button>
       </div>
-
       <div class="row">
-        <select id="filterPos">
+        <select id="filterPos" aria-label="Filter by position">
           <option value="">All</option>
           <option value="RB">RB</option>
           <option value="WR">WR</option>
@@ -121,41 +102,38 @@
           <option value="K">K</option>
           <option value="DEF">DEF</option>
         </select>
-        <input id="searchName" placeholder="Search name..." />
+        <input id="searchName" placeholder="Search name..." aria-label="Search by name" />
       </div>
-
       <div id="midList" class="mt8 list"></div>
     </div>
 
-    <!-- My Roster / Team Viewer -->
+    <!-- Roster -->
     <div class="col">
       <div class="roster-head">
-        <h3 class="roster-title">Roster</h3>
-        <select id="rosterViewerSelect" title="View another team's roster"></select>
+        <h3>Roster</h3>
+        <select id="rosterViewSelect" aria-label="View roster for team"></select>
       </div>
       <div id="myRoster"></div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="ftr">
-    <small>Data URL: <code>./consensus.json</code></small>
-  </footer>
-
-  <!-- Results Modal -->
-  <div id="resultsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="resultsTitle">
-    <div class="modal-content">
-      <div class="modal-head">
+  <!-- Results Modal (hidden until draft ends) -->
+  <div id="resultsModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="resultsTitle">
+    <div class="modal__dialog">
+      <div class="modal__header">
         <h3 id="resultsTitle">Draft Results</h3>
-        <button id="resultsClose" class="icon-btn" aria-label="Close">✕</button>
+        <button class="icon-btn" id="resultsClose" aria-label="Close results">✕</button>
       </div>
-      <div id="resultsBody" class="modal-body"></div>
-      <div class="modal-foot">
-        <button id="downloadResults" class="secondary">Download Results CSV</button>
-        <button id="resultsOk">OK</button>
+      <div id="resultsBody" class="modal__body"></div>
+      <div class="modal__footer">
+        <button id="resultsOk" class="button">Done</button>
       </div>
     </div>
   </div>
+
+  <footer>
+    <small>Data URL: <code>./consensus.json</code></small>
+  </footer>
 
   <script src="app.js"></script>
 </body>

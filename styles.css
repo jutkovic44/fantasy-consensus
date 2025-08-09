@@ -116,8 +116,8 @@ footer { padding: 16px 20px; background: #111827; border-top: 1px solid #1f2937;
 details.accordion > summary { list-style:none; cursor:pointer; font-weight:600; padding: 8px 0; }
 details.accordion > summary::marker { display:none; }
 details.accordion[open] > summary { color: #e5e7eb; }
-details.accordion > summary::after { content: "▾"; float: right; color: #64748b; }
-details.accordion[open] > summary::after { content: "▴"; }
+details.accordion > summary::after { content: "â–¾"; float: right; color: #64748b; }
+details.accordion[open] > summary::after { content: "â–´"; }
 
 /* Mobile */
 @media (max-width: 1024px){
